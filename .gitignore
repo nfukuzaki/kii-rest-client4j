@@ -1,0 +1,10 @@
+*.class
+*.jar
+.project
+.classpath
+.settings
+target
+*.log
+Thumbs.db
+.DS_Store
+

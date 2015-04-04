@@ -1,0 +1,35 @@
+package com.kii.cloud.resource;
+
+import java.util.Map;
+
+import com.google.gson.JsonObject;
+import com.kii.cloud.KiiRestException;
+import com.kii.cloud.model.KiiObject;
+
+public class KiiObjectResource extends KiiRestSubResource {
+	
+	private final String objectID;
+	
+	public KiiObjectResource(KiiBucketResource parent, String objectID) {
+		super(parent);
+		this.objectID = objectID;
+	}
+	public KiiObject get() throws KiiRestException {
+		return null;
+	}
+	public void delete() throws KiiRestException {
+	}
+	public void update(KiiObject object) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		JsonObject response = this.executePut(headers, null, object.getJsonObject());
+	}
+	public void partialUpdate(KiiObject object) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		headers.put("X-HTTP-Method-Override", "PATCH");
+		JsonObject response = this.executePost(headers, null, object.getJsonObject());
+	}
+	@Override
+	public String getPath() {
+		return KiiObjectsResource.BASE_PATH + "/" + this.objectID;
+	}
+}
