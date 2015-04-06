@@ -1,6 +1,7 @@
 package com.kii.cloud.group;
 
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import com.kii.cloud.KiiRest;
 import com.kii.cloud.TestApp;
@@ -26,16 +27,28 @@ public class KiiGroupResourceTest {
 		
 		rest.setCredentials(user1);
 		
-		KiiGroup group = new KiiGroup();
-		group.setName("MyGroup");
-		group.setOwner(user1.getUserID());
+		// creating new group
+		KiiGroup group1 = new KiiGroup();
+		group1.setName("MyGroup");
+		group1.setOwner(user1.getUserID());
 		
 		KiiGroupMembers members = new KiiGroupMembers();
 		members.addMember(user2.getUserID());
 		members.addMember(user3.getUserID());
-		rest.api().groups().save(group, members);
+		rest.api().groups().save(group1, members);
 		
+		// changing group name
+		rest.api().groups(group1).changeName("NewMyGroup");
+		KiiGroup group2 = rest.api().groups(group1).get();
+		assertEquals("NewMyGroup", group2.getName());
 		
-		rest.api().groups(group).get();
+		// changing owner
+		assertEquals(user1.getUserID(), group2.getOwner());
+		rest.api().groups(group2.getGroupID()).changeOwner(user2.getUserID());
+		KiiGroup group3 = rest.api().groups(group1).get();
+		assertEquals(user2.getUserID(), group3.getOwner());
+		rest.setCredentials(user2);
+		
+		rest.api().groups(group2.getGroupID()).delete();
 	}
 }

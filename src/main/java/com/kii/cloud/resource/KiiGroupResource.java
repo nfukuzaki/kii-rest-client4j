@@ -5,8 +5,12 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiGroup;
+import com.squareup.okhttp.MediaType;
 
 public class KiiGroupResource extends KiiRestSubResource {
+	
+	public static final MediaType MEDIA_TYPE_GROUP_OWNER_CHANGE_REQUEST = MediaType.parse("application/vnd.kii.GroupOwnerChangeRequest+json");
+	
 	private final String groupID;
 	public KiiGroupResource(KiiGroupsResource parent, String groupID) {
 		super(parent);
@@ -23,11 +27,19 @@ public class KiiGroupResource extends KiiRestSubResource {
 		JsonObject response = this.executeGet(headers);
 		return new KiiGroup(response);
 	}
-	public void changeOwner() throws KiiRestException {
+	public void changeOwner(String userID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		JsonObject request = new JsonObject();
+		request.addProperty("owner", userID);
+		this.executePut("/owner", headers, MEDIA_TYPE_GROUP_OWNER_CHANGE_REQUEST, request);
 	}
-	public void update(KiiGroup group) throws KiiRestException {
+	public void changeName(String name) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		this.executePut("/name", headers, MEDIA_TYPE_TEXT_PLAIN, name);
 	}
 	public void delete() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		this.executeDelete(headers);
 	}
 	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);

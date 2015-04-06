@@ -1,6 +1,7 @@
 package com.kii.cloud.resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,30 @@ public class KiiGroupsResource extends KiiRestSubResource {
 			notFoundusers.add(array.get(i).getAsString());
 		}
 		return notFoundusers;
+	}
+	public List<KiiGroup> getOwnGroups(String userID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("owner", userID);
+		JsonObject response = this.executeGet(headers, params);
+		JsonArray array = response.getAsJsonArray("groups");
+		List<KiiGroup> groups = new ArrayList<KiiGroup>();
+		for (int i = 0; i < array.size(); i++) {
+			groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+		}
+		return groups;
+	}
+	public List<KiiGroup> getBelongGroups(String userID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("is_member", userID);
+		JsonObject response = this.executeGet(headers, params);
+		JsonArray array = response.getAsJsonArray("groups");
+		List<KiiGroup> groups = new ArrayList<KiiGroup>();
+		for (int i = 0; i < array.size(); i++) {
+			groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+		}
+		return groups;
 	}
 	@Override
 	public String getPath() {
