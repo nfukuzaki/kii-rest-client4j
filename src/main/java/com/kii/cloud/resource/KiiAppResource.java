@@ -3,6 +3,7 @@ package com.kii.cloud.resource;
 import java.util.Map;
 
 import com.kii.cloud.model.KiiCredentialsContainer;
+import com.kii.cloud.model.KiiGroup;
 import com.kii.cloud.model.KiiUser;
 
 public class KiiAppResource extends KiiRestResource {
@@ -33,6 +34,9 @@ public class KiiAppResource extends KiiRestResource {
 	}
 	public KiiGroupsResource group() {
 		return new KiiGroupsResource(this);
+	}
+	public KiiGroupResource group(KiiGroup group) {
+		return group(group.getGroupID());
 	}
 	public KiiGroupResource group(String groupID) {
 		return new KiiGroupResource(this.group(), groupID);

@@ -4,8 +4,13 @@ import java.math.BigDecimal;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class GsonUtils {
+	public static JsonObject clone(JsonObject json) {
+		JsonObject result = (JsonObject)new JsonParser().parse(json.toString());
+		return result;
+	}
 	public static String getString(JsonObject json, String name) {
 		if (json == null || json.isJsonNull()) {
 			return null;

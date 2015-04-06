@@ -90,6 +90,6 @@ public class KiiUserResource extends KiiRestSubResource {
 	}
 	@Override
 	public String getPath() {
-		return KiiUser.getAccountType(this.identifier) + this.identifier;
+		return "/" + KiiUser.getAccountType(this.identifier) + this.identifier;
 	}
 }

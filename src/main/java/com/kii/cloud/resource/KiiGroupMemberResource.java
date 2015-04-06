@@ -4,15 +4,15 @@ import com.kii.cloud.KiiRestException;
 
 public class KiiGroupMemberResource extends KiiRestSubResource {
 	
+	private final String userID;
 	
-	public KiiGroupMemberResource(KiiGroupResource parent) {
+	public KiiGroupMemberResource(KiiGroupMembersResource parent, String userID) {
 		super(parent);
+		this.userID = userID;
 	}
 	@Override
 	public String getPath() {
-		return null;
-	}
-	public void get() throws KiiRestException {
+		return "/" + this.userID;
 	}
 	public void add(String userID) throws KiiRestException {
 	}
