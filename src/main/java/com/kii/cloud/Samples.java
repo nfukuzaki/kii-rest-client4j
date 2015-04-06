@@ -3,7 +3,7 @@ package com.kii.cloud;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiObject;
 
-public class Test {
+public class Samples {
 	public static void main(String[] args) throws Exception {
 		KiiRest rest = new KiiRest("c230bead", "1ecb42576c3b98924f1ab21badd2e7ef", KiiRest.Site.JP);
 		
@@ -13,9 +13,12 @@ public class Test {
 		rest.setCredentials(user);
 		
 		KiiObject object = new KiiObject().set("score", 0).set("level", 1);
-		rest.api().user(user).bucket("by_bucket").object().register(object);
+		rest.api().user(user).bucket("my_bucket").object().register(object);
 		object.set("score", 100).set("level", 2);
-		rest.api().user(user).bucket("by_bucket").object(object).update(object);
+		rest.api().user(user).bucket("my_bucket").object(object).update(object);
+		
+		KiiObject partialObject = new KiiObject().set("hight_score", 10000);
+		rest.api().user(user).bucket("my_bucket").object(object).partialUpdate(partialObject);
 	}
 
 }

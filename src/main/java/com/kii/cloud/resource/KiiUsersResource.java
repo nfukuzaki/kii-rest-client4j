@@ -31,9 +31,9 @@ public class KiiUsersResource extends KiiRestSubResource {
 		JsonObject request = (JsonObject)new JsonParser().parse(user.toJsonString());
 		request.addProperty("password", password);
 		JsonObject response = this.executePost(headers, MEDIA_TYPE_REGISTRATION_REQUEST, request);
-		String userID = GsonUtils.getString(response, KiiUser.PROPERTY_USER_ID);
-		String accessToken = GsonUtils.getString(response, KiiUser.PROPERTY_ACCESS_TOKEN);
-		String refreshToken = GsonUtils.getString(response, KiiUser.PROPERTY_REFRESH_TOKEN);
+		String userID = KiiUser.PROPERTY_USER_ID.getString(response);
+		String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.getString(response);
+		String refreshToken = KiiUser.PROPERTY_REFRESH_TOKEN.getString(response);
 		return user.setUserID(userID).setAccessToken(accessToken).setRefreshToken(refreshToken);
 	}
 	private KiiUser register(KiiPseudoUser user, String password) throws KiiRestException {

@@ -22,11 +22,17 @@ public class KiiObjectResource extends KiiRestSubResource {
 	public void update(KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject response = this.executePut(headers, null, object.getJsonObject());
+		Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.getLong(response);
+		object.setModifiedAt(modifiedAt);
 	}
 	public void partialUpdate(KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("X-HTTP-Method-Override", "PATCH");
 		JsonObject response = this.executePost(headers, null, object.getJsonObject());
+		Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.getLong(response);
+		String owner = KiiObject.PROPERTY_OWNER.getString(response);
+		String version = KiiObject.PROPERTY_VERSION.getString(response);
+		object.setModifiedAt(modifiedAt).setOwner(owner).setVersion(version);
 	}
 	@Override
 	public String getPath() {

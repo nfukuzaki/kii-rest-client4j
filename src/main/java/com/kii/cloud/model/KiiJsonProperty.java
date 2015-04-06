@@ -15,6 +15,23 @@ public class KiiJsonProperty {
 		this.name = name;
 		this.aliases = aliases;
 	}
+	public String getName() {
+		return this.name;
+	}
+	public boolean has(JsonObject json) {
+		if (json == null) {
+			return false;
+		}
+		if (json.has(this.name)) {
+			return true;
+		}
+		for (String alias : this.aliases) {
+			if (json.has(alias)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public String getString(JsonObject json) {
 		if (json == null) {
 			return null;

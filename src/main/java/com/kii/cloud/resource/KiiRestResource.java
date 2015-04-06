@@ -110,7 +110,7 @@ public abstract class KiiRestResource {
 		}
 	}
 	protected JsonObject executePut(Map<String, String> headers, MediaType contentType, JsonObject entity) throws KiiRestException {
-		return this.executePost(headers, contentType, entity.toString());
+		return this.executePut(headers, contentType, entity.toString());
 	}
 	protected JsonObject executePut(Map<String, String> headers, MediaType contentType, String entity) throws KiiRestException {
 		String curl = this.toCurl("PUT", headers, contentType, entity);

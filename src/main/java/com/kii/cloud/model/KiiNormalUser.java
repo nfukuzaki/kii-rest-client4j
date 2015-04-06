@@ -1,52 +1,50 @@
 package com.kii.cloud.model;
 
-import com.kii.cloud.util.GsonUtils;
-
 public class KiiNormalUser extends KiiUser {
 	
 	public String getUsername() {
-		return GsonUtils.getString(this.json, PROPERTY_USERNAME);
+		return PROPERTY_USERNAME.getString(this.json);
 	}
 	public KiiNormalUser setUsername(String username) {
-		this.json.addProperty(PROPERTY_USERNAME, username);
+		this.json.addProperty(PROPERTY_USERNAME.getName(), username);
 		return this;
 	}
 	public String getEmail() {
-		return GsonUtils.getString(this.json, PROPERTY_EMAIL_ADDRESS);
+		return PROPERTY_EMAIL_ADDRESS.getString(this.json);
 	}
 	public KiiNormalUser setEmail(String email) {
-		this.json.addProperty(PROPERTY_EMAIL_ADDRESS, email);
+		this.json.addProperty(PROPERTY_EMAIL_ADDRESS.getName(), email);
 		return this;
 	}
 	public String getPhone() {
-		return GsonUtils.getString(this.json, PROPERTY_PHONE_NUMBER);
+		return PROPERTY_PHONE_NUMBER.getString(this.json);
 	}
 	public KiiNormalUser setPhone(String phone) {
-		this.json.addProperty(PROPERTY_PHONE_NUMBER, phone);
+		this.json.addProperty(PROPERTY_PHONE_NUMBER.getName(), phone);
 		return this;
 	}
 	public String getCountry() {
-		return GsonUtils.getString(this.json, PROPERTY_COUNTRY);
+		return PROPERTY_COUNTRY.getString(this.json);
 	}
 	public KiiNormalUser setCountry(String country) {
-		this.json.addProperty(PROPERTY_COUNTRY, country);
+		this.json.addProperty(PROPERTY_COUNTRY.getName(), country);
 		return this;
 	}
 	public String getDisplayName() {
-		return GsonUtils.getString(this.json, PROPERTY_DISPLAY_NAME);
+		return PROPERTY_DISPLAY_NAME.getString(this.json);
 	}
 	public KiiNormalUser setDisplayName(String displayName) {
-		this.json.addProperty(PROPERTY_DISPLAY_NAME, displayName);
+		this.json.addProperty(PROPERTY_DISPLAY_NAME.getName(), displayName);
 		return this;
 	}
 	public String getIdentifier() {
-		if (json.has(PROPERTY_USERNAME)) {
+		if (PROPERTY_USERNAME.has(this.json)) {
 			return this.getUsername();
 		}
-		if (json.has(PROPERTY_EMAIL_ADDRESS)) {
+		if (PROPERTY_EMAIL_ADDRESS.has(this.json)) {
 			return this.getEmail();
 		}
-		if (json.has(PROPERTY_PHONE_NUMBER)) {
+		if (PROPERTY_PHONE_NUMBER.has(this.json)) {
 			return this.getPhone();
 		}
 		return null;

@@ -3,7 +3,6 @@ package com.kii.cloud.model;
 import java.util.regex.Pattern;
 
 import com.google.gson.JsonObject;
-import com.kii.cloud.util.GsonUtils;
 
 public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements KiiCredentialsContainer {
 	
@@ -21,21 +20,20 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 			")+"
 	);
 	
-	public static final String PROPERTY_ID = "id";
-	public static final String PROPERTY_ACCESS_TOKEN = "_accessToken";
-	public static final String PROPERTY_REFRESH_TOKEN = "_refreshToken";
-	public static final String PROPERTY_EXPIRES_IN = "expires_in";
-	public static final String PROPERTY_USER_ID = "userID";
-	public static final String PROPERTY_INTERNAL_USER_ID = "internalUserID";
-	public static final String PROPERTY_USERNAME = "loginName";
-	public static final String PROPERTY_DISPLAY_NAME = "displayName";
-	public static final String PROPERTY_COUNTRY = "country";
-	public static final String PROPERTY_EMAIL_ADDRESS = "emailAddress";
-	public static final String PROPERTY_EMAIL_ADDRESS_VERIFIED = "emailAddressVerified";
-	public static final String PROPERTY_PHONE_NUMBER = "phoneNumber";
-	public static final String PROPERTY_PHONE_NUMBER_VERIFIED = "phoneNumberVerified";
-	public static final String PROPERTY_HAS_PASSWORD = "_hasPassword";
-	public static final String PROPERTY_DISABLED = "_disabled";
+	public static final KiiJsonProperty PROPERTY_ACCESS_TOKEN = new KiiJsonProperty("_accessToken", "accessToken");
+	public static final KiiJsonProperty PROPERTY_REFRESH_TOKEN = new KiiJsonProperty("_refreshToken", "refresh_token");
+	public static final KiiJsonProperty PROPERTY_EXPIRES_IN = new KiiJsonProperty("expires_in");
+	public static final KiiJsonProperty PROPERTY_USER_ID = new KiiJsonProperty("userID", "id");
+	public static final KiiJsonProperty PROPERTY_INTERNAL_USER_ID = new KiiJsonProperty("internalUserID");
+	public static final KiiJsonProperty PROPERTY_USERNAME = new KiiJsonProperty("loginName");
+	public static final KiiJsonProperty PROPERTY_DISPLAY_NAME = new KiiJsonProperty("displayName");
+	public static final KiiJsonProperty PROPERTY_COUNTRY = new KiiJsonProperty("country");
+	public static final KiiJsonProperty PROPERTY_EMAIL_ADDRESS = new KiiJsonProperty("emailAddress");
+	public static final KiiJsonProperty PROPERTY_EMAIL_ADDRESS_VERIFIED = new KiiJsonProperty("emailAddressVerified");
+	public static final KiiJsonProperty PROPERTY_PHONE_NUMBER = new KiiJsonProperty("phoneNumber");
+	public static final KiiJsonProperty PROPERTY_PHONE_NUMBER_VERIFIED = new KiiJsonProperty("phoneNumberVerified");
+	public static final KiiJsonProperty PROPERTY_HAS_PASSWORD = new KiiJsonProperty("_hasPassword");
+	public static final KiiJsonProperty PROPERTY_DISABLED = new KiiJsonProperty("_disabled");
 	
 	protected final JsonObject credentials = new JsonObject();
 	
@@ -45,28 +43,28 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	}
 	@Override
 	public String getAccessToken() {
-		return GsonUtils.getString(credentials, PROPERTY_ACCESS_TOKEN);
+		return PROPERTY_ACCESS_TOKEN.getString(credentials);
 	}
 	public KiiUser setAccessToken(String accessToken) {
-		credentials.addProperty(PROPERTY_ACCESS_TOKEN, accessToken);
+		credentials.addProperty(PROPERTY_ACCESS_TOKEN.getName(), accessToken);
 		return this;
 	}
 	@Override
 	public String getRefreshToken() {
-		return GsonUtils.getString(credentials, PROPERTY_REFRESH_TOKEN);
+		return PROPERTY_REFRESH_TOKEN.getString(credentials);
 	}
 	public KiiUser setRefreshToken(String refreshToken) {
-		credentials.addProperty(PROPERTY_REFRESH_TOKEN, refreshToken);
+		credentials.addProperty(PROPERTY_REFRESH_TOKEN.getName(), refreshToken);
 		return this;
 	}
 	
 	public abstract boolean isPseudo();
 	
 	public String getUserID() {
-		return GsonUtils.getString(this.json, PROPERTY_USER_ID);
+		return PROPERTY_USER_ID.getString(this.json);
 	}
 	public KiiUser setUserID(String userID) {
-		this.json.addProperty(PROPERTY_USER_ID, userID);
+		this.json.addProperty(PROPERTY_USER_ID.getName(), userID);
 		return this;
 	}
 	public static String getAccountType(String identifier) {
