@@ -13,4 +13,8 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 	public String getRefreshToken() {
 		return null;
 	}
+	@Override
+	public boolean isAdmin() {
+		return false;
+	}
 }

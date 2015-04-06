@@ -1,5 +1,7 @@
 package com.kii.cloud.model;
 
+import com.google.gson.JsonObject;
+
 public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 	public static final KiiJsonProperty PROPERTY_OBJECT_ID = new KiiJsonProperty("objectID", "_id");
 	public static final KiiJsonProperty PROPERTY_CREATED_AT = new KiiJsonProperty("createdAt", "_created");
@@ -8,6 +10,11 @@ public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 	public static final KiiJsonProperty PROPERTY_OWNER = new KiiJsonProperty("_owner");
 	public static final KiiJsonProperty PROPERTY_VERSION = new KiiJsonProperty("_version");
 	
+	public KiiObject() {
+	}
+	public KiiObject(JsonObject json) {
+		super(json);
+	}
 	public String getObjectID() {
 		return PROPERTY_OBJECT_ID.getString(this.json);
 	}
@@ -43,5 +50,4 @@ public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 		this.json.addProperty(PROPERTY_VERSION.getName(), version);
 		return this;
 	}
-
 }

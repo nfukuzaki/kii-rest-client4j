@@ -37,6 +37,12 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	
 	protected final JsonObject credentials = new JsonObject();
 	
+	public KiiUser() {
+	}
+	public KiiUser(JsonObject json) {
+		super(json);
+	}
+	
 	@Override
 	public String getID() {
 		return this.getUserID();
@@ -57,6 +63,10 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 		credentials.addProperty(PROPERTY_REFRESH_TOKEN.getName(), refreshToken);
 		return this;
 	}
+	@Override
+	public boolean isAdmin() {
+		return false;
+	}
 	
 	public abstract boolean isPseudo();
 	
@@ -66,6 +76,9 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public KiiUser setUserID(String userID) {
 		this.json.addProperty(PROPERTY_USER_ID.getName(), userID);
 		return this;
+	}
+	public boolean isDisabled() {
+		return PROPERTY_DISABLED.getBoolean(this.json);
 	}
 	public static String getAccountType(String identifier) {
 		if (KiiUser.EMAIL_ADDRESS_PATTERN.matcher(identifier).matches()) {

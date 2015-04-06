@@ -35,4 +35,10 @@ public class KiiRest {
 	public void setCredentials(KiiCredentialsContainer credentials) {
 		this.credentials = credentials;
 	}
+	public KiiCredentialsContainer getCredentials() {
+		return this.credentials;
+	}
+	public boolean hasCredentials() {
+		return this.credentials != null;
+	}
 }

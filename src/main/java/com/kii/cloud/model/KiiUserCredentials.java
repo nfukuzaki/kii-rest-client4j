@@ -25,6 +25,10 @@ public class KiiUserCredentials extends KiiJsonModel implements KiiCredentialsCo
 	public String getRefreshToken() {
 		return GsonUtils.getString(this.json, PROPERTY_REFRESH_TOKEN);
 	}
+	@Override
+	public boolean isAdmin() {
+		return false;
+	}
 	public Long getExpiresIn() {
 		return GsonUtils.getLong(this.json, PROPERTY_EXPIRES_IN);
 	}

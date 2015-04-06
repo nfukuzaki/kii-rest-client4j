@@ -1,17 +1,28 @@
 package com.kii.cloud.model;
 
+import com.google.gson.JsonObject;
+
 public class KiiPseudoUser extends KiiUser {
+	
+	public KiiPseudoUser() {
+	}
+	public KiiPseudoUser(JsonObject json) {
+		super(json);
+	}
+	
 	public String getCountry() {
 		return PROPERTY_COUNTRY.getString(this.json);
 	}
-	public void setCountry(String country) {
+	public KiiPseudoUser setCountry(String country) {
 		this.json.addProperty(PROPERTY_COUNTRY.getName(), country);
+		return this;
 	}
 	public String getDisplayName() {
 		return PROPERTY_DISPLAY_NAME.getString(this.json);
 	}
-	public void setDisplayName(String displayName) {
+	public KiiPseudoUser setDisplayName(String displayName) {
 		this.json.addProperty(PROPERTY_DISPLAY_NAME.getName(), displayName);
+		return this;
 	}
 	@Override
 	public boolean isPseudo() {

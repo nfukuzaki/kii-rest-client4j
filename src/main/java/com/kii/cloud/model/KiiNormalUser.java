@@ -1,6 +1,14 @@
 package com.kii.cloud.model;
 
+import com.google.gson.JsonObject;
+
 public class KiiNormalUser extends KiiUser {
+	
+	public KiiNormalUser() {
+	}
+	public KiiNormalUser(JsonObject json) {
+		super(json);
+	}
 	
 	public String getUsername() {
 		return PROPERTY_USERNAME.getString(this.json);
