@@ -2,7 +2,7 @@ package com.kii.cloud.resource;
 
 import java.util.Map;
 
-import com.kii.cloud.model.KiiRestContext;
+import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiUser;
 
 public class KiiAppResource extends KiiRestResource {
@@ -11,13 +11,13 @@ public class KiiAppResource extends KiiRestResource {
 	private final String appID;
 	private final String appKey;
 	private final String endpoint;
-	private final KiiRestContext context;
+	private final KiiCredentialsContainer credentials;
 	
-	public KiiAppResource(String appID, String appKey, String endpoint, KiiRestContext context) {
+	public KiiAppResource(String appID, String appKey, String endpoint, KiiCredentialsContainer credentials) {
 		this.appID = appID;
 		this.appKey = appKey;
 		this.endpoint = endpoint;
-		this.context = context;
+		this.credentials = credentials;
 	}
 	public KiiOAuthResource oauth() {
 		return new KiiOAuthResource(this);
@@ -65,8 +65,8 @@ public class KiiAppResource extends KiiRestResource {
 	}
 	@Override
 	protected void setAuthorizationHeader(Map<String, String> headers) {
-		if (this.context != null) {
-			headers.put("Authorization", "Bearer " + this.context.getAccessToken());
+		if (this.credentials != null) {
+			headers.put("Authorization", "Bearer " + this.credentials.getAccessToken());
 		}
 	}
 }

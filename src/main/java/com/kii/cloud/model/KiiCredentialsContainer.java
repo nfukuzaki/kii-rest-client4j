@@ -1,6 +1,6 @@
 package com.kii.cloud.model;
 
-public interface KiiRestContext {
+public interface KiiCredentialsContainer {
 	public String getAccessToken();
 	public String getRefreshToken();
 }

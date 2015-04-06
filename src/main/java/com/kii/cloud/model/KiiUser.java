@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import com.google.gson.JsonObject;
 import com.kii.cloud.util.GsonUtils;
 
-public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements KiiRestContext {
+public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements KiiCredentialsContainer {
 	
 	public static final Pattern USERNAME_PATTERN = Pattern.compile("[a-zA-Z0-9-_\\.]{3,64}$");
 	public static final Pattern GLOBAL_PHONE_PATTERN = Pattern.compile("^[\\+][0-9.-]+");

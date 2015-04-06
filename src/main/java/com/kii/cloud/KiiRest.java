@@ -1,6 +1,6 @@
 package com.kii.cloud;
 
-import com.kii.cloud.model.KiiRestContext;
+import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.resource.KiiAppResource;
 
 public class KiiRest {
@@ -19,7 +19,7 @@ public class KiiRest {
 	private final String appID;
 	private final String appKey;
 	private final String endpoint;
-	private KiiRestContext context;
+	private KiiCredentialsContainer credentials;
 	
 	public KiiRest(String appID, String appKey, Site site) {
 		this(appID, appKey, site.endpoint);
@@ -30,9 +30,9 @@ public class KiiRest {
 		this.endpoint = endpoint;
 	}
 	public KiiAppResource api() {
-		return new KiiAppResource(this.appID, this.appKey, this.endpoint, this.context);
+		return new KiiAppResource(this.appID, this.appKey, this.endpoint, this.credentials);
 	}
-	public void setContext(KiiRestContext context) {
-		this.context = context;
+	public void setCredentials(KiiCredentialsContainer credentials) {
+		this.credentials = credentials;
 	}
 }

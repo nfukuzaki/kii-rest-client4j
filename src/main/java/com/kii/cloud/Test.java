@@ -10,7 +10,7 @@ public class Test {
 		KiiNormalUser user = new KiiNormalUser().setUsername("nori" + System.currentTimeMillis()).setDisplayName("Noriyoshi Fukuzaki").setCountry("JP");
 		
 		rest.api().user().register(user, "pasword");
-		rest.setContext(user);
+		rest.setCredentials(user);
 		
 		KiiObject object = new KiiObject().set("score", 0).set("level", 1);
 		rest.api().user(user).bucket("by_bucket").object().register(object);

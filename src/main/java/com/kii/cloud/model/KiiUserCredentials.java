@@ -3,7 +3,7 @@ package com.kii.cloud.model;
 import com.google.gson.JsonObject;
 import com.kii.cloud.util.GsonUtils;
 
-public class KiiUserCredentials extends KiiJsonModel implements KiiRestContext {
+public class KiiUserCredentials extends KiiJsonModel implements KiiCredentialsContainer {
 	
 	public static final String PROPERTY_ID = "id";
 	public static final String PROPERTY_ACCESS_TOKEN = "access_token";
