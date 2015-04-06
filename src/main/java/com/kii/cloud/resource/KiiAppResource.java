@@ -26,22 +26,22 @@ public class KiiAppResource extends KiiRestResource {
 		return new KiiUsersResource(this);
 	}
 	public KiiUserResource user(String identifier) {
-		return new KiiUserResource(this, identifier);
+		return new KiiUserResource(this.user(), identifier);
 	}
 	public KiiUserResource user(KiiUser user) {
-		return new KiiUserResource(this, user.getUserID());
+		return new KiiUserResource(this.user(), user.getUserID());
 	}
 	public KiiGroupsResource group() {
 		return new KiiGroupsResource(this);
 	}
 	public KiiGroupResource group(String groupID) {
-		return new KiiGroupResource(this, groupID);
+		return new KiiGroupResource(this.group(), groupID);
 	}
 	public KiiTopicsResource topic() {
 		return new KiiTopicsResource(this);
 	}
 	public KiiTopicResource topic(String name) {
-		return new KiiTopicResource(this, name);
+		return new KiiTopicResource(this.topic(), name);
 	}
 	public KiiServerCodeResource servercode() {
 		return new KiiServerCodeResource(this);

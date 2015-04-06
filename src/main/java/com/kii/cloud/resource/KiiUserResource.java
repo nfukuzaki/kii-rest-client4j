@@ -22,7 +22,7 @@ public class KiiUserResource extends KiiRestSubResource {
 	}
 	
 	private final String identifier;
-	public KiiUserResource(KiiAppResource parent, String identifier) {
+	public KiiUserResource(KiiUsersResource parent, String identifier) {
 		super(parent);
 		this.identifier = identifier;
 	}
@@ -86,10 +86,10 @@ public class KiiUserResource extends KiiRestSubResource {
 		return new KiiTopicsResource(this);
 	}
 	public KiiTopicResource topic(String name) {
-		return new KiiTopicResource(this, name);
+		return new KiiTopicResource(this.topic(), name);
 	}
 	@Override
 	public String getPath() {
-		return KiiUsersResource.BASE_PATH + "/" + KiiUser.getAccountType(this.identifier) + this.identifier;
+		return KiiUser.getAccountType(this.identifier) + this.identifier;
 	}
 }
