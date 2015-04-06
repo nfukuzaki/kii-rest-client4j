@@ -12,10 +12,10 @@ public class KiiObjectsResource extends KiiRestSubResource {
 	public KiiObjectsResource(KiiBucketResource parent) {
 		super(parent);
 	}
-	public void register(KiiObject object) throws KiiRestException {
-		this.register("application/json", object);
+	public void save(KiiObject object) throws KiiRestException {
+		this.save("application/json", object);
 	}
-	public KiiObject register(String contentType, KiiObject object) throws KiiRestException {
+	public KiiObject save(String contentType, KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject response = this.executePost(headers, MediaType.parse(contentType), object.getJsonObject());
 		String objectID = KiiObject.PROPERTY_OBJECT_ID.getString(response);

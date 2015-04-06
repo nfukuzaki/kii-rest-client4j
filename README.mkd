@@ -1,19 +1,64 @@
 # KiiRestClinent for Java
+A REST client for [Kii Cloud](http://kii.com) for Android and Java applications.
+
+## Dependencies
+```xml
+<dependencies>
+	<dependency>
+		<groupId>com.google.code.gson</groupId>
+		<artifactId>gson</artifactId>
+		<version>2.3.1</version>
+	</dependency>
+	<dependency>
+		<groupId>com.squareup.okhttp</groupId>
+		<artifactId>okhttp-urlconnection</artifactId>
+		<version>2.3.0</version>
+	</dependency>
+	<dependency>
+		<groupId>com.squareup.okio</groupId>
+		<artifactId>okio</artifactId>
+		<version>1.3.0</version>
+	</dependency>
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+		<scope>test</scope>
+	</dependency>
+</dependencies>
+```
+
+## Example usage
+```java
+// initialize rest client
+KiiRest rest = new KiiRest("APP_ID", "APP_KEY", KiiRest.Site.US);
+
+// register a user
+KiiNormalUser user = new KiiNormalUser()
+	.setEmail("test@example.com")
+	.setCountry("US");
+user = rest.api().user().register(user, "pasword");
+rest.setCredentials(user);
+
+// create app scope object
+KiiObject appObject = new KiiObject()
+	.set("user_id", user.getUserID())
+	.set("email", user.getEmail());
+rest.api().bucket("app_bucket").object().save(appObject);
+
+// create user scope object
+KiiObject userObject = new KiiObject()
+	.set("age", 30);
+rest.api().user(user).bucket("user_bucket").object().save(userObject);
+
+//update object
+appObject.set("email", "TEST@example.com");
+rest.api().bucket("app_bucket").object(appObject).update(appObject);
+```
 
 ## TODO
-1. 全てのStorageAPIをサポート
-1. Admin機能のサポート
-1. アナリティクスAPIのサポート
-1. サーバーコードのデプロイ、デブログのサポート
-1. 非同期API
-1. モデルのシリアライズ、デシリアライズのサポート
-1. Credentials情報の取り扱い。（ログイン、ログアウト）
-1. オートリフレッシュの仕組み
-1. JSONフィールドの名前差異を吸収する仕組みの構築
-1. テストコード
-1. ヘルプ
-1. ソースコードにコメント
-1. READMEをちゃんと書く
+
+1. Supports all REST APIs.
 
 
 

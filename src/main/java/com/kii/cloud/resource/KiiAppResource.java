@@ -37,6 +37,9 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiGroupResource group(String groupID) {
 		return new KiiGroupResource(this.group(), groupID);
 	}
+	public KiiBucketResource bucket(String name) {
+		return new KiiBucketResource(this, name);
+	}
 	public KiiTopicsResource topic() {
 		return new KiiTopicsResource(this);
 	}

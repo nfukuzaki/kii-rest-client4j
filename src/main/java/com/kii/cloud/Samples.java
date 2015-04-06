@@ -20,7 +20,7 @@ public class Samples {
 		KiiUser u = rest.api().user(user).get();
 		
 		KiiObject object = new KiiObject().set("score", 0).set("level", 1);
-		rest.api().user(user).bucket("my_bucket").object().register(object);
+		rest.api().user(user).bucket("my_bucket").object().save(object);
 		object.set("score", 100).set("level", 2);
 		rest.api().user(user).bucket("my_bucket").object(object).update(object);
 		
@@ -34,5 +34,4 @@ public class Samples {
 		rest.api().user(user).bucket("my_bucket").object(object.getObjectID()).delete();
 		
 	}
-
 }
