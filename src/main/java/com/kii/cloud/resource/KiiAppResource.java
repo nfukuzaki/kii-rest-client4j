@@ -23,32 +23,32 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiOAuthResource oauth() {
 		return new KiiOAuthResource(this);
 	}
-	public KiiUsersResource user() {
+	public KiiUsersResource users() {
 		return new KiiUsersResource(this);
 	}
-	public KiiUserResource user(String identifier) {
-		return new KiiUserResource(this.user(), identifier);
+	public KiiUserResource users(String identifier) {
+		return new KiiUserResource(this.users(), identifier);
 	}
-	public KiiUserResource user(KiiUser user) {
-		return new KiiUserResource(this.user(), user.getUserID());
+	public KiiUserResource users(KiiUser user) {
+		return new KiiUserResource(this.users(), user.getUserID());
 	}
-	public KiiGroupsResource group() {
+	public KiiGroupsResource groups() {
 		return new KiiGroupsResource(this);
 	}
-	public KiiGroupResource group(KiiGroup group) {
-		return group(group.getGroupID());
+	public KiiGroupResource groups(KiiGroup group) {
+		return groups(group.getGroupID());
 	}
-	public KiiGroupResource group(String groupID) {
-		return new KiiGroupResource(this.group(), groupID);
+	public KiiGroupResource groups(String groupID) {
+		return new KiiGroupResource(this.groups(), groupID);
 	}
-	public KiiBucketResource bucket(String name) {
+	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);
 	}
-	public KiiTopicsResource topic() {
+	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}
-	public KiiTopicResource topic(String name) {
-		return new KiiTopicResource(this.topic(), name);
+	public KiiTopicResource topics(String name) {
+		return new KiiTopicResource(this.topics(), name);
 	}
 	public KiiServerCodeResource servercode() {
 		return new KiiServerCodeResource(this);

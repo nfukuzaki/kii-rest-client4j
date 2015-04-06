@@ -26,13 +26,13 @@ public class KiiBucketResource extends KiiRestSubResource {
 	}
 	public void query(KiiQuery query) {
 	}
-	public KiiObjectsResource object() {
+	public KiiObjectsResource objects() {
 		return new KiiObjectsResource(this);
 	}
-	public KiiObjectResource object(KiiObject object) {
-		return object(object.getObjectID());
+	public KiiObjectResource objects(KiiObject object) {
+		return objects(object.getObjectID());
 	}
-	public KiiObjectResource object(String objectID) {
+	public KiiObjectResource objects(String objectID) {
 		return new KiiObjectResource(this, objectID);
 	}
 	@Override

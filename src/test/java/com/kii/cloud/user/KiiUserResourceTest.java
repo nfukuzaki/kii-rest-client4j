@@ -39,20 +39,20 @@ public class KiiUserResourceTest {
 			.setCountry(country);
 		
 		// register new user
-		KiiUser registeredUser = rest.api().user().register(testUser, password);
+		KiiUser registeredUser = rest.api().users().register(testUser, password);
 		rest.setCredentials(registeredUser);
 		// getting user
-		KiiUser user1 = rest.api().user(registeredUser.getUserID()).get();
+		KiiUser user1 = rest.api().users(registeredUser.getUserID()).get();
 		assertEquals(registeredUser.getJsonObject(), user1.getJsonObject());
 		// updating user
 		user1.set("age", "30");
-		rest.api().user(user1).update(user1);
+		rest.api().users(user1).update(user1);
 		// getting user
-		KiiUser user2 = rest.api().user(user1.getUserID()).get();
+		KiiUser user2 = rest.api().users(user1.getUserID()).get();
 		assertEquals(user1.getJsonObject(), user2.getJsonObject());
 		// changing password
 		String newPassword = "newPa$$word";
-		rest.api().user(user2).changePassword(password, newPassword);
+		rest.api().users(user2).changePassword(password, newPassword);
 		try {
 			rest.api().oauth().getAccessToken(username, password);
 			Assert.fail("KiiRestException should be thrown.");
@@ -61,9 +61,9 @@ public class KiiUserResourceTest {
 		KiiUserCredentials credentials = rest.api().oauth().getAccessToken(username, newPassword);
 		rest.setCredentials(credentials);
 		// reseting password
-		rest.api().user(user2).resetPassword(NotificationMethod.EMAIL);
+		rest.api().users(user2).resetPassword(NotificationMethod.EMAIL);
 		// deleting user
-		rest.api().user(user2).delete();
+		rest.api().users(user2).delete();
 	}
 	@Test
 	public void pseudoUserTest() throws Exception {
@@ -81,21 +81,21 @@ public class KiiUserResourceTest {
 			.setCountry(country);
 		
 		// register pseudo user
-		KiiUser registeredUser = rest.api().user().register(testUser);
+		KiiUser registeredUser = rest.api().users().register(testUser);
 		rest.setCredentials(registeredUser);
 		// getting user
-		KiiUser user1 = rest.api().user(registeredUser.getUserID()).get();
+		KiiUser user1 = rest.api().users(registeredUser.getUserID()).get();
 		assertEquals(registeredUser.getJsonObject(), user1.getJsonObject());
 		// updating user
 		user1.set("age", "30");
-		rest.api().user(user1).update(user1);
+		rest.api().users(user1).update(user1);
 		// getting user
-		KiiUser user2 = rest.api().user(user1.getUserID()).get();
+		KiiUser user2 = rest.api().users(user1.getUserID()).get();
 		assertEquals(user1.getJsonObject(), user2.getJsonObject());
 		// becoming normal users
-		rest.api().user(user2).updateToNormal((KiiPseudoUser)user2, username, null, null, password);
+		rest.api().users(user2).updateToNormal((KiiPseudoUser)user2, username, null, null, password);
 		// getting normal user
-		KiiUser user3 = rest.api().user(user2.getUserID()).get();
+		KiiUser user3 = rest.api().users(user2.getUserID()).get();
 		Assert.assertFalse(user3.isPseudo());
 	}
 }

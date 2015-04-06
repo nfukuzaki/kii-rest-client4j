@@ -79,14 +79,14 @@ public class KiiUserResource extends KiiRestSubResource {
 		this.executePost("/password/request-reset", headers, MEDIA_TYPE_RESET_PASSWORD_REQUEST, request);
 	}
 	
-	public KiiBucketResource bucket(String name) {
+	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);
 	}
-	public KiiTopicsResource topic() {
+	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}
-	public KiiTopicResource topic(String name) {
-		return new KiiTopicResource(this.topic(), name);
+	public KiiTopicResource topics(String name) {
+		return new KiiTopicResource(this.topics(), name);
 	}
 	@Override
 	public String getPath() {

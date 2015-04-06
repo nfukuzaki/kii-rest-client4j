@@ -14,24 +14,24 @@ public class Samples {
 			.setDisplayName("Noriyoshi Fukuzaki")
 			.setCountry("JP");
 		
-		rest.api().user().register(user, "pasword");
+		rest.api().users().register(user, "pasword");
 		rest.setCredentials(user);
 		
-		KiiUser u = rest.api().user(user).get();
+		KiiUser u = rest.api().users(user).get();
 		
 		KiiObject object = new KiiObject().set("score", 0).set("level", 1);
-		rest.api().user(user).bucket("my_bucket").object().save(object);
+		rest.api().users(user).buckets("my_bucket").objects().save(object);
 		object.set("score", 100).set("level", 2);
-		rest.api().user(user).bucket("my_bucket").object(object).update(object);
+		rest.api().users(user).buckets("my_bucket").objects(object).update(object);
 		
 		KiiObject partialObject = new KiiObject().set("hight_score", 10000);
-		rest.api().user(user).bucket("my_bucket").object(object).partialUpdate(partialObject);
+		rest.api().users(user).buckets("my_bucket").objects(object).partialUpdate(partialObject);
 		
-		object = rest.api().user(user).bucket("my_bucket").object(object.getObjectID()).get();
+		object = rest.api().users(user).buckets("my_bucket").objects(object.getObjectID()).get();
 		
 //		rest.api().user(user.getEmail()).resetPassword(NotificationMethod.EMAIL);
 		
-		rest.api().user(user).bucket("my_bucket").object(object.getObjectID()).delete();
+		rest.api().users(user).buckets("my_bucket").objects(object.getObjectID()).delete();
 		
 	}
 }

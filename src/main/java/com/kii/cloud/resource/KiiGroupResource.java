@@ -12,11 +12,11 @@ public class KiiGroupResource extends KiiRestSubResource {
 		super(parent);
 		this.groupID = groupID;
 	}
-	public KiiGroupMembersResource member() {
+	public KiiGroupMembersResource members() {
 		return new KiiGroupMembersResource(this);
 	}
-	public KiiGroupMemberResource member(String userID) {
-		return new KiiGroupMemberResource(member(), userID);
+	public KiiGroupMemberResource members(String userID) {
+		return new KiiGroupMemberResource(members(), userID);
 	}
 	public KiiGroup get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
@@ -29,14 +29,14 @@ public class KiiGroupResource extends KiiRestSubResource {
 	}
 	public void delete() throws KiiRestException {
 	}
-	public KiiBucketResource bucket(String name) {
-		return null;
+	public KiiBucketResource buckets(String name) {
+		return new KiiBucketResource(this, name);
 	}
-	public KiiTopicsResource topic() {
+	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}
-	public KiiTopicResource topic(String name) {
-		return new KiiTopicResource(this.topic(), name);
+	public KiiTopicResource topics(String name) {
+		return new KiiTopicResource(this.topics(), name);
 	}
 	@Override
 	public String getPath() {

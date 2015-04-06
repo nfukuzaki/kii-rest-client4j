@@ -2,10 +2,6 @@ package com.kii.cloud.group;
 
 import org.junit.Test;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.kii.cloud.KiiRest;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
@@ -24,9 +20,9 @@ public class KiiGroupResourceTest {
 		KiiPseudoUser user2 = new KiiPseudoUser();
 		KiiNormalUser user3 = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
 		
-		user1 = rest.api().user().register(user1);
-		user2 = rest.api().user().register(user2);
-		user3 = rest.api().user().register(user3, "password");
+		user1 = rest.api().users().register(user1);
+		user2 = rest.api().users().register(user2);
+		user3 = rest.api().users().register(user3, "password");
 		
 		rest.setCredentials(user1);
 		
@@ -37,9 +33,9 @@ public class KiiGroupResourceTest {
 		KiiGroupMembers members = new KiiGroupMembers();
 		members.addMember(user2.getUserID());
 		members.addMember(user3.getUserID());
-		rest.api().group().save(group, members);
+		rest.api().groups().save(group, members);
 		
 		
-		rest.api().group(group).get();
+		rest.api().groups(group).get();
 	}
 }

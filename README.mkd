@@ -37,23 +37,23 @@ KiiRest rest = new KiiRest("APP_ID", "APP_KEY", KiiRest.Site.US);
 KiiNormalUser user = new KiiNormalUser()
 	.setEmail("test@example.com")
 	.setCountry("US");
-user = rest.api().user().register(user, "pasword");
+user = rest.api().users().register(user, "pasword");
 rest.setCredentials(user);
 
 // create app scope object
 KiiObject appObject = new KiiObject()
 	.set("user_id", user.getUserID())
 	.set("email", user.getEmail());
-rest.api().bucket("app_bucket").object().save(appObject);
+rest.api().buckets("app_bucket").objects().save(appObject);
 
 // create user scope object
 KiiObject userObject = new KiiObject()
 	.set("age", 30);
-rest.api().user(user).bucket("user_bucket").object().save(userObject);
+rest.api().users(user).buckets("user_bucket").objects().save(userObject);
 
 //update object
 appObject.set("email", "TEST@example.com");
-rest.api().bucket("app_bucket").object(appObject).update(appObject);
+rest.api().buckets("app_bucket").objects(appObject).update(appObject);
 ```
 
 ## TODO
