@@ -40,6 +40,10 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	protected final JsonObject credentials = new JsonObject();
 	
 	@Override
+	public String getID() {
+		return this.getUserID();
+	}
+	@Override
 	public String getAccessToken() {
 		return GsonUtils.getString(credentials, PROPERTY_ACCESS_TOKEN);
 	}

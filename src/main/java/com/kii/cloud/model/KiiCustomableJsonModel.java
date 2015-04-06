@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.util.GsonUtils;
 
 @SuppressWarnings("unchecked")
-public abstract class KiiCustomableJsonModel<T> extends KiiJsonModel {
+public abstract class KiiCustomableJsonModel<T extends KiiCustomableJsonModel<?>> extends KiiJsonModel {
 	public String getString(String name) {
 		return GsonUtils.getString(this.json, name);
 	}

@@ -13,16 +13,19 @@ public class KiiUserCredentials extends KiiJsonModel implements KiiCredentialsCo
 	public KiiUserCredentials(JsonObject json) {
 		super(json);
 	}
+	@Override
 	public String getID() {
 		return GsonUtils.getString(this.json, PROPERTY_ID);
 	}
-	public Long getExpiresIn() {
-		return GsonUtils.getLong(this.json, PROPERTY_EXPIRES_IN);
-	}
+	@Override
 	public String getAccessToken() {
 		return GsonUtils.getString(this.json, PROPERTY_ACCESS_TOKEN);
 	}
+	@Override
 	public String getRefreshToken() {
 		return GsonUtils.getString(this.json, PROPERTY_REFRESH_TOKEN);
+	}
+	public Long getExpiresIn() {
+		return GsonUtils.getLong(this.json, PROPERTY_EXPIRES_IN);
 	}
 }
