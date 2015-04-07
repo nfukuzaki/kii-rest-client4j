@@ -19,6 +19,7 @@ import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Request.Builder;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
@@ -40,27 +41,15 @@ public abstract class KiiRestResource {
 		return (KiiAppResource)parent;
 	}
 	public String getUrl(String path) {
-		return this.buildUrl(path, null);
+		return this.buildUrl(path);
 	}
-	public String buildUrl(String path, Map<String, String> params) {
-		String url = createPath("", this);
-		if (params != null) {
-			StringBuilder queryParams = new StringBuilder();
-			for (Map.Entry<String, String> param : params.entrySet()) {
-				if (queryParams.length() == 0) {
-					queryParams.append("?");
-				} else {
-					queryParams.append("&");
-				}
-				queryParams.append(param.getKey() + "=" + param.getValue());
-			}
-			url = url + queryParams.toString();
-		}
+	private String buildUrl(String path) {
+		String url = buildUrl("", this);
 		return Path.combine(url, path);
 	}
-	private String createPath(String path, KiiRestResource resource) {
+	private String buildUrl(String path, KiiRestResource resource) {
 		if (resource.getParent() != null) {
-			path = createPath(path, resource.getParent());
+			path = buildUrl(path, resource.getParent());
 		}
 		return Path.combine(path, resource.getPath());
 	}
@@ -286,7 +275,7 @@ public abstract class KiiRestResource {
 			throw new KiiRestException(curl, e);
 		}
 	}
-	private JsonObject parseResponse(String curl, Response response) throws KiiRestException {
+	protected JsonObject parseResponse(String curl, Response response) throws KiiRestException {
 		try {
 			String body = response.body().string();
 			if (!response.isSuccessful()) {
@@ -309,7 +298,7 @@ public abstract class KiiRestResource {
 			throw new KiiRestException(curl, e);
 		}
 	}
-	private InputStream parseResponseAsInputStream(String curl, Response response) throws KiiRestException {
+	protected InputStream parseResponseAsInputStream(String curl, Response response) throws KiiRestException {
 		try {
 			if (!response.isSuccessful()) {
 				String body = response.body().string();
@@ -346,4 +335,55 @@ public abstract class KiiRestResource {
 		}
 		return curl.toString();
 	}
+	
+	protected Response execute(KiiRestRequest restRequest) throws IOException {
+		Builder bulder = new Request.Builder();
+		bulder.url(restRequest.getUrl());
+		bulder.headers(Headers.of(restRequest.getHeaders()));
+		switch (restRequest.getMethod()) {
+			case HEAD:
+				bulder.head();
+				break;
+			case GET:
+				bulder.get();
+				break;
+			case POST:
+				bulder.post(this.createRequestBody(restRequest.getContentType(), restRequest.getEntity()));
+				break;
+			case PUT:
+				bulder.put(this.createRequestBody(restRequest.getContentType(), restRequest.getEntity()));
+				break;
+			case DELETE:
+				bulder.delete();
+				break;
+		}
+		Request request = bulder.build();
+		return client.newCall(request).execute();
+	}
+	protected RequestBody createRequestBody(final MediaType contentType, final Object entity) {
+		if (entity == null) {
+			return RequestBody.create(contentType, "");
+		}
+		if (entity instanceof String) {
+			return RequestBody.create(contentType, (String)entity);
+		}
+		if (entity instanceof JsonObject) {
+			return RequestBody.create(contentType, ((JsonObject)entity).toString());
+		}
+		if (entity instanceof InputStream) {
+			new RequestBody() {
+				@Override
+				public MediaType contentType() {
+					return contentType;
+				}
+				@Override
+				public void writeTo(BufferedSink sink) throws IOException {
+					OutputStream os = sink.outputStream();
+					IOUtils.copy((InputStream)entity, os);
+				}
+			};
+		}
+		throw new RuntimeException("Unexpected entity type.");
+	}
+	
 }
