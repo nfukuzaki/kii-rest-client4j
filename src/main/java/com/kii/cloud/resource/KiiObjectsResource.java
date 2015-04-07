@@ -23,9 +23,10 @@ public class KiiObjectsResource extends KiiRestSubResource {
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MediaType.parse(contentType), object.getJsonObject());
 		try {
 			Response response = this.execute(request);
+			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			String objectID = KiiObject.PROPERTY_OBJECT_ID.getString(responseBody);
-			return object.setObjectID(objectID);
+			return object.setObjectID(objectID).setVersion(version);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
