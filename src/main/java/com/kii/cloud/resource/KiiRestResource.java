@@ -35,9 +35,9 @@ public abstract class KiiRestResource {
 		return (KiiAppResource)parent;
 	}
 	public String getUrl(String path) {
-		return this.getUrl(path, null);
+		return this.buildUrl(path, null);
 	}
-	public String getUrl(String path, Map<String, String> params) {
+	public String buildUrl(String path, Map<String, String> params) {
 		String url = createPath("", this);
 		if (params != null) {
 			StringBuilder queryParams = new StringBuilder();
