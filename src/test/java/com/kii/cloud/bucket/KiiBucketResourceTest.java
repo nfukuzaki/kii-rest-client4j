@@ -24,7 +24,7 @@ public class KiiBucketResourceTest {
 		TestApp testApp = TestEnvironments.random();
 		KiiRest rest = new KiiRest(testApp.AppID, testApp.AppKey, testApp.Site);
 		
-		KiiNormalUser user = new KiiNormalUser().setUsername("test1-" + System.currentTimeMillis());
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		

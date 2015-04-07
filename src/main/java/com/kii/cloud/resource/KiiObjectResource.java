@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiObject;
+import com.squareup.okhttp.Response;
 
 public class KiiObjectResource extends KiiRestSubResource {
 	
@@ -19,6 +20,11 @@ public class KiiObjectResource extends KiiRestSubResource {
 	}
 	public KiiAclResource acl() {
 		return new KiiAclResource(this);
+	}
+	public boolean exists() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		Response response = this.executeHead(headers);
+		return response.isSuccessful();
 	}
 	public KiiObject get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
@@ -35,14 +41,25 @@ public class KiiObjectResource extends KiiRestSubResource {
 		Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.getLong(response);
 		object.setModifiedAt(modifiedAt);
 	}
+	public void updateWithOptimisticLock(KiiObject object) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		headers.put("If-Match", object.getVersion());
+		JsonObject response = this.executePut(headers, null, object.getJsonObject());
+		Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.getLong(response);
+		object.setModifiedAt(modifiedAt);
+	}
 	public void partialUpdate(KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("X-HTTP-Method-Override", "PATCH");
 		JsonObject response = this.executePost(headers, null, object.getJsonObject());
-		Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.getLong(response);
-		String owner = KiiObject.PROPERTY_OWNER.getString(response);
-		String version = KiiObject.PROPERTY_VERSION.getString(response);
-		object.setModifiedAt(modifiedAt).setOwner(owner).setVersion(version);
+		object.setJsonObject(response);
+	}
+	public void partialUpdateWithOptimisticLock(KiiObject object) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		headers.put("If-Match", object.getVersion());
+		headers.put("X-HTTP-Method-Override", "PATCH");
+		JsonObject response = this.executePost(headers, null, object.getJsonObject());
+		object.setJsonObject(response);
 	}
 	@Override
 	public String getPath() {

@@ -1,13 +1,18 @@
 package com.kii.cloud.resource;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import okio.BufferedSink;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.OkHttpClientFactory;
+import com.kii.cloud.util.IOUtils;
 import com.kii.cloud.util.Path;
 import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.Headers;
@@ -101,7 +106,9 @@ public abstract class KiiRestResource {
 			.head()
 			.build();
 		try {
-			return client.newCall(request).execute();
+			Response response = client.newCall(request).execute();
+			System.out.println(curl + "  : " + response.code());
+			return response;
 		} catch (IOException e) {
 			throw new KiiRestException(curl, e);
 		}
@@ -123,6 +130,23 @@ public abstract class KiiRestResource {
 			throw new KiiRestException(curl, e);
 		}
 	}
+	protected InputStream executeGetAsInputStream(Map<String, String> headers) throws KiiRestException {
+		return this.executeGetAsInputStream(null, headers);
+	}
+	protected InputStream executeGetAsInputStream(String path, Map<String, String> headers) throws KiiRestException {
+		String curl = this.toCurl(path, "GET", headers);
+		Request request = new Request.Builder()
+			.url(this.getUrl(path))
+			.headers(Headers.of(headers))
+			.get()
+			.build();
+		try {
+			Response response = client.newCall(request).execute();
+			return parseResponseAsInputStream(curl, response);
+		} catch (IOException e) {
+			throw new KiiRestException(curl, e);
+		}
+	}
 	protected JsonObject executePost(Map<String, String> headers, MediaType contentType, JsonObject entity) throws KiiRestException {
 		return this.executePost(null, headers, contentType, entity);
 	}
@@ -138,6 +162,33 @@ public abstract class KiiRestResource {
 			entity = "";
 		}
 		RequestBody requestBody = RequestBody.create(contentType, entity);
+		Request request = new Request.Builder()
+			.url(this.getUrl(path))
+			.headers(Headers.of(headers))
+			.post(requestBody)
+			.build();
+		OkHttpClient postClient = client.clone();
+		postClient.setRetryOnConnectionFailure(false);
+		try {
+			Response response = client.newCall(request).execute();
+			return parseResponse(curl, response);
+		} catch (IOException e) {
+			throw new KiiRestException(curl, e);
+		}
+	}
+	protected JsonObject executePost(String path, Map<String, String> headers, final MediaType contentType, final InputStream entity) throws KiiRestException {
+		String curl = this.toCurl(path, "POST", headers, contentType, entity.toString());
+		RequestBody requestBody = new RequestBody() {
+			@Override
+			public MediaType contentType() {
+				return contentType;
+			}
+			@Override
+			public void writeTo(BufferedSink sink) throws IOException {
+				OutputStream os = sink.outputStream();
+				IOUtils.copy(entity, os);
+			}
+		};
 		Request request = new Request.Builder()
 			.url(this.getUrl(path))
 			.headers(Headers.of(headers))
@@ -188,6 +239,36 @@ public abstract class KiiRestResource {
 			throw new KiiRestException(curl, e);
 		}
 	}
+	protected JsonObject executePut(Map<String, String> headers, final MediaType contentType, final InputStream entity) throws KiiRestException {
+		return this.executePut(null, headers, contentType, entity);
+	}
+	protected JsonObject executePut(String path, Map<String, String> headers, final MediaType contentType, final InputStream entity) throws KiiRestException {
+		String curl = this.toCurl(path, "PUT", headers, contentType, entity.toString());
+		RequestBody requestBody = new RequestBody() {
+			@Override
+			public MediaType contentType() {
+				return contentType;
+			}
+			@Override
+			public void writeTo(BufferedSink sink) throws IOException {
+				OutputStream os = sink.outputStream();
+				IOUtils.copy(entity, os);
+			}
+		};
+		Request request = new Request.Builder()
+			.url(this.getUrl(path))
+			.headers(Headers.of(headers))
+			.put(requestBody)
+			.build();
+		OkHttpClient postClient = client.clone();
+		postClient.setRetryOnConnectionFailure(false);
+		try {
+			Response response = client.newCall(request).execute();
+			return parseResponse(curl, response);
+		} catch (IOException e) {
+			throw new KiiRestException(curl, e);
+		}
+	}
 	protected JsonObject executeDelete(Map<String, String> headers) throws KiiRestException {
 		return this.executeDelete(null, headers);
 	}
@@ -224,6 +305,25 @@ public abstract class KiiRestResource {
 				return null;
 			}
 			return (JsonObject)new JsonParser().parse(body);
+		} catch (IOException e) {
+			throw new KiiRestException(curl, e);
+		}
+	}
+	private InputStream parseResponseAsInputStream(String curl, Response response) throws KiiRestException {
+		try {
+			if (!response.isSuccessful()) {
+				String body = response.body().string();
+				JsonObject errorDetail = null;
+				try {
+					errorDetail = (JsonObject)new JsonParser().parse(body);
+				} catch (Exception ignore) {
+				}
+				System.out.println(curl + "  : " + response.code());
+				System.out.println(body);
+				throw new KiiRestException(curl, response.code(), errorDetail);
+			}
+			System.out.println(curl + "  : " + response.code());
+			return response.body().byteStream();
 		} catch (IOException e) {
 			throw new KiiRestException(curl, e);
 		}
