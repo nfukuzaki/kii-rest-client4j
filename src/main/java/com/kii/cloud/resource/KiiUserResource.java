@@ -82,6 +82,9 @@ public class KiiUserResource extends KiiRestSubResource {
 	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);
 	}
+	public KiiEncryptedBucketResource encryptedBuckets(String name) {
+		return new KiiEncryptedBucketResource(this, name);
+	}
 	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}

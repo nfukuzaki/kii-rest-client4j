@@ -16,6 +16,12 @@ public class KiiObjectResource extends KiiRestSubResource {
 		super(parent);
 		this.objectID = objectID;
 	}
+	public KiiObjectBodyResource body() {
+		return new KiiObjectBodyResource(this);
+	}
+	public KiiAclResource acl() {
+		return new KiiAclResource(this);
+	}
 	public KiiObject get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject response = this.executeGet(headers);

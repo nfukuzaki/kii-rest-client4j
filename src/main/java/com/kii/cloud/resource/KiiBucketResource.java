@@ -1,12 +1,20 @@
 package com.kii.cloud.resource;
 
+import java.util.Map;
+
+import com.google.gson.JsonObject;
+import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.model.KiiQuery;
+import com.squareup.okhttp.MediaType;
 
 public class KiiBucketResource extends KiiRestSubResource {
+	
+	public static final MediaType MEDIA_TYPE_BUCKET_CREATION_REQUEST = MediaType.parse("application/vnd.kii.BucketCreationRequest+json");
+	
 	public static final String BASE_PATH = "/buckets";
 	
-	private final String name;
+	protected final String name;
 	
 	public KiiBucketResource(KiiAppResource parent, String name) {
 		super(parent);
@@ -24,7 +32,20 @@ public class KiiBucketResource extends KiiRestSubResource {
 		super(parent);
 		this.name = name;
 	}
-	public void query(KiiQuery query) {
+	public void create() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		JsonObject request = new JsonObject();
+		request.addProperty("bucketType", this.getBucketType());
+		executePut(headers, MEDIA_TYPE_BUCKET_CREATION_REQUEST, request);
+	}
+	public void query(KiiQuery query) throws KiiRestException {
+	}
+	public void delete() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		this.executeDelete(headers);
+	}
+	public KiiAclResource acl() {
+		return new KiiAclResource(this);
 	}
 	public KiiObjectsResource objects() {
 		return new KiiObjectsResource(this);
@@ -34,6 +55,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	}
 	public KiiObjectResource objects(String objectID) {
 		return new KiiObjectResource(this, objectID);
+	}
+	protected String getBucketType() {
+		return "rw";
 	}
 	@Override
 	public String getPath() {
