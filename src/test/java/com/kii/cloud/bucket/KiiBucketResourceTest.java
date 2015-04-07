@@ -17,6 +17,8 @@ public class KiiBucketResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		rest.api().buckets("app_bucket" + System.currentTimeMillis()).create();
+		String appBucketName = "app_bucket" + System.currentTimeMillis();
+		rest.api().buckets(appBucketName).create();
+		rest.api().buckets(appBucketName).delete();
 	}
 }
