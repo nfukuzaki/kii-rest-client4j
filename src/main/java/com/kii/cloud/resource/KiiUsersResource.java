@@ -1,5 +1,6 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
@@ -8,7 +9,9 @@ import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiPseudoUser;
 import com.kii.cloud.model.KiiUser;
+import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
 
 public class KiiUsersResource extends KiiRestSubResource {
 	
@@ -21,26 +24,39 @@ public class KiiUsersResource extends KiiRestSubResource {
 	}
 	public KiiNormalUser register(KiiNormalUser user, String password) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
-		JsonObject request = (JsonObject)new JsonParser().parse(user.toJsonString());
-		request.addProperty("password", password);
-		JsonObject response = this.executePost(headers, MEDIA_TYPE_REGISTRATION_REQUEST, request);
-		String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.getString(response);
-		String refreshToken = KiiUser.PROPERTY_REFRESH_TOKEN.getString(response);
-		response.remove(KiiUser.PROPERTY_ACCESS_TOKEN.getName());
-		response.remove(KiiUser.PROPERTY_REFRESH_TOKEN.getName());
-		KiiNormalUser registeredUser = new KiiNormalUser(response);
-		registeredUser.setAccessToken(accessToken);
-		registeredUser.setRefreshToken(refreshToken);
-		return registeredUser;
+		JsonObject requestBody = (JsonObject)new JsonParser().parse(user.toJsonString());
+		requestBody.addProperty("password", password);
+		
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_REGISTRATION_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.getString(responseBody);
+			String refreshToken = KiiUser.PROPERTY_REFRESH_TOKEN.getString(responseBody);
+			responseBody.remove(KiiUser.PROPERTY_ACCESS_TOKEN.getName());
+			responseBody.remove(KiiUser.PROPERTY_REFRESH_TOKEN.getName());
+			KiiNormalUser registeredUser = new KiiNormalUser(responseBody);
+			registeredUser.setAccessToken(accessToken);
+			registeredUser.setRefreshToken(refreshToken);
+			return registeredUser;
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public KiiPseudoUser register(KiiPseudoUser user) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
-		JsonObject response = this.executePost(headers, MEDIA_TYPE_REGISTRATION_REQUEST, user.toJsonString());
-		String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.getString(response);
-		response.remove(KiiUser.PROPERTY_ACCESS_TOKEN.getName());
-		KiiPseudoUser registeredUser = new KiiPseudoUser(response);
-		registeredUser.setAccessToken(accessToken);
-		return registeredUser;
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_REGISTRATION_REQUEST, user.toJsonString());
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.getString(responseBody);
+			responseBody.remove(KiiUser.PROPERTY_ACCESS_TOKEN.getName());
+			KiiPseudoUser registeredUser = new KiiPseudoUser(responseBody);
+			registeredUser.setAccessToken(accessToken);
+			return registeredUser;
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	@Override
 	public String getPath() {

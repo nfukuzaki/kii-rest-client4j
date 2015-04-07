@@ -1,5 +1,6 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
@@ -8,8 +9,10 @@ import com.kii.cloud.model.KiiCountingQuery;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.model.KiiQuery;
 import com.kii.cloud.model.KiiQueryResult;
+import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
 
 public class KiiBucketResource extends KiiRestSubResource {
 	
@@ -38,9 +41,15 @@ public class KiiBucketResource extends KiiRestSubResource {
 	}
 	public void create() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("bucketType", this.getBucketType());
-		this.executePut(headers, MEDIA_TYPE_BUCKET_CREATION_REQUEST, request);
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("bucketType", this.getBucketType());
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MEDIA_TYPE_BUCKET_CREATION_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public int count() throws KiiRestException {
 		return this.count(new KiiQuery());
@@ -48,17 +57,35 @@ public class KiiBucketResource extends KiiRestSubResource {
 	public int count(KiiQuery query) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiCountingQuery countingQuery = new KiiCountingQuery(query);
-		JsonObject response = this.executePost("/query", headers, MEDIA_TYPE_QUERY_REQUEST, countingQuery.toJson());
-		return GsonUtils.getInt(response.getAsJsonObject("aggregations"), "count_field") ;
+		KiiRestRequest request = new KiiRestRequest(getUrl("/query"), Method.POST, headers, MEDIA_TYPE_QUERY_REQUEST, countingQuery.toJson());
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return GsonUtils.getInt(responseBody.getAsJsonObject("aggregations"), "count_field") ;
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public KiiQueryResult query(KiiQuery query) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject response = this.executePost("/query", headers, MEDIA_TYPE_QUERY_REQUEST, query.toJson());
-		return new KiiQueryResult(query, response);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/query"), Method.POST, headers, MEDIA_TYPE_QUERY_REQUEST, query.toJson());
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return new KiiQueryResult(query, responseBody);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		this.executeDelete(headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public KiiAclResource acl() {
 		return new KiiAclResource(this);

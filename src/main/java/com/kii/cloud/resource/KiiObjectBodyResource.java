@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
 import com.kii.cloud.util.IOUtils;
 import com.squareup.okhttp.MediaType;
@@ -28,20 +29,38 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	}
 	public boolean exists() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		Response response = this.executeHead(headers);
-		return response.code() == 200;
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.HEAD, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+			return response.isSuccessful();
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void upload(String contentType, InputStream stream) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		this.executePut(headers, MediaType.parse(contentType), stream);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MediaType.parse(contentType), stream);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void download(String contentType, OutputStream stream) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		InputStream response = this.executeGetAsInputStream(headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
 		try {
-			IOUtils.copy(response, stream);
+			Response response = this.execute(request);
+			InputStream responseBody = this.parseResponseAsInputStream(request, response);
+			try {
+				IOUtils.copy(responseBody, stream);
+			} catch (IOException e) {
+				throw new KiiRestException("", e);
+			}
 		} catch (IOException e) {
-			throw new KiiRestException("", e);
+			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
 	public String publish() throws KiiRestException {
@@ -49,15 +68,27 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	}
 	public String publish(long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject request = new JsonObject();
+		JsonObject requestBody = new JsonObject();
 		if (expiresAt > 0) {
-			request.addProperty("expiresAt", expiresAt);
+			requestBody.addProperty("expiresAt", expiresAt);
 		}
-		JsonObject response = this.executePost("/publish", headers, MEDIA_TYPE_START_OBJECT_BODY_PUBLICATION_REQUEST, request);
-		return GsonUtils.getString(response, "url");
+		KiiRestRequest request = new KiiRestRequest(getUrl("/publish"), Method.POST, headers, MEDIA_TYPE_START_OBJECT_BODY_PUBLICATION_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return GsonUtils.getString(responseBody, "url");
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		this.executeDelete(headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 }

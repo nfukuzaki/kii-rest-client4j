@@ -1,10 +1,13 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiGroupMembers;
+import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.squareup.okhttp.Response;
 
 public class KiiGroupMembersResource extends KiiRestSubResource {
 	
@@ -19,7 +22,13 @@ public class KiiGroupMembersResource extends KiiRestSubResource {
 	}
 	public KiiGroupMembers list() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject response = this.executeGet(headers);
-		return new KiiGroupMembers(response);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return new KiiGroupMembers(responseBody);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 }

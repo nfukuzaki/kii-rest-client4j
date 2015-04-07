@@ -1,5 +1,6 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +10,10 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiGroup;
 import com.kii.cloud.model.KiiGroupMembers;
+import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
 
 public class KiiGroupsResource extends KiiRestSubResource {
 	
@@ -29,39 +32,57 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	 */
 	public List<String> save(KiiGroup group, KiiGroupMembers members) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject request = GsonUtils.clone(group.getJsonObject());
+		JsonObject requestBody = GsonUtils.clone(group.getJsonObject());
 		if (members != null) {
-			request.add(KiiGroupMembers.PROPERTY_MEMBERS.getName(), members.toJsonArrayAsRequest());
+			requestBody.add(KiiGroupMembers.PROPERTY_MEMBERS.getName(), members.toJsonArrayAsRequest());
 		}
-		JsonObject response = this.executePost(headers, MEDIA_TYPE_GROUP_CREATION_REQUEST, request);
-		String groupID = KiiGroup.PROPERTY_GROUP_ID.getString(response);
-		group.setGroupID(groupID);
-		List<String> notFoundusers = new ArrayList<String>();
-		JsonArray array = KiiGroup.PROPERTY_NOT_FOUND_USERS.getJsonArray(response);
-		for (int i = 0; i < array.size(); i++) {
-			notFoundusers.add(array.get(i).getAsString());
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_GROUP_CREATION_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			String groupID = KiiGroup.PROPERTY_GROUP_ID.getString(responseBody);
+			group.setGroupID(groupID);
+			List<String> notFoundusers = new ArrayList<String>();
+			JsonArray array = KiiGroup.PROPERTY_NOT_FOUND_USERS.getJsonArray(responseBody);
+			for (int i = 0; i < array.size(); i++) {
+				notFoundusers.add(array.get(i).getAsString());
+			}
+			return notFoundusers;
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
 		}
-		return notFoundusers;
 	}
 	public List<KiiGroup> getOwnGroups(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject response = this.executeGet("?owner=" + userID, headers);
-		JsonArray array = response.getAsJsonArray("groups");
-		List<KiiGroup> groups = new ArrayList<KiiGroup>();
-		for (int i = 0; i < array.size(); i++) {
-			groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+		KiiRestRequest request = new KiiRestRequest(getUrl("?owner=" + userID), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			JsonArray array = responseBody.getAsJsonArray("groups");
+			List<KiiGroup> groups = new ArrayList<KiiGroup>();
+			for (int i = 0; i < array.size(); i++) {
+				groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+			}
+			return groups;
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
 		}
-		return groups;
 	}
 	public List<KiiGroup> getBelongGroups(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject response = this.executeGet("?is_member=" + userID, headers);
-		JsonArray array = response.getAsJsonArray("groups");
-		List<KiiGroup> groups = new ArrayList<KiiGroup>();
-		for (int i = 0; i < array.size(); i++) {
-			groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+		KiiRestRequest request = new KiiRestRequest(getUrl("?is_member=" + userID), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			JsonArray array = responseBody.getAsJsonArray("groups");
+			List<KiiGroup> groups = new ArrayList<KiiGroup>();
+			for (int i = 0; i < array.size(); i++) {
+				groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+			}
+			return groups;
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
 		}
-		return groups;
 	}
 	@Override
 	public String getPath() {

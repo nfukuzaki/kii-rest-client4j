@@ -1,5 +1,6 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
@@ -7,6 +8,8 @@ import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiAdminCredentials;
 import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiUserCredentials;
+import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.squareup.okhttp.Response;
 
 public class KiiOAuthResource extends KiiRestSubResource {
 	public static final String BASE_PATH = "/oauth2/token";
@@ -18,47 +21,65 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	}
 	public KiiUserCredentials getAccessToken(String identifier, String password, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("grant_type", "password");
-		request.addProperty("username", identifier);
-		request.addProperty("password", password);
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("grant_type", "password");
+		requestBody.addProperty("username", identifier);
+		requestBody.addProperty("password", password);
 		if (expiresAt != null) {
-			request.addProperty("expiresAt", expiresAt);
+			requestBody.addProperty("expiresAt", expiresAt);
 		}
-		JsonObject response = this.executePost(headers, MEDIA_TYPE_APPLICATION_JSON, request);
-		return new KiiUserCredentials(response);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, requestBody);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return new KiiUserCredentials(responseBody);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret) throws KiiRestException {
 		return this.getAdminAccessToken(clientID, clientSecret, null);
 	}
 	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("grant_type", "client_credentials");
-		request.addProperty("client_id", clientID);
-		request.addProperty("client_secret", clientSecret);
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("grant_type", "client_credentials");
+		requestBody.addProperty("client_id", clientID);
+		requestBody.addProperty("client_secret", clientSecret);
 		if (expiresAt != null) {
-			request.addProperty("expiresAt", expiresAt);
+			requestBody.addProperty("expiresAt", expiresAt);
 		}
-		JsonObject response = this.executePost(headers, MEDIA_TYPE_APPLICATION_JSON, request);
-		return new KiiAdminCredentials(response);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, requestBody);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return new KiiAdminCredentials(responseBody);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials) throws KiiRestException {
 		return refreshAccessToken(credentials, null);
 	}
 	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("grant_type", "refresh_token");
-		request.addProperty("refresh_token", credentials.getRefreshToken());
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("grant_type", "refresh_token");
+		requestBody.addProperty("refresh_token", credentials.getRefreshToken());
 		if (expiresAt != null) {
-			request.addProperty("expires_at", expiresAt);
+			requestBody.addProperty("expires_at", expiresAt);
 		}
-		JsonObject response = this.executePost(headers, MEDIA_TYPE_APPLICATION_JSON, request);
-		if (credentials.isAdmin()) {
-			return new KiiAdminCredentials(response);
-		} else {
-			return new KiiUserCredentials(response);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, requestBody);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			if (credentials.isAdmin()) {
+				return new KiiAdminCredentials(responseBody);
+			} else {
+				return new KiiUserCredentials(responseBody);
+			}
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
 	@Override

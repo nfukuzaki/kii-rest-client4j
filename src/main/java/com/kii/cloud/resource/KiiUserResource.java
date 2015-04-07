@@ -1,5 +1,6 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
@@ -7,8 +8,10 @@ import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiPseudoUser;
 import com.kii.cloud.model.KiiUser;
+import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
 
 public class KiiUserResource extends KiiRestSubResource {
 	
@@ -28,16 +31,28 @@ public class KiiUserResource extends KiiRestSubResource {
 	}
 	public KiiUser get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject response = this.executeGet(headers);
-		if (KiiUser.PROPERTY_HAS_PASSWORD.getBoolean(response)) {
-			return new KiiNormalUser(response);
-		} else {
-			return new KiiPseudoUser(response);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			if (KiiUser.PROPERTY_HAS_PASSWORD.getBoolean(responseBody)) {
+				return new KiiNormalUser(responseBody);
+			} else {
+				return new KiiPseudoUser(responseBody);
+			}
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
 	public void update(KiiUser user) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		this.executePost(headers, MEDIA_TYPE_USER_UPDATE_REQUEST, user.toJsonString());
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_USER_UPDATE_REQUEST, user.toJsonString());
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	// FIXME:インターフェースがちょっと微妙
 	public void updateToNormal(KiiPseudoUser user, String username, String email, String phone, String password) throws KiiRestException {
@@ -48,37 +63,60 @@ public class KiiUserResource extends KiiRestSubResource {
 			throw new IllegalArgumentException("");
 		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("password", password);
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("password", password);
 		if (!StringUtils.isEmpty(username)) {
-			request.addProperty(KiiUser.PROPERTY_USERNAME.getName(), username);
+			requestBody.addProperty(KiiUser.PROPERTY_USERNAME.getName(), username);
 		}
 		if (!StringUtils.isEmpty(email)) {
-			request.addProperty(KiiUser.PROPERTY_EMAIL_ADDRESS.getName(), email);
+			requestBody.addProperty(KiiUser.PROPERTY_EMAIL_ADDRESS.getName(), email);
 		}
 		if (!StringUtils.isEmpty(phone)) {
-			request.addProperty(KiiUser.PROPERTY_PHONE_NUMBER.getName(), phone);
+			requestBody.addProperty(KiiUser.PROPERTY_PHONE_NUMBER.getName(), phone);
 		}
-		this.executePost(headers, MEDIA_TYPE_USER_UPDATE_REQUEST, request);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_USER_UPDATE_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		this.executeDelete(headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void changePassword(String oldPassword, String newPassword) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("oldPassword", oldPassword);
-		request.addProperty("newPassword", newPassword);
-		this.executePut("/password", headers, MEDIA_TYPE_CHANGE_PASSWORD_REQUEST, request);
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("oldPassword", oldPassword);
+		requestBody.addProperty("newPassword", newPassword);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/password"), Method.PUT, headers, MEDIA_TYPE_CHANGE_PASSWORD_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void resetPassword(NotificationMethod notificationMethod) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("notificationMethod", notificationMethod.name());
-		this.executePost("/password/request-reset", headers, MEDIA_TYPE_RESET_PASSWORD_REQUEST, request);
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("notificationMethod", notificationMethod.name());
+		KiiRestRequest request = new KiiRestRequest(getUrl("/password/request-reset"), Method.POST, headers, MEDIA_TYPE_RESET_PASSWORD_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
-	
 	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);
 	}

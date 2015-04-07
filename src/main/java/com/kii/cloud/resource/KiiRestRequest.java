@@ -43,7 +43,7 @@ public class KiiRestRequest {
 	public Object getEntity() {
 		return entity;
 	}
-	public String toCurlCommand() {
+	public String getCurl() {
 		StringBuilder curl = new StringBuilder();
 		curl.append("curl -v -X " + this.method.name());
 		if (this.contentType != null) {

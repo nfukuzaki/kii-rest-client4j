@@ -1,11 +1,14 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiGroup;
+import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
 
 public class KiiGroupResource extends KiiRestSubResource {
 	
@@ -24,22 +27,46 @@ public class KiiGroupResource extends KiiRestSubResource {
 	}
 	public KiiGroup get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject response = this.executeGet(headers);
-		return new KiiGroup(response);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return new KiiGroup(responseBody);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void changeOwner(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		JsonObject request = new JsonObject();
-		request.addProperty("owner", userID);
-		this.executePut("/owner", headers, MEDIA_TYPE_GROUP_OWNER_CHANGE_REQUEST, request);
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("owner", userID);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/owner"), Method.PUT, headers, MEDIA_TYPE_GROUP_OWNER_CHANGE_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void changeName(String name) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		this.executePut("/name", headers, MEDIA_TYPE_TEXT_PLAIN, name);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/name"), Method.PUT, headers, MEDIA_TYPE_TEXT_PLAIN, name);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		this.executeDelete(headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);
