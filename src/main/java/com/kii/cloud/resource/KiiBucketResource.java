@@ -6,11 +6,13 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.model.KiiQuery;
+import com.kii.cloud.model.KiiQueryResult;
 import com.squareup.okhttp.MediaType;
 
 public class KiiBucketResource extends KiiRestSubResource {
 	
 	public static final MediaType MEDIA_TYPE_BUCKET_CREATION_REQUEST = MediaType.parse("application/vnd.kii.BucketCreationRequest+json");
+	public static final MediaType MEDIA_TYPE_QUERY_REQUEST = MediaType.parse("application/vnd.kii.QueryRequest+json");
 	
 	public static final String BASE_PATH = "/buckets";
 	
@@ -36,9 +38,12 @@ public class KiiBucketResource extends KiiRestSubResource {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject request = new JsonObject();
 		request.addProperty("bucketType", this.getBucketType());
-		executePut(headers, MEDIA_TYPE_BUCKET_CREATION_REQUEST, request);
+		this.executePut(headers, MEDIA_TYPE_BUCKET_CREATION_REQUEST, request);
 	}
-	public void query(KiiQuery query) throws KiiRestException {
+	public KiiQueryResult query(KiiQuery query) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		JsonObject response = this.executePost("/query", headers, MEDIA_TYPE_QUERY_REQUEST, query.toJson());
+		return new KiiQueryResult(query, response);
 	}
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();

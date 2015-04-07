@@ -1,23 +1,26 @@
 package com.kii.cloud.model;
 
 import com.google.gson.JsonObject;
+import com.kii.cloud.util.GsonUtils;
 import com.kii.cloud.util.StringUtils;
 
 public class KiiQuery {
 	
 	private String nextPaginationKey;
 	private int limit;
-	private final JsonObject json;
+	private JsonObject json;
 	
 	public KiiQuery() {
 		this(null);
 	}
 	public KiiQuery(KiiClause clause) {
+		JsonObject clauseJson = new JsonObject();
 		if (clause == null) {
-			this.json = KiiClause.all().getJson();
+			clauseJson.add("clause", KiiClause.all().getJson());
 		} else {
-			this.json = clause.getJson();
+			clauseJson.add("clause", clause.getJson());
 		}
+		this.json = clauseJson;
 	}
 	public KiiQuery sortByAsc(String key) {
 		this.json.addProperty("orderBy", key);
@@ -47,5 +50,12 @@ public class KiiQuery {
 			query.addProperty("bestEffortLimit", this.limit);
 		}
 		return query;
+	}
+	public KiiQuery clone() {
+		KiiQuery clone = new KiiQuery();
+		clone.nextPaginationKey = this.nextPaginationKey;
+		clone.limit = this.limit;
+		clone.json = GsonUtils.clone(this.json);
+		return clone;
 	}
 }
