@@ -87,67 +87,6 @@ public abstract class KiiRestResource {
 			getParent().setAuthorizationHeader(headers);
 		}
 	}
-	protected void parseResponse(KiiRestRequest request, Response response) throws KiiRestException {
-		try {
-			String body = response.body().string();
-			if (!response.isSuccessful()) {
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
-			}
-			System.out.println(request.getCurl() + "  : " + response.code());
-			System.out.println(body);
-		} catch (IOException e) {
-			throw new KiiRestException(request.getCurl(), e);
-		}
-	}
-	protected JsonObject parseResponseAsJsonObject(KiiRestRequest request, Response response) throws KiiRestException {
-		try {
-			String body = response.body().string();
-			if (!response.isSuccessful()) {
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
-			}
-			System.out.println(request.getCurl() + "  : " + response.code());
-			System.out.println(body);
-			if (StringUtils.isEmpty(body)) {
-				return null;
-			}
-			return (JsonObject)new JsonParser().parse(body);
-		} catch (IOException e) {
-			throw new KiiRestException(request.getCurl(), e);
-		}
-	}
-	protected InputStream parseResponseAsInputStream(KiiRestRequest request, Response response) throws KiiRestException {
-		try {
-			if (!response.isSuccessful()) {
-				String body = response.body().string();
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
-			}
-			System.out.println(request.getCurl() + "  : " + response.code());
-			return response.body().byteStream();
-		} catch (IOException e) {
-			throw new KiiRestException(request.getCurl(), e);
-		}
-	}
 	protected Response execute(KiiRestRequest restRequest) throws IOException {
 		Builder bulder = new Request.Builder();
 		bulder.url(restRequest.getUrl());
@@ -201,5 +140,77 @@ public abstract class KiiRestResource {
 			};
 		}
 		throw new RuntimeException("Unexpected entity type.");
+	}
+	protected void parseResponse(KiiRestRequest request, Response response) throws KiiRestException {
+		try {
+			String body = response.body().string();
+			if (!response.isSuccessful()) {
+				JsonObject errorDetail = null;
+				try {
+					errorDetail = (JsonObject)new JsonParser().parse(body);
+				} catch (Exception ignore) {
+				}
+				System.out.println(request.getCurl() + "  : " + response.code());
+				logHeader(response);
+				System.out.println(body);
+				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+			}
+			System.out.println(request.getCurl() + "  : " + response.code());
+			logHeader(response);
+			System.out.println(body);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	protected JsonObject parseResponseAsJsonObject(KiiRestRequest request, Response response) throws KiiRestException {
+		try {
+			String body = response.body().string();
+			if (!response.isSuccessful()) {
+				JsonObject errorDetail = null;
+				try {
+					errorDetail = (JsonObject)new JsonParser().parse(body);
+				} catch (Exception ignore) {
+				}
+				System.out.println(request.getCurl() + "  : " + response.code());
+				logHeader(response);
+				System.out.println(body);
+				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+			}
+			System.out.println(request.getCurl() + "  : " + response.code());
+			logHeader(response);
+			System.out.println(body);
+			if (StringUtils.isEmpty(body)) {
+				return null;
+			}
+			return (JsonObject)new JsonParser().parse(body);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	protected InputStream parseResponseAsInputStream(KiiRestRequest request, Response response) throws KiiRestException {
+		try {
+			if (!response.isSuccessful()) {
+				String body = response.body().string();
+				JsonObject errorDetail = null;
+				try {
+					errorDetail = (JsonObject)new JsonParser().parse(body);
+				} catch (Exception ignore) {
+				}
+				System.out.println(request.getCurl() + "  : " + response.code());
+				logHeader(response);
+				System.out.println(body);
+				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+			}
+			System.out.println(request.getCurl() + "  : " + response.code());
+			logHeader(response);
+			return response.body().byteStream();
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	protected void logHeader(Response response) {
+		for (String name : response.headers().names()) {
+			System.out.println("    " + name + ":" + response.header(name));
+		}
 	}
 }
