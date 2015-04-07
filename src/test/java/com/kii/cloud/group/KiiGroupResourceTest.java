@@ -1,7 +1,9 @@
 package com.kii.cloud.group;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.kii.cloud.KiiRest;
 import com.kii.cloud.TestApp;
@@ -19,11 +21,13 @@ public class KiiGroupResourceTest {
 		
 		KiiPseudoUser user1 = new KiiPseudoUser();
 		KiiPseudoUser user2 = new KiiPseudoUser();
-		KiiNormalUser user3 = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		KiiNormalUser user3 = new KiiNormalUser().setUsername("test1-" + System.currentTimeMillis());
+		KiiNormalUser user4 = new KiiNormalUser().setUsername("test2-" + System.currentTimeMillis());
 		
 		user1 = rest.api().users().register(user1);
 		user2 = rest.api().users().register(user2);
 		user3 = rest.api().users().register(user3, "password");
+		user4 = rest.api().users().register(user4, "password");
 		
 		rest.setCredentials(user1);
 		
@@ -41,6 +45,16 @@ public class KiiGroupResourceTest {
 		rest.api().groups(group1).changeName("NewMyGroup");
 		KiiGroup group2 = rest.api().groups(group1).get();
 		assertEquals("NewMyGroup", group2.getName());
+		
+		// remove/add member
+		rest.api().groups(group1).members(user3.getUserID()).remove();
+		rest.api().groups(group1).members(user4.getUserID()).add();
+		// getting list of members
+		members = rest.api().groups(group1).members().list();
+		assertEquals(3, members.getMembers().size());
+		assertTrue(members.getMembers().contains(user1.getUserID()));
+		assertTrue(members.getMembers().contains(user2.getUserID()));
+		assertTrue(members.getMembers().contains(user4.getUserID()));
 		
 		// changing owner
 		assertEquals(user1.getUserID(), group2.getOwner());

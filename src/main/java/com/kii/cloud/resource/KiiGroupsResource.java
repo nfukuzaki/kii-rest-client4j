@@ -1,7 +1,6 @@
 package com.kii.cloud.resource;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,9 +45,7 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	}
 	public List<KiiGroup> getOwnGroups(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("owner", userID);
-		JsonObject response = this.executeGet(headers, params);
+		JsonObject response = this.executeGet("?owner=" + userID, headers);
 		JsonArray array = response.getAsJsonArray("groups");
 		List<KiiGroup> groups = new ArrayList<KiiGroup>();
 		for (int i = 0; i < array.size(); i++) {
@@ -58,9 +55,7 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	}
 	public List<KiiGroup> getBelongGroups(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("is_member", userID);
-		JsonObject response = this.executeGet(headers, params);
+		JsonObject response = this.executeGet("?is_member=" + userID, headers);
 		JsonArray array = response.getAsJsonArray("groups");
 		List<KiiGroup> groups = new ArrayList<KiiGroup>();
 		for (int i = 0; i < array.size(); i++) {

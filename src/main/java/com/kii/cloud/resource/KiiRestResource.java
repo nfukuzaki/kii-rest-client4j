@@ -107,15 +107,9 @@ public abstract class KiiRestResource {
 		}
 	}
 	protected JsonObject executeGet(Map<String, String> headers) throws KiiRestException {
-		return this.executeGet(headers, null);
-	}
-	protected JsonObject executeGet(Map<String, String> headers, Map<String, String> params) throws KiiRestException {
-		return this.executeGet(null, headers, params);
+		return this.executeGet(null, headers);
 	}
 	protected JsonObject executeGet(String path, Map<String, String> headers) throws KiiRestException {
-		return this.executeGet(null, headers, null);
-	}
-	protected JsonObject executeGet(String path, Map<String, String> headers, Map<String, String> params) throws KiiRestException {
 		String curl = this.toCurl(path, "GET", headers);
 		Request request = new Request.Builder()
 			.url(this.getUrl(path))
@@ -139,7 +133,7 @@ public abstract class KiiRestResource {
 		return this.executePost(null, headers, contentType, entity);
 	}
 	protected JsonObject executePost(String path, Map<String, String> headers, MediaType contentType, String entity) throws KiiRestException {
-		String curl = this.toCurl(path, "POST", headers, null, contentType, entity);
+		String curl = this.toCurl(path, "POST", headers, contentType, entity);
 		if (entity == null) {
 			entity = "";
 		}
@@ -158,17 +152,24 @@ public abstract class KiiRestResource {
 			throw new KiiRestException(curl, e);
 		}
 	}
+	protected JsonObject executePut(Map<String, String> headers) throws KiiRestException {
+		return this.executePut(null, headers, null, (String)null);
+	}
 	protected JsonObject executePut(Map<String, String> headers, MediaType contentType, JsonObject entity) throws KiiRestException {
 		return this.executePut(null, headers, contentType, entity);
 	}
 	protected JsonObject executePut(String path, Map<String, String> headers, MediaType contentType, JsonObject entity) throws KiiRestException {
-		return this.executePut(path, headers, contentType, entity.toString());
+		if (entity != null) {
+			return this.executePut(path, headers, contentType, entity.toString());
+		} else {
+			return this.executePut(path, headers, contentType, (String)null);
+		}
 	}
 	protected JsonObject executePut(Map<String, String> headers, MediaType contentType, String entity) throws KiiRestException {
 		return this.executePut(null, headers, contentType, entity);
 	}
 	protected JsonObject executePut(String path, Map<String, String> headers, MediaType contentType, String entity) throws KiiRestException {
-		String curl = this.toCurl(path, "PUT", headers, null, contentType, entity);
+		String curl = this.toCurl(path, "PUT", headers, contentType, entity);
 		if (entity == null) {
 			entity = "";
 		}
@@ -228,12 +229,9 @@ public abstract class KiiRestResource {
 		}
 	}
 	private String toCurl(String path, String method, Map<String, String> headers) {
-		return toCurl(path, method, headers, null);
+		return toCurl(path, method, headers, null, null);
 	}
-	private String toCurl(String path, String method, Map<String, String> headers, Map<String, String> params) {
-		return toCurl(path, method, headers, params, null, null);
-	}
-	private String toCurl(String path, String method, Map<String, String> headers, Map<String, String> params, MediaType contentType, String entity) {
+	private String toCurl(String path, String method, Map<String, String> headers, MediaType contentType, String entity) {
 		StringBuilder curl = new StringBuilder();
 		curl.append("curl -v -X " + method);
 		if (contentType != null) {
