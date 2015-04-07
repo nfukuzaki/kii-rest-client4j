@@ -39,6 +39,10 @@ public class KiiBucketResourceTest {
 			objectsResource.save(obj);
 		}
 		
+		// counting object
+		int count  = rest.api().buckets(appBucketName).count();
+		assertEquals(15, count);
+		
 		// querying object
 		KiiQuery query = new KiiQuery(KiiClause.lt("score", 9));
 		query.setLimit(5);
@@ -57,6 +61,11 @@ public class KiiBucketResourceTest {
 		}
 		assertFalse(queryResult.hasNext());
 		
+		// counting object
+		count  = rest.api().buckets(appBucketName).count(query);
+		assertEquals(9, count);
+		
+		// deleting bucket
 		rest.api().buckets(appBucketName).delete();
 	}
 }

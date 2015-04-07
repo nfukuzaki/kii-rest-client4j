@@ -1,12 +1,10 @@
 package com.kii.cloud.resource;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiObject;
-import com.kii.cloud.model.KiiQuery;
 
 public class KiiObjectResource extends KiiRestSubResource {
 	
@@ -26,9 +24,6 @@ public class KiiObjectResource extends KiiRestSubResource {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject response = this.executeGet(headers);
 		return new KiiObject(response);
-	}
-	public List<KiiObject> query(KiiQuery query) {
-		return null;
 	}
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();

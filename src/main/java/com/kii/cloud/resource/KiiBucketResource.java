@@ -4,9 +4,11 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.model.KiiCountingQuery;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.model.KiiQuery;
 import com.kii.cloud.model.KiiQueryResult;
+import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 
 public class KiiBucketResource extends KiiRestSubResource {
@@ -39,6 +41,15 @@ public class KiiBucketResource extends KiiRestSubResource {
 		JsonObject request = new JsonObject();
 		request.addProperty("bucketType", this.getBucketType());
 		this.executePut(headers, MEDIA_TYPE_BUCKET_CREATION_REQUEST, request);
+	}
+	public int count() throws KiiRestException {
+		return this.count(new KiiQuery());
+	}
+	public int count(KiiQuery query) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiCountingQuery countingQuery = new KiiCountingQuery(query);
+		JsonObject response = this.executePost("/query", headers, MEDIA_TYPE_QUERY_REQUEST, countingQuery.toJson());
+		return GsonUtils.getInt(response.getAsJsonObject("aggregations"), "count_field") ;
 	}
 	public KiiQueryResult query(KiiQuery query) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
