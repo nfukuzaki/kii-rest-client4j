@@ -56,6 +56,8 @@ appObject.set("email", "TEST@example.com");
 rest.api().buckets("app_bucket").objects(appObject).update(appObject);
 ```
 
+For more examples, please refer to the [test code](https://github.com/nfukuzaki/kii-rest-client4j/tree/master/src/test/java/com/kii/cloud).
+
 ## TODO
 
 1. Supports all REST APIs.
