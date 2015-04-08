@@ -1,5 +1,6 @@
 package com.kii.cloud.resource;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -122,6 +123,12 @@ public abstract class KiiRestResource {
 		}
 		if (entity instanceof String) {
 			return RequestBody.create(contentType, (String)entity);
+		}
+		if (entity instanceof byte[]) {
+			return RequestBody.create(contentType, (byte[])entity);
+		}
+		if (entity instanceof File) {
+			return RequestBody.create(contentType, (File)entity);
 		}
 		if (entity instanceof JsonObject) {
 			return RequestBody.create(contentType, ((JsonObject)entity).toString());

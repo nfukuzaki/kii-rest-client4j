@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.model.KiiChunkedDownloadContext;
 import com.kii.cloud.model.KiiChunkedUploadContext;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
@@ -47,6 +48,56 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		}
 	}
 	/**
+	 * @param stream
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/downloading/
+	 */
+	public void download(OutputStream stream) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			InputStream responseBody = this.parseResponseAsInputStream(request, response);
+			try {
+				IOUtils.copy(responseBody, stream);
+			} catch (IOException e) {
+				throw new KiiRestException("", e);
+			}
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @param context
+	 * @param stream
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/downloading/
+	 */
+	public KiiChunkedDownloadContext downloadByChunk(KiiChunkedDownloadContext context, OutputStream stream) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		if (context.getETag() != null) {
+			headers.put("If-Match", context.getETag());
+		}
+		headers.put("Range", "bytes=" + context.getDownloadedSize() + "-" + (context.getDownloadedSize() + context.getChunkSize() - 1));
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			InputStream responseBody = this.parseResponseAsInputStream(request, response);
+			try {
+				long downloadedBytes = IOUtils.copy(responseBody, stream);
+				context.setETag(response.header("ETag"));
+				context.setContentType(MediaType.parse(response.header("Content-Type")));
+				context.increaseDownloadedSize(downloadedBytes);
+				return context;
+			} catch (IOException e) {
+				throw new KiiRestException("", e);
+			}
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
 	 * @param contentType
 	 * @param stream
 	 * @throws KiiRestException
@@ -58,27 +109,6 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
-		} catch (IOException e) {
-			throw new KiiRestException(request.getCurl(), e);
-		}
-	}
-	/**
-	 * @param contentType
-	 * @param stream
-	 * @throws KiiRestException
-	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/downloading/
-	 */
-	public void download(String contentType, OutputStream stream) throws KiiRestException {
-		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
-		try {
-			Response response = this.execute(request);
-			InputStream responseBody = this.parseResponseAsInputStream(request, response);
-			try {
-				IOUtils.copy(responseBody, stream);
-			} catch (IOException e) {
-				throw new KiiRestException("", e);
-			}
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
