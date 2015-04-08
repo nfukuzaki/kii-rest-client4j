@@ -50,4 +50,8 @@ public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 		this.json.addProperty(PROPERTY_VERSION.getName(), version);
 		return this;
 	}
+	public KiiObject set(String name, KiiGeoPoint value) {
+		this.json.add(name, value.toJson());
+		return this;
+	}
 }
