@@ -134,7 +134,7 @@ public abstract class KiiRestResource {
 			return RequestBody.create(contentType, ((JsonObject)entity).toString());
 		}
 		if (entity instanceof InputStream) {
-			new RequestBody() {
+			return new RequestBody() {
 				@Override
 				public MediaType contentType() {
 					return contentType;

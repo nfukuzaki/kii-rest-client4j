@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.model.HttpContentRange;
 import com.kii.cloud.model.KiiChunkedDownloadContext;
 import com.kii.cloud.model.KiiChunkedUploadContext;
 import com.kii.cloud.resource.KiiRestRequest.Method;
@@ -88,6 +89,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 				long downloadedBytes = IOUtils.copy(responseBody, stream);
 				context.setETag(response.header("ETag"));
 				context.setContentType(MediaType.parse(response.header("Content-Type")));
+				context.setContentRange(HttpContentRange.fromHeader(response.header("Content-Range")));
 				context.increaseDownloadedSize(downloadedBytes);
 				return context;
 			} catch (IOException e) {

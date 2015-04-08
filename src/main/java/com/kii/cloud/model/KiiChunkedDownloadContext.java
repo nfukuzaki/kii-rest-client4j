@@ -8,6 +8,7 @@ public class KiiChunkedDownloadContext {
 	private long downloadedSize = 0;
 	private MediaType contentType = null;
 	private String eTag = null;
+	private HttpContentRange contentRange = null;
 	public KiiChunkedDownloadContext() {
 		this(DEFAULT_CHUNK_SIZE);
 	}
@@ -35,5 +36,17 @@ public class KiiChunkedDownloadContext {
 	}
 	public void setETag(String eTag) {
 		this.eTag = eTag;
+	}
+	public HttpContentRange getContentRange() {
+		return this.contentRange;
+	}
+	public void setContentRange(HttpContentRange contentRange) {
+		this.contentRange = contentRange;
+	}
+	public boolean isCompleted() {
+		if (this.contentRange == null) {
+			return false;
+		}
+		return this.contentRange.getTotal() - 1 == this.contentRange.getTo();
 	}
 }
