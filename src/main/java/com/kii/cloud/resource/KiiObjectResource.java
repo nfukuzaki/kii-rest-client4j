@@ -23,6 +23,11 @@ public class KiiObjectResource extends KiiRestSubResource {
 	public KiiAclResource acl() {
 		return new KiiAclResource(this);
 	}
+	/**
+	 * NOTE:This feature has not documented yet.
+	 * @return
+	 * @throws KiiRestException
+	 */
 	public boolean exists() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.HEAD, headers);
@@ -34,6 +39,11 @@ public class KiiObjectResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/retrieving/
+	 */
 	public KiiObject get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
@@ -45,6 +55,10 @@ public class KiiObjectResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/deleting/
+	 */
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
@@ -55,6 +69,11 @@ public class KiiObjectResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param object
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
+	 */
 	public void update(KiiObject object) throws KiiRestException {
 		// TODO:ContentType?
 		Map<String, String> headers = this.newAuthorizedHeaders();
@@ -69,6 +88,11 @@ public class KiiObjectResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param object
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
+	 */
 	public void updateWithOptimisticLock(KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("If-Match", object.getVersion());
@@ -83,6 +107,11 @@ public class KiiObjectResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param object
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
+	 */
 	public void partialUpdate(KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("X-HTTP-Method-Override", "PATCH");
@@ -95,6 +124,11 @@ public class KiiObjectResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param object
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
+	 */
 	public void partialUpdateWithOptimisticLock(KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("X-HTTP-Method-Override", "PATCH");

@@ -18,6 +18,13 @@ public class KiiObjectsResource extends KiiRestSubResource {
 	public void save(KiiObject object) throws KiiRestException {
 		this.save("application/json", object);
 	}
+	/**
+	 * @param contentType
+	 * @param object
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/creating/
+	 */
 	public KiiObject save(String contentType, KiiObject object) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MediaType.parse(contentType), object.getJsonObject());

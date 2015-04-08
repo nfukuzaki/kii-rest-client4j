@@ -27,8 +27,9 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	/**
 	 * @param group
 	 * @param members
-	 * @return not found users.
+	 * @return
 	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/creating-a-group/
 	 */
 	public List<String> save(KiiGroup group, KiiGroupMembers members) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
@@ -52,6 +53,13 @@ public class KiiGroupsResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * 
+	 * NOTE:This feature has not documented yet.
+	 * @param userID
+	 * @return
+	 * @throws KiiRestException
+	 */
 	public List<KiiGroup> getOwnGroups(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("?owner=" + userID), Method.GET, headers);
@@ -68,6 +76,12 @@ public class KiiGroupsResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param userID
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/ja/guides/rest/managing-groups/listing-groups/
+	 */
 	public List<KiiGroup> getBelongGroups(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("?is_member=" + userID), Method.GET, headers);

@@ -19,6 +19,10 @@ public class KiiGroupMemberResource extends KiiRestSubResource {
 	public String getPath() {
 		return "/" + this.userID;
 	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/adding-group-members/
+	 */
 	public void add() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers);
@@ -29,6 +33,10 @@ public class KiiGroupMemberResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/adding-group-members/
+	 */
 	public void remove() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);

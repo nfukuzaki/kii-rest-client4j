@@ -29,6 +29,11 @@ public class KiiUserResource extends KiiRestSubResource {
 		super(parent);
 		this.identifier = identifier;
 	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/retrieving-other-user-s-data/
+	 */
 	public KiiUser get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
@@ -44,6 +49,11 @@ public class KiiUserResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param user
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/user-attributes/
+	 */
 	public void update(KiiUser user) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_USER_UPDATE_REQUEST, user.toJsonString());
@@ -54,8 +64,17 @@ public class KiiUserResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
-	// FIXME:インターフェースがちょっと微妙
+	/**
+	 * @param user
+	 * @param username
+	 * @param email
+	 * @param phone
+	 * @param password
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/pseudo-users/
+	 */
 	public void updateToNormal(KiiPseudoUser user, String username, String email, String phone, String password) throws KiiRestException {
+		// FIXME:インターフェースがちょっと微妙
 		if (StringUtils.isEmpty(username) && StringUtils.isEmpty(email) && StringUtils.isEmpty(phone)) {
 			throw new IllegalArgumentException("");
 		}
@@ -82,6 +101,10 @@ public class KiiUserResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/deleting-users/
+	 */
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
@@ -92,6 +115,12 @@ public class KiiUserResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param oldPassword
+	 * @param newPassword
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/passwords/
+	 */
 	public void changePassword(String oldPassword, String newPassword) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -105,6 +134,11 @@ public class KiiUserResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param notificationMethod
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/passwords/
+	 */
 	public void resetPassword(NotificationMethod notificationMethod) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();

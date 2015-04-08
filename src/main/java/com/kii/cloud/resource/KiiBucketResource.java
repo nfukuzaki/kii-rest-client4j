@@ -39,6 +39,11 @@ public class KiiBucketResource extends KiiRestSubResource {
 		super(parent);
 		this.name = name;
 	}
+	/**
+	 * 
+	 * NOTE:This feature has not documented yet.
+	 * @throws KiiRestException
+	 */
 	public void create() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -51,9 +56,20 @@ public class KiiBucketResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/querying/
+	 */
 	public int count() throws KiiRestException {
 		return this.count(new KiiQuery());
 	}
+	/**
+	 * @param query
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/querying/
+	 */
 	public int count(KiiQuery query) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiCountingQuery countingQuery = new KiiCountingQuery(query);
@@ -66,6 +82,12 @@ public class KiiBucketResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param query
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/querying/
+	 */
 	public KiiQueryResult query(KiiQuery query) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/query"), Method.POST, headers, MEDIA_TYPE_QUERY_REQUEST, query.toJson());
@@ -77,6 +99,10 @@ public class KiiBucketResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/buckets/deleting/
+	 */
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);

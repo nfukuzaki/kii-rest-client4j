@@ -25,6 +25,11 @@ public class KiiGroupResource extends KiiRestSubResource {
 	public KiiGroupMemberResource members(String userID) {
 		return new KiiGroupMemberResource(members(), userID);
 	}
+	/**
+	 * NOTE:This feature has not documented yet.
+	 * @return
+	 * @throws KiiRestException
+	 */
 	public KiiGroup get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
@@ -36,6 +41,11 @@ public class KiiGroupResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param userID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/changing-a-group-owner/
+	 */
 	public void changeOwner(String userID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -48,6 +58,11 @@ public class KiiGroupResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param name
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/changing-a-group-name/
+	 */
 	public void changeName(String name) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/name"), Method.PUT, headers, MEDIA_TYPE_TEXT_PLAIN, name);
@@ -58,6 +73,10 @@ public class KiiGroupResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/deleting-a-group/
+	 */
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);

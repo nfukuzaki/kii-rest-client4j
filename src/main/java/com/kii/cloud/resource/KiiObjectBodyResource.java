@@ -27,6 +27,12 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	public String getPath() {
 		return BASE_PATH;
 	}
+	/**
+	 * 
+	 * NOTE:This feature has not documented yet.
+	 * @return
+	 * @throws KiiRestException
+	 */
 	public boolean exists() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.HEAD, headers);
@@ -38,6 +44,12 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param contentType
+	 * @param stream
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/uploading/
+	 */
 	public void upload(String contentType, InputStream stream) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MediaType.parse(contentType), stream);
@@ -48,6 +60,12 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param contentType
+	 * @param stream
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/downloading/
+	 */
 	public void download(String contentType, OutputStream stream) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
@@ -63,9 +81,20 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/publishingbody/
+	 */
 	public String publish() throws KiiRestException {
 		return this.publish(0);
 	}
+	/**
+	 * @param expiresAt
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/publishingbody/
+	 */
 	public String publish(long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -81,6 +110,10 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/deletingbody/
+	 */
 	public void delete() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);

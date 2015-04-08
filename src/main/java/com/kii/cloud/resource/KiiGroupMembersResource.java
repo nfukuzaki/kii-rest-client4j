@@ -20,6 +20,11 @@ public class KiiGroupMembersResource extends KiiRestSubResource {
 	public String getPath() {
 		return BASE_PATH;
 	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/listing-group-member/
+	 */
 	public KiiGroupMembers list() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);

@@ -16,9 +16,24 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	public KiiOAuthResource(KiiRestResource parent) {
 		super(parent);
 	}
+	/**
+	 * @param identifier
+	 * @param password
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
+	 */
 	public KiiUserCredentials getAccessToken(String identifier, String password) throws KiiRestException {
 		return this.getAccessToken(identifier, password, null);
 	}
+	/**
+	 * @param identifier
+	 * @param password
+	 * @param expiresAt
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
+	 */
 	public KiiUserCredentials getAccessToken(String identifier, String password, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -37,9 +52,24 @@ public class KiiOAuthResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param clientID
+	 * @param clientSecret
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/admin-features/
+	 */
 	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret) throws KiiRestException {
 		return this.getAdminAccessToken(clientID, clientSecret, null);
 	}
+	/**
+	 * @param clientID
+	 * @param clientSecret
+	 * @param expiresAt
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/admin-features/
+	 */
 	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -58,9 +88,22 @@ public class KiiOAuthResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param credentials
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
+	 */
 	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials) throws KiiRestException {
 		return refreshAccessToken(credentials, null);
 	}
+	/**
+	 * @param credentials
+	 * @param expiresAt
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
+	 */
 	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
