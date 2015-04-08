@@ -157,11 +157,8 @@ public class KiiUserResource extends KiiRestSubResource {
 	public KiiEncryptedBucketResource encryptedBuckets(String name) {
 		return new KiiEncryptedBucketResource(this, name);
 	}
-	public KiiTopicsResource topics() {
-		return new KiiTopicsResource(this);
-	}
 	public KiiTopicResource topics(String name) {
-		return new KiiTopicResource(this.topics(), name);
+		return new KiiTopicResource(this, name);
 	}
 	@Override
 	public String getPath() {

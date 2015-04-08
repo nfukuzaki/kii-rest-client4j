@@ -1,5 +1,9 @@
 package com.kii.cloud.model;
 
-public class KiiPushMessage {
+import com.google.gson.JsonObject;
 
+public class KiiPushMessage {
+	public JsonObject toJson() {
+		return null;
+	}
 }

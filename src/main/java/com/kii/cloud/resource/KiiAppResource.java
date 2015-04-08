@@ -47,11 +47,8 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiEncryptedBucketResource encryptedBuckets(String name) {
 		return new KiiEncryptedBucketResource(this, name);
 	}
-	public KiiTopicsResource topics() {
-		return new KiiTopicsResource(this);
-	}
 	public KiiTopicResource topics(String name) {
-		return new KiiTopicResource(this.topics(), name);
+		return new KiiTopicResource(this, name);
 	}
 	public KiiServerCodeResource servercode() {
 		return new KiiServerCodeResource(this);

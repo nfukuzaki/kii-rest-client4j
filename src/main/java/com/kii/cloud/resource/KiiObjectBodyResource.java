@@ -42,7 +42,6 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.HEAD, headers);
 		try {
 			Response response = this.execute(request);
-			this.parseResponse(request, response);
 			return response.isSuccessful();
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
