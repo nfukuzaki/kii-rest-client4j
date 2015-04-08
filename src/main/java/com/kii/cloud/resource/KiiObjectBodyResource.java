@@ -143,7 +143,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		headers.put("Content-Range", "bytes=" + context.getUploadedSize() +
 				"-" + (context.getUploadedSize() + chunk.length - 1) +
 				"/" + context.getDataSize());
-		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/" + context.getUploadID() + "/data"), Method.PUT, headers, context.getContentType(), chunk);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/%s/data", context.getUploadID()), Method.PUT, headers, context.getContentType(), chunk);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
@@ -160,7 +160,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 */
 	public void commitChunkedUpload(KiiChunkedUploadContext context) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/" + context.getUploadID() + "/status/committed"), Method.POST, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/%s/status/committed", context.getUploadID()), Method.POST, headers);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
@@ -175,7 +175,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 */
 	public void cancelChunkedUpload(KiiChunkedUploadContext context) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/" + context.getUploadID() + "/status/cancelled"), Method.POST, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/%s/status/cancelled", context.getUploadID()), Method.POST, headers);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);

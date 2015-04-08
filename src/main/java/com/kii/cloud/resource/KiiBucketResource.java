@@ -113,8 +113,8 @@ public class KiiBucketResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
-	public KiiAclResource acl() {
-		return new KiiAclResource(this);
+	public KiiBucketAclResource acl() {
+		return new KiiBucketAclResource(this);
 	}
 	public KiiObjectsResource objects() {
 		return new KiiObjectsResource(this);

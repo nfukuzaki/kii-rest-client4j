@@ -150,8 +150,8 @@ public class KiiTopicResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
-	public KiiAclResource acl() {
-		return new KiiAclResource(this);
+	public KiiTopicAclResource acl() {
+		return new KiiTopicAclResource(this);
 	}
 	@Override
 	public String getPath() {

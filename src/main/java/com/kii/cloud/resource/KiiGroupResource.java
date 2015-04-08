@@ -19,6 +19,9 @@ public class KiiGroupResource extends KiiRestSubResource {
 		super(parent);
 		this.groupID = groupID;
 	}
+	public KiiScopeAclResource acl() {
+		return new KiiScopeAclResource(this);
+	}
 	public KiiGroupMembersResource members() {
 		return new KiiGroupMembersResource(this);
 	}

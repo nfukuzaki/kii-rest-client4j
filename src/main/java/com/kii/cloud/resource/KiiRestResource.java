@@ -9,6 +9,7 @@ import java.util.Map;
 
 import okio.BufferedSink;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kii.cloud.KiiRestException;
@@ -46,6 +47,9 @@ public abstract class KiiRestResource {
 	}
 	public String getUrl(String path) {
 		return this.buildUrl(path);
+	}
+	public String getUrl(String pathFormat, Object... args) {
+		return this.buildUrl(String.format(pathFormat, args));
 	}
 	private String buildUrl(String path) {
 		String url = buildUrl("", this);
@@ -190,6 +194,31 @@ public abstract class KiiRestResource {
 				return null;
 			}
 			return (JsonObject)new JsonParser().parse(body);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	protected JsonArray parseResponseAsJsonArray(KiiRestRequest request, Response response) throws KiiRestException {
+		try {
+			String body = response.body().string();
+			if (!response.isSuccessful()) {
+				JsonObject errorDetail = null;
+				try {
+					errorDetail = (JsonObject)new JsonParser().parse(body);
+				} catch (Exception ignore) {
+				}
+				System.out.println(request.getCurl() + "  : " + response.code());
+				logHeader(response);
+				System.out.println(body);
+				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+			}
+			System.out.println(request.getCurl() + "  : " + response.code());
+			logHeader(response);
+			System.out.println(body);
+			if (StringUtils.isEmpty(body)) {
+				return null;
+			}
+			return (JsonArray)new JsonParser().parse(body);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

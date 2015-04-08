@@ -50,6 +50,9 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiTopicResource topics(String name) {
 		return new KiiTopicResource(this, name);
 	}
+	public KiiScopeAclResource acl() {
+		return new KiiScopeAclResource(this);
+	}
 	public KiiServerCodeResource servercode() {
 		return new KiiServerCodeResource(this);
 	}

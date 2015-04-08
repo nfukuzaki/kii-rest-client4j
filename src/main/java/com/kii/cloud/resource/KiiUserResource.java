@@ -29,6 +29,11 @@ public class KiiUserResource extends KiiRestSubResource {
 		super(parent);
 		this.identifier = identifier;
 	}
+	
+	public KiiScopeAclResource acl() {
+		return new KiiScopeAclResource(this);
+	}
+	
 	/**
 	 * @return
 	 * @throws KiiRestException

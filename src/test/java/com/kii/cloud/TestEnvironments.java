@@ -8,6 +8,8 @@ public class TestEnvironments {
 	public static final TestApp US1 = new TestApp("kii-rest-client4j-test-us-1", "9a30c24b", "eaaf7c57316124a29a564943d7c11ea8", KiiRest.Site.US);
 	public static final TestApp SG1 = new TestApp("kii-rest-client4j-test-sg-1", "3f22addf", "7fac180c653b2fda0724fa5b7c888fdb", KiiRest.Site.SG);
 	public static final TestApp CN1 = new TestApp("kii-rest-client4j-test-cn-1", "1c3c0e50", "e1544a070cc0089d2885a03ea3d38dfb", KiiRest.Site.CN);
+	// TODO: Needs to set APP_ID, APP_KEY, CLIENT_ID and CLIENT_SECRET if you want to test the Admin feature
+	public static final TestApp ADMIN = new TestApp("kii-rest-client4j-test-admin", "{APP_ID}", "{APP_KEY}", "{CLIENT_ID}", "{CLIENT_SECRET}", KiiRest.Site.US);
 	
 	public static final TestApp[] ALL = {JP1, US1, SG1, CN1};
 	public static final TestApp[] JP_ALL = {JP1};

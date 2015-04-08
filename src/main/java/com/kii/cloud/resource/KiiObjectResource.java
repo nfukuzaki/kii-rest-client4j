@@ -20,8 +20,8 @@ public class KiiObjectResource extends KiiRestSubResource {
 	public KiiObjectBodyResource body() {
 		return new KiiObjectBodyResource(this);
 	}
-	public KiiAclResource acl() {
-		return new KiiAclResource(this);
+	public KiiObjectAclResource acl() {
+		return new KiiObjectAclResource(this);
 	}
 	/**
 	 * NOTE:This feature has not documented yet.

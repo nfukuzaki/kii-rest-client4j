@@ -8,6 +8,9 @@ import com.google.gson.JsonParser;
 
 public class GsonUtils {
 	public static JsonObject clone(JsonObject json) {
+		if (json == null) {
+			return null;
+		}
 		JsonObject result = (JsonObject)new JsonParser().parse(json.toString());
 		return result;
 	}
