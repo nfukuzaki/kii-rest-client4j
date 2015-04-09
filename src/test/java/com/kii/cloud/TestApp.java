@@ -1,26 +1,49 @@
 package com.kii.cloud;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.kii.cloud.KiiRest.Site;
+import com.kii.cloud.util.GsonUtils;
+
 public class TestApp {
-	public final String AppName;
-	public final String AppID;
-	public final String AppKey;
-	public final String ClientID;
-	public final String ClientSecret;
-	public final KiiRest.Site Site;
-	public TestApp(String appName, String appID, String appKey, KiiRest.Site site) {
-		this.AppName = appName;
-		this.AppID = appID;
-		this.AppKey = appKey;
-		this.ClientID = null;
-		this.ClientSecret = null;
-		this.Site = site;
+	private final JsonObject json;
+	public TestApp(JsonObject json) {
+		this.json = json;
 	}
-	public TestApp(String appName, String appID, String appKey, String clientID, String clientSecret, KiiRest.Site site) {
-		this.AppName = appName;
-		this.AppID = appID;
-		this.AppKey = appKey;
-		this.ClientID = clientID;
-		this.ClientSecret = clientSecret;
-		this.Site = site;
+	public String getAppID() {
+		return GsonUtils.getString(this.json, "AppID");
+	}
+	public String getAppKey() {
+		return GsonUtils.getString(this.json, "AppKey");
+	}
+	public Site getSite() {
+		return Enum.valueOf(Site.class, GsonUtils.getString(this.json, "Site"));
+	}
+	public String getClientID() {
+		return GsonUtils.getString(this.json, "ClientID");
+	}
+	public String getClientSecret() {
+		return GsonUtils.getString(this.json, "ClientSecret");
+	}
+	public boolean getFlag(String name) {
+		return GsonUtils.getBoolean(this.json, name);
+	}
+	public boolean isEnabledPush(String name) {
+		JsonArray array = GsonUtils.getJsonArray(this.json, "PushEnabled");
+		for (int i = 0; i < array.size(); i++) {
+			if (GsonUtils.getBoolean(array.get(i).getAsJsonObject(), name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean isEnabledSNS(String name) {
+		JsonArray array = GsonUtils.getJsonArray(this.json, "SNSEnabled");
+		for (int i = 0; i < array.size(); i++) {
+			if (GsonUtils.getBoolean(array.get(i).getAsJsonObject(), name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

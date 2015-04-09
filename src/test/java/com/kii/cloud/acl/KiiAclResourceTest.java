@@ -13,7 +13,7 @@ public class KiiAclResourceTest {
 	@Test
 	public void bucketAclTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
-		KiiRest rest = new KiiRest(testApp.AppID, testApp.AppKey, testApp.Site);
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
 		user = rest.api().users().register(user, "password");
@@ -36,14 +36,14 @@ public class KiiAclResourceTest {
 	@Test
 	public void objectAclTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
-		KiiRest rest = new KiiRest(testApp.AppID, testApp.AppKey, testApp.Site);
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		
 	}
 	@Test
 	public void topicAclTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
-		KiiRest rest = new KiiRest(testApp.AppID, testApp.AppKey, testApp.Site);
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		
 	}

@@ -1,0 +1,126 @@
+[
+    {
+        "AppID"            : "9a15048a",
+        "AppKey"           : "b16f770032fdef36677ed39b0457c867",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "JP",
+        "Endpoint"         : null,
+        "RefreshToken"     : false,
+        "EmailVerification": false,
+        "PhoneVerification": false,
+        "Privacy"          : false,
+        "EncryptEnabled"   : false,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"   : false},
+            {"Yahoo"    : false},
+            {"Twitter"  : false},
+            {"Facebook" : false},
+            {"Live"     : false},
+            {"LinkedIn" : false},
+            {"DropBox"  : false},
+            {"Box"      : false},
+            {"RenRen"   : false},
+            {"Sina"     : false},
+            {"QQ"       : false}
+        ]
+    },
+    {
+        "AppID"            : "9a30c24b",
+        "AppKey"           : "eaaf7c57316124a29a564943d7c11ea8",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "US",
+        "Endpoint"         : null,
+        "RefreshToken"     : false,
+        "EmailVerification": false,
+        "PhoneVerification": false,
+        "Privacy"          : false,
+        "EncryptEnabled"   : false,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"   : false},
+            {"Yahoo"    : false},
+            {"Twitter"  : false},
+            {"Facebook" : false},
+            {"Live"     : false},
+            {"LinkedIn" : false},
+            {"DropBox"  : false},
+            {"Box"      : false},
+            {"RenRen"   : false},
+            {"Sina"     : false},
+            {"QQ"       : false}
+        ]
+    },
+    {
+        "AppID"            : "3f22addf",
+        "AppKey"           : "7fac180c653b2fda0724fa5b7c888fdb",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "SG",
+        "Endpoint"         : null,
+        "RefreshToken"     : false,
+        "EmailVerification": false,
+        "PhoneVerification": false,
+        "Privacy"          : false,
+        "EncryptEnabled"   : false,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"   : false},
+            {"Yahoo"    : false},
+            {"Twitter"  : false},
+            {"Facebook" : false},
+            {"Live"     : false},
+            {"LinkedIn" : false},
+            {"DropBox"  : false},
+            {"Box"      : false},
+            {"RenRen"   : false},
+            {"Sina"     : false},
+            {"QQ"       : false}
+        ]
+    },
+    {
+        "AppID"            : "1c3c0e50",
+        "AppKey"           : "e1544a070cc0089d2885a03ea3d38dfb",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "CN",
+        "Endpoint"         : null,
+        "RefreshToken"     : false,
+        "EmailVerification": false,
+        "PhoneVerification": false,
+        "Privacy"          : false,
+        "EncryptEnabled"   : false,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"   : false},
+            {"Yahoo"    : false},
+            {"Twitter"  : false},
+            {"Facebook" : false},
+            {"Live"     : false},
+            {"LinkedIn" : false},
+            {"DropBox"  : false},
+            {"Box"      : false},
+            {"RenRen"   : false},
+            {"Sina"     : false},
+            {"QQ"       : false}
+        ]
+    }
+]

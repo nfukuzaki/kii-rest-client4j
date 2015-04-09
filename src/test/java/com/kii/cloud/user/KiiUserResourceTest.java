@@ -21,7 +21,7 @@ public class KiiUserResourceTest {
 	@Test
 	public void normalUserTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
-		KiiRest rest = new KiiRest(testApp.AppID, testApp.AppKey, testApp.Site);
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		String currentTime = String.valueOf(System.currentTimeMillis());
 		String username = "test-" + currentTime;
@@ -68,7 +68,7 @@ public class KiiUserResourceTest {
 	@Test
 	public void pseudoUserTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
-		KiiRest rest = new KiiRest(testApp.AppID, testApp.AppKey, testApp.Site);
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		String currentTime = String.valueOf(System.currentTimeMillis());
 		String username = "test-" + currentTime;

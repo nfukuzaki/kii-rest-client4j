@@ -1,45 +1,57 @@
 package com.kii.cloud;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
+/**
+ * test/resources/test_config.json
+ */
 public class TestEnvironments {
 	
-	public static final TestApp JP1 = new TestApp("kii-rest-client4j-test-jp-1", "9a15048a", "b16f770032fdef36677ed39b0457c867", KiiRest.Site.JP);
-	public static final TestApp US1 = new TestApp("kii-rest-client4j-test-us-1", "9a30c24b", "eaaf7c57316124a29a564943d7c11ea8", KiiRest.Site.US);
-	public static final TestApp SG1 = new TestApp("kii-rest-client4j-test-sg-1", "3f22addf", "7fac180c653b2fda0724fa5b7c888fdb", KiiRest.Site.SG);
-	public static final TestApp CN1 = new TestApp("kii-rest-client4j-test-cn-1", "1c3c0e50", "e1544a070cc0089d2885a03ea3d38dfb", KiiRest.Site.CN);
-	// TODO: Needs to set APP_ID, APP_KEY, CLIENT_ID and CLIENT_SECRET if you want to test the Admin feature
-	public static final TestApp ADMIN = new TestApp("kii-rest-client4j-test-admin", "{APP_ID}", "{APP_KEY}", "{CLIENT_ID}", "{CLIENT_SECRET}", KiiRest.Site.US);
+	public static final List<TestApp> TEST_APPS = new ArrayList<TestApp>();
 	
-	public static final TestApp[] ALL = {JP1, US1, SG1, CN1};
-	public static final TestApp[] JP_ALL = {JP1};
-	public static final TestApp[] US_ALL = {US1};
-	public static final TestApp[] SG_ALL = {SG1};
-	public static final TestApp[] CN_ALL = {CN1};
-	
+	static {
+		try {
+			InputStream is = ClassLoader.getSystemResourceAsStream("test_config.json");
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+			JsonArray apps = (JsonArray)new JsonParser().parse(sb.toString());
+			for (int i = 0; i < apps.size(); i++) {
+				TEST_APPS.add(new TestApp(apps.get(i).getAsJsonObject()));
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("failed to parse test_config.json", e);
+		}
+	}
 	public static TestApp random() {
 		Random random = new Random(System.currentTimeMillis());
-		int index = random.nextInt(ALL.length);
-		return ALL[index];
+		int index = random.nextInt(TEST_APPS.size());
+		return TEST_APPS.get(index);
 	}
-	public static TestApp randomJP() {
+	public static TestApp random(TestAppFilter filter) {
+		List<TestApp> acceptedApps = new ArrayList<TestApp>();
+		for (TestApp app : TEST_APPS) {
+			if (filter.accept(app)) {
+				acceptedApps.add(app);
+			}
+		}
+		if (acceptedApps.size() == 0) {
+			throw new RuntimeException("There is no app that match the filter.");
+		}
 		Random random = new Random(System.currentTimeMillis());
-		int index = random.nextInt(JP_ALL.length);
-		return JP_ALL[index];
-	}
-	public static TestApp randomUS() {
-		Random random = new Random(System.currentTimeMillis());
-		int index = random.nextInt(US_ALL.length);
-		return US_ALL[index];
-	}
-	public static TestApp randomSG() {
-		Random random = new Random(System.currentTimeMillis());
-		int index = random.nextInt(SG_ALL.length);
-		return SG_ALL[index];
-	}
-	public static TestApp randomCN() {
-		Random random = new Random(System.currentTimeMillis());
-		int index = random.nextInt(CN_ALL.length);
-		return CN_ALL[index];
+		int index = random.nextInt(acceptedApps.size());
+		return acceptedApps.get(index);
 	}
 }

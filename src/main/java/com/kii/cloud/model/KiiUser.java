@@ -35,6 +35,8 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public static final KiiJsonProperty PROPERTY_HAS_PASSWORD = new KiiJsonProperty("_hasPassword");
 	public static final KiiJsonProperty PROPERTY_DISABLED = new KiiJsonProperty("_disabled");
 	
+	public static final String ME = "me";
+	
 	protected final JsonObject credentials = new JsonObject();
 	
 	public KiiUser() {
