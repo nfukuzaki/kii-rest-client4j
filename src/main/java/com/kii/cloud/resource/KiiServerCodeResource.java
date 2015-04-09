@@ -12,6 +12,11 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 		super(parent);
 		this.version = version;
 	}
+	/**
+	 * @param endpoint
+	 * @param args
+	 * @see http://documentation.kii.com/en/guides/serverextension/executing_servercode/manual_execution/
+	 */
 	public void execute(String endpoint, JsonObject args) {
 		
 	}
