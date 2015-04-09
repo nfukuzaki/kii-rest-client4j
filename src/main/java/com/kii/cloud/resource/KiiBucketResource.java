@@ -130,6 +130,54 @@ public class KiiBucketResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	
+	
+	/**
+	 * @param userID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
+	 */
+	public void subscribe(String userID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/filters/all/push/subscriptions/users/" + userID), Method.PUT, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @param userID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
+	 */
+	public void unsubscribe(String userID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/filters/all/push/subscriptions/users/" + userID), Method.DELETE, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @param userID
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
+	 */
+	public boolean isSubscribed(String userID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/filters/all/push/subscriptions/users/" + userID), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			return response.isSuccessful();
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
 	public KiiBucketAclResource acl() {
 		return new KiiBucketAclResource(this);
 	}
