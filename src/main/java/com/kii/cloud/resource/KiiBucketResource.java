@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.model.KiiBucket;
 import com.kii.cloud.model.KiiCountingQuery;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.model.KiiQuery;
@@ -52,6 +53,22 @@ public class KiiBucketResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * 
+	 * NOTE:This feature has not documented yet.
+	 * @throws KiiRestException
+	 */
+	public KiiBucket get() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return new KiiBucket(responseBody);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

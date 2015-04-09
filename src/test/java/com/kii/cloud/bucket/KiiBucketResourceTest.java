@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.kii.cloud.KiiRest;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
+import com.kii.cloud.model.KiiBucket;
 import com.kii.cloud.model.KiiClause;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiObject;
@@ -31,6 +32,10 @@ public class KiiBucketResourceTest {
 		// creating bucket
 		String appBucketName = "app_bucket" + System.currentTimeMillis();
 		rest.api().buckets(appBucketName).create();
+		
+		KiiBucket bucket = rest.api().buckets(appBucketName).get();
+		assertEquals("rw", bucket.getBucketType());
+		assertEquals(0, bucket.getSize());
 		
 		// creating objects
 		KiiObjectsResource objectsResource = rest.api().buckets(appBucketName).objects();
