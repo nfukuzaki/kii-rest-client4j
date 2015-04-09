@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiGroup;
+import com.kii.cloud.model.KiiThing;
 import com.kii.cloud.model.KiiUser;
 
 public class KiiAppResource extends KiiRestResource {
@@ -31,6 +32,15 @@ public class KiiAppResource extends KiiRestResource {
 	}
 	public KiiUserResource users(KiiUser user) {
 		return new KiiUserResource(this.users(), user.getUserID());
+	}
+	public KiiThingsResource things() {
+		return new KiiThingsResource(this);
+	}
+	public KiiThingResource things(KiiThing thing) {
+		return new KiiThingResource(this.things(), thing.getIdentifier());
+	}
+	public KiiThingResource things(String identifier) {
+		return new KiiThingResource(this.things(), identifier);
 	}
 	public KiiGroupsResource groups() {
 		return new KiiGroupsResource(this);

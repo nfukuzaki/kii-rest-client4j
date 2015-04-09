@@ -51,7 +51,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	}
 	@Override
 	public String getAccessToken() {
-		return PROPERTY_ACCESS_TOKEN.getString(credentials);
+		return PROPERTY_ACCESS_TOKEN.getString(this.credentials);
 	}
 	public KiiUser setAccessToken(String accessToken) {
 		credentials.addProperty(PROPERTY_ACCESS_TOKEN.getName(), accessToken);
@@ -59,7 +59,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	}
 	@Override
 	public String getRefreshToken() {
-		return PROPERTY_REFRESH_TOKEN.getString(credentials);
+		return PROPERTY_REFRESH_TOKEN.getString(this.credentials);
 	}
 	public KiiUser setRefreshToken(String refreshToken) {
 		credentials.addProperty(PROPERTY_REFRESH_TOKEN.getName(), refreshToken);

@@ -22,6 +22,12 @@ public class SkipAcceptableTestRunner extends BlockJUnit4ClassRunner {
 			overridedRunLeaf(methodBlock(method), description, notifier);
 		}
 	}
+	/**
+	 * @param statement
+	 * @param description
+	 * @param notifier
+	 * @see org.junit.runners.BlockJUnit4ClassRunner#runLeaf(Statement, Description, RunNotifier)
+	 */
 	private void overridedRunLeaf(Statement statement, Description description, RunNotifier notifier) {
 		EachTestNotifier eachNotifier = new EachTestNotifier(notifier, description);
 		eachNotifier.fireTestStarted();
