@@ -7,8 +7,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.kii.cloud.KiiRest;
+import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiChunkedDownloadContext;
@@ -17,6 +19,7 @@ import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.resource.KiiObjectBodyResource;
 
+@RunWith(SkipAcceptableTestRunner.class)
 public class KiiObjectBodyResourceTest {
 	@Test
 	public void normalTransferTest() throws Exception {

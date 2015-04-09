@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.kii.cloud.KiiRest;
+import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiGroup;
@@ -13,6 +15,7 @@ import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiObject;
 
 
+@RunWith(SkipAcceptableTestRunner.class)
 public class KiiObjectResourceTest {
 	@Test
 	public void appScopeTest() throws Exception {

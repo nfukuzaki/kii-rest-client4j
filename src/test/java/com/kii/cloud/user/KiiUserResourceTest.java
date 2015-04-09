@@ -4,9 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.kii.cloud.KiiRest;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.TestUtils;
@@ -16,6 +18,7 @@ import com.kii.cloud.model.KiiUser;
 import com.kii.cloud.model.KiiUserCredentials;
 import com.kii.cloud.resource.KiiUserResource.NotificationMethod;
 
+@RunWith(SkipAcceptableTestRunner.class)
 public class KiiUserResourceTest {
 	
 	@Test

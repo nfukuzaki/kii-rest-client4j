@@ -35,12 +35,15 @@ public class TestEnvironments {
 			throw new RuntimeException("failed to parse test_config.json", e);
 		}
 	}
-	public static TestApp random() {
+	public static TestApp random() throws TestAppNotFoundException {
+		if (TEST_APPS.size() == 0) {
+			throw new TestAppNotFoundException("There is no app for test.");
+		}
 		Random random = new Random(System.currentTimeMillis());
 		int index = random.nextInt(TEST_APPS.size());
 		return TEST_APPS.get(index);
 	}
-	public static TestApp random(TestAppFilter filter) {
+	public static TestApp random(TestAppFilter filter) throws TestAppNotFoundException {
 		List<TestApp> acceptedApps = new ArrayList<TestApp>();
 		for (TestApp app : TEST_APPS) {
 			if (filter.accept(app)) {
@@ -48,7 +51,7 @@ public class TestEnvironments {
 			}
 		}
 		if (acceptedApps.size() == 0) {
-			throw new RuntimeException("There is no app that match the filter.");
+			throw new TestAppNotFoundException("There is no app that match the filter.");
 		}
 		Random random = new Random(System.currentTimeMillis());
 		int index = random.nextInt(acceptedApps.size());

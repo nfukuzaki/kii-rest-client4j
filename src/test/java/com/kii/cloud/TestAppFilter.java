@@ -26,7 +26,7 @@ public class TestAppFilter {
 	private boolean enableRenRen = false;
 	private boolean enableSina = false;
 	private boolean enableQQ = false;
-
+	
 	public TestAppFilter site(Site site) {
 		this.site = site;
 		return this;

@@ -1,14 +1,17 @@
 package com.kii.cloud.acl;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.kii.cloud.KiiRest;
+import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiAcl.BucketAction;
 import com.kii.cloud.model.KiiAcl.Subject;
 import com.kii.cloud.model.KiiNormalUser;
 
+@RunWith(SkipAcceptableTestRunner.class)
 public class KiiAclResourceTest {
 	@Test
 	public void bucketAclTest() throws Exception {

@@ -4,13 +4,16 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.kii.cloud.KiiRest;
+import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiGroup;
 import com.kii.cloud.model.KiiNormalUser;
 
+@RunWith(SkipAcceptableTestRunner.class)
 public class KiiTopicResourceTest {
 	@Test
 	public void userScopeTest() throws Exception {

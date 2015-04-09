@@ -7,8 +7,10 @@ import static org.junit.Assert.assertFalse;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.kii.cloud.KiiRest;
+import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiBucket;
@@ -19,6 +21,7 @@ import com.kii.cloud.model.KiiQuery;
 import com.kii.cloud.model.KiiQueryResult;
 import com.kii.cloud.resource.KiiObjectsResource;
 
+@RunWith(SkipAcceptableTestRunner.class)
 public class KiiBucketResourceTest {
 	@Test
 	public void test() throws Exception {

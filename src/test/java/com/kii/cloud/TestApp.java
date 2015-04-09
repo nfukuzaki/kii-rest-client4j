@@ -31,7 +31,7 @@ public class TestApp {
 	public boolean isEnabledPush(String name) {
 		JsonArray array = GsonUtils.getJsonArray(this.json, "PushEnabled");
 		for (int i = 0; i < array.size(); i++) {
-			if (GsonUtils.getBoolean(array.get(i).getAsJsonObject(), name)) {
+			if (GsonUtils.getBoolean(array.get(i).getAsJsonObject(), name) == Boolean.TRUE) {
 				return true;
 			}
 		}
@@ -40,7 +40,7 @@ public class TestApp {
 	public boolean isEnabledSNS(String name) {
 		JsonArray array = GsonUtils.getJsonArray(this.json, "SNSEnabled");
 		for (int i = 0; i < array.size(); i++) {
-			if (GsonUtils.getBoolean(array.get(i).getAsJsonObject(), name)) {
+			if (GsonUtils.getBoolean(array.get(i).getAsJsonObject(), name) == Boolean.TRUE) {
 				return true;
 			}
 		}
