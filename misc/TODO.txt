@@ -1,5 +1,3 @@
-Thing
-Push
 ServerCode
 Analytics
 ABTest

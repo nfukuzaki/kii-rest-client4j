@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiGroup;
+import com.kii.cloud.model.KiiPushInstallation.InstallationType;
 import com.kii.cloud.model.KiiThing;
 import com.kii.cloud.model.KiiUser;
 
@@ -65,6 +66,15 @@ public class KiiAppResource extends KiiRestResource {
 	}
 	public KiiScopeAclResource acl() {
 		return new KiiScopeAclResource(this);
+	}
+	public KiiPushInstallationsResource installations() {
+		return new KiiPushInstallationsResource(this);
+	}
+	public KiiPushInstallationResource installations(String installationID) {
+		return new KiiPushInstallationResource(this.installations(), installationID);
+	}
+	public KiiPushInstallationResource installations(InstallationType installationType, String installationRegistrationID) {
+		return new KiiPushInstallationResource(this.installations(), installationType, installationRegistrationID);
 	}
 	public KiiServerCodeResource servercode() {
 		return new KiiServerCodeResource(this);
