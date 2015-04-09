@@ -1,8 +1,19 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
+import java.util.Map;
+
+import com.google.gson.JsonObject;
+import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.KiiThing;
+import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
 
 public class KiiThingResource extends KiiRestSubResource {
+	
+	public static final MediaType MEDIA_TYPE_THING_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.ThingUpdateRequest+json");
+	public static final MediaType MEDIA_TYPE_THING_STATUS_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.ThingStatusUpdateRequest+json");
 	
 	private final String thingID;
 	private final String vendorThingID;
@@ -19,6 +30,93 @@ public class KiiThingResource extends KiiRestSubResource {
 	}
 	public KiiScopeAclResource acl() {
 		return new KiiScopeAclResource(this);
+	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
+	 */
+	public boolean exists() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.HEAD, headers);
+		try {
+			Response response = this.execute(request);
+			return response.isSuccessful();
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
+	 */
+	public KiiThing get() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return new KiiThing(responseBody);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @param thing
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
+	 */
+	public void update(KiiThing thing) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		headers.put("X-HTTP-Method-Override", "PATCH");
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_THING_UPDATE_REQUEST, thing.getJsonObject());
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
+	 */
+	public void enable() throws KiiRestException {
+		this.changeStatus(false);
+	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
+	 */
+	public void disable() throws KiiRestException {
+		this.changeStatus(true);
+	}
+	private void changeStatus(boolean disabled) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("disabled", disabled);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MEDIA_TYPE_THING_STATUS_UPDATE_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
+	 */
+	public void delete() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	
 	@Override

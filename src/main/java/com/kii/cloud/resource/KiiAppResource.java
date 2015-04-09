@@ -24,6 +24,9 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiOAuthResource oauth() {
 		return new KiiOAuthResource(this);
 	}
+	public KiiAppConfigurationResource configuration() {
+		return new KiiAppConfigurationResource(this);
+	}
 	public KiiUsersResource users() {
 		return new KiiUsersResource(this);
 	}
