@@ -55,8 +55,13 @@ public class KiiAcl {
 		SEND_MESSAGE_TO_TOPIC
 	}
 	public static class Subject {
-		public static final Subject ANONYMOUS_USER = new Subject("UserID", "ANONYMOUS_USER");
-		public static final Subject ANY_AUTHENTICATED_USER = new Subject("UserID", "ANY_AUTHENTICATED_USER");
+		public static final String PREFIX_USER_ID = "UserID";
+		public static final String PREFIX_GROUP_ID = "GroupID";
+		public static final String PREFIX_THING_ID = "ThingID";
+		public static final String ANONYMOUS_USER_ID = "ANONYMOUS_USER";
+		public static final String ANY_AUTHENTICATED_USER_ID = "ANY_AUTHENTICATED_USER";
+		public static final Subject ANONYMOUS_USER = new Subject("UserID", ANONYMOUS_USER_ID);
+		public static final Subject ANY_AUTHENTICATED_USER = new Subject("UserID", ANY_AUTHENTICATED_USER_ID);
 		private final String prefix;
 		private final String identifier;
 		private Subject(String prefix, String identifier) {
@@ -64,13 +69,19 @@ public class KiiAcl {
 			this.identifier = identifier;
 		}
 		public static Subject user(String userID) {
-			return new Subject("UserID", userID);
+			if (ANONYMOUS_USER_ID.equals(userID)) {
+				return ANONYMOUS_USER;
+			}
+			if (ANY_AUTHENTICATED_USER_ID.equals(userID)) {
+				return ANY_AUTHENTICATED_USER;
+			}
+			return new Subject(PREFIX_USER_ID, userID);
 		}
 		public static Subject group(String groupID) {
-			return new Subject("GroupID", groupID);
+			return new Subject(PREFIX_GROUP_ID, groupID);
 		}
 		public static Subject thing(String thingID) {
-			return new Subject("ThingID", thingID);
+			return new Subject(PREFIX_THING_ID, thingID);
 		}
 		public static Subject fromJson(JsonObject json) {
 			Set<Entry<String, JsonElement>> entrySet = json.entrySet();
@@ -78,7 +89,27 @@ public class KiiAcl {
 				throw new IllegalArgumentException(json + " is not subject");
 			}
 			Entry<String, JsonElement> entry = entrySet.iterator().next();
+			if (PREFIX_USER_ID.equals(StringUtils.capitalize(entry.getKey()))) {
+				if (ANONYMOUS_USER_ID.equals(entry.getValue().toString())) {
+					return ANONYMOUS_USER;
+				}
+				if (ANY_AUTHENTICATED_USER_ID.equals(entry.getValue().toString())) {
+					return ANY_AUTHENTICATED_USER;
+				}
+			}
 			return new Subject(entry.getKey(), entry.getValue().toString());
+		}
+		public boolean isUser() {
+			return this.prefix.equals(PREFIX_USER_ID);
+		}
+		public boolean isGroup() {
+			return this.prefix.equals(PREFIX_GROUP_ID);
+		}
+		public boolean isThing() {
+			return this.prefix.equals(PREFIX_THING_ID);
+		}
+		public String getID() {
+			return this.identifier;
 		}
 		public String toString() {
 			return this.prefix + ":" + this.identifier;
