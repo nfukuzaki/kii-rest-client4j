@@ -1,10 +1,22 @@
 package com.kii.cloud.resource;
 
+import java.io.IOException;
+import java.util.Map;
+
+import com.google.gson.JsonObject;
+import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AnonymousAPI;
+import com.kii.cloud.model.KiiAnalyticsQuery;
+import com.kii.cloud.model.KiiAnalyticsResult;
+import com.kii.cloud.model.KiiAnalyticsResult.ResultType;
+import com.kii.cloud.model.KiiGroupedAnalyticsResult;
+import com.kii.cloud.model.KiiTabularAnalyticsResult;
+import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.squareup.okhttp.Response;
+
 public class KiiAnalyticsResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/analytics";
-	public static final String CONTENT_TYPE_TABULAR_ANALYTIC_RESULT = "application/vnd.kii.TabularAnalyticResult+json";
-	public static final String CONTENT_TYPE_GROUPED_ANALYTIC_RESULT = "application/vnd.kii.GroupedAnalyticResult+json";
 	
 	
 	private final String aggregationRuleID;
@@ -13,11 +25,22 @@ public class KiiAnalyticsResource extends KiiRestSubResource {
 		super(parent);
 		this.aggregationRuleID = aggregationRuleID;
 	}
-	
-	
-	
-	
-	
+	@AnonymousAPI
+	public KiiAnalyticsResult getResult(KiiAnalyticsQuery query) throws KiiRestException {
+		Map<String, String> headers = this.newAppHeaders();
+		headers.put("Accept", query.getResultType().getContentType());
+		KiiRestRequest request = new KiiRestRequest(getUrl("/data"), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			if (query.getResultType() == ResultType.GroupedResult) {
+				return new KiiGroupedAnalyticsResult(responseBody);
+			}
+			return new KiiTabularAnalyticsResult(responseBody);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
 	@Override
 	public String getPath() {
 		return BASE_PATH + "/" + this.aggregationRuleID;
