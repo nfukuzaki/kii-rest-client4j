@@ -137,6 +137,9 @@ public abstract class KiiRestResource {
 		if (entity instanceof JsonObject) {
 			return RequestBody.create(contentType, ((JsonObject)entity).toString());
 		}
+		if (entity instanceof JsonArray) {
+			return RequestBody.create(contentType, ((JsonArray)entity).toString());
+		}
 		if (entity instanceof InputStream) {
 			return new RequestBody() {
 				@Override

@@ -82,6 +82,12 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiServerCodeResource servercode(String version) {
 		return new KiiServerCodeResource(this, version);
 	}
+	public KiiEventsResource events() {
+		return new KiiEventsResource(this);
+	}
+	public KiiAnalyticsResource analytics() {
+		return new KiiAnalyticsResource(this);
+	}
 	@Override
 	public String getPath() {
 		return this.endpoint + BASE_PATH + "/" + this.appID;
