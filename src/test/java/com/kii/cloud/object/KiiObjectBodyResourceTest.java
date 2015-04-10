@@ -1,15 +1,18 @@
 package com.kii.cloud.object;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.kii.cloud.KiiRest;
+import com.kii.cloud.OkHttpClientFactory;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
@@ -18,6 +21,9 @@ import com.kii.cloud.model.KiiChunkedUploadContext;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.resource.KiiObjectBodyResource;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiObjectBodyResourceTest {
@@ -41,6 +47,11 @@ public class KiiObjectBodyResourceTest {
 		// uploading object body
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
 		rest.api().users(user).buckets(userBucketName).objects(object).body().upload("image/jpg", is);
+		
+		// publishing body
+		String url = rest.api().users(user).buckets(userBucketName).objects(object).body().publish();
+		assertTrue(url.startsWith("https://" + testApp.getAppID()));
+		assertArrayEquals(body, getPublishedBody(url));
 		
 		// downloading object body
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -76,6 +87,11 @@ public class KiiObjectBodyResourceTest {
 		}
 		bodyResource.commitChunkedUpload(uploadContext);
 		
+		// publishing body
+		String url = rest.api().users(user).buckets(userBucketName).objects(object).body().publish();
+		assertTrue(url.startsWith("https://" + testApp.getAppID()));
+		assertArrayEquals(body, getPublishedBody(url));
+		
 		// downloading object body by chunk
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		KiiChunkedDownloadContext downloadContext = new KiiChunkedDownloadContext(1024);
@@ -90,5 +106,11 @@ public class KiiObjectBodyResourceTest {
 			body[i] = (byte)(i % 128);
 		}
 		return body;
+	}
+	private byte[] getPublishedBody(String url) throws IOException {
+		OkHttpClient client = OkHttpClientFactory.newInstance();
+		Request request = new Request.Builder().url(url).get().build();
+		Response response = client.newCall(request).execute();
+		return response.body().bytes();
 	}
 }
