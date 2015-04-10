@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AnonymousAPI;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiPseudoUser;
 import com.kii.cloud.model.KiiUser;
@@ -144,6 +145,7 @@ public class KiiUserResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/passwords/
 	 */
+	@AnonymousAPI
 	public void resetPassword(NotificationMethod notificationMethod) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();

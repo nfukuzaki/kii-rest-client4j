@@ -85,8 +85,8 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiEventsResource events() {
 		return new KiiEventsResource(this);
 	}
-	public KiiAnalyticsResource analytics() {
-		return new KiiAnalyticsResource(this);
+	public KiiAnalyticsResource analytics(String aggregationRuleID) {
+		return new KiiAnalyticsResource(this, aggregationRuleID);
 	}
 	@Override
 	public String getPath() {

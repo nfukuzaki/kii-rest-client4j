@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AnonymousAPI;
 import com.kii.cloud.model.KiiThing;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
@@ -25,6 +26,7 @@ public class KiiThingsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
 	 */
+	@AnonymousAPI
 	public KiiThing register(KiiThing thing) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_REGISTRATION_REQUEST, thing.getJsonObject());

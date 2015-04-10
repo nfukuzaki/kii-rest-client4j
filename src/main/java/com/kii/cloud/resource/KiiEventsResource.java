@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AnonymousAPI;
 import com.kii.cloud.model.KiiEvent;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
@@ -26,6 +27,7 @@ public class KiiEventsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-analytics/flex-analytics/analyze-event-data/
 	 */
+	@AnonymousAPI
 	public void upload(KiiEvent event) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_EVENT_RECORD, event.getJsonObject());
@@ -41,6 +43,7 @@ public class KiiEventsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-analytics/flex-analytics/analyze-event-data/
 	 */
+	@AnonymousAPI
 	public void upload(List<KiiEvent> events) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonArray requestBody = new JsonArray();

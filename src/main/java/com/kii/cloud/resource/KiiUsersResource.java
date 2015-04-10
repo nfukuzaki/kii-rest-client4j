@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AnonymousAPI;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiPseudoUser;
 import com.kii.cloud.model.KiiUser;
@@ -29,6 +30,7 @@ public class KiiUsersResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-up/
 	 */
+	@AnonymousAPI
 	public KiiNormalUser register(KiiNormalUser user, String password) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = (JsonObject)new JsonParser().parse(user.toJsonString());
@@ -56,6 +58,7 @@ public class KiiUsersResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/pseudo-users/
 	 */
+	@AnonymousAPI
 	public KiiPseudoUser register(KiiPseudoUser user) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_REGISTRATION_REQUEST, user.toJsonString());

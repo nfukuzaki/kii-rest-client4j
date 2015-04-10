@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AnonymousAPI;
 import com.kii.cloud.model.KiiAdminCredentials;
 import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiUserCredentials;
@@ -34,6 +35,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
+	@AnonymousAPI
 	public KiiUserCredentials getAccessToken(String identifier, String password, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -70,6 +72,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/admin-features/
 	 */
+	@AnonymousAPI
 	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -104,6 +107,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
+	@AnonymousAPI
 	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
