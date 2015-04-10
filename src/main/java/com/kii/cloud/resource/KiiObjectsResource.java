@@ -32,7 +32,7 @@ public class KiiObjectsResource extends KiiRestSubResource {
 			Response response = this.execute(request);
 			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			String objectID = KiiObject.PROPERTY_OBJECT_ID.getString(responseBody);
+			String objectID = KiiObject.PROPERTY_OBJECT_ID.get(responseBody);
 			return object.setObjectID(objectID).setVersion(version);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);

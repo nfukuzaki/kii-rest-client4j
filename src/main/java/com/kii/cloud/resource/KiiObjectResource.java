@@ -81,7 +81,7 @@ public class KiiObjectResource extends KiiRestSubResource {
 			Response response = this.execute(request);
 			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.getLong(responseBody);
+			Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.get(responseBody);
 			object.setModifiedAt(modifiedAt).setVersion(version);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
@@ -100,7 +100,7 @@ public class KiiObjectResource extends KiiRestSubResource {
 			Response response = this.execute(request);
 			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.getLong(responseBody);
+			Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.get(responseBody);
 			object.setModifiedAt(modifiedAt).setVersion(version);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);

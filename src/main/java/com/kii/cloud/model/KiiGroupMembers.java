@@ -9,8 +9,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 public class KiiGroupMembers extends KiiJsonModel {
-	public static final KiiJsonProperty PROPERTY_MEMBERS = new KiiJsonProperty("members");
-	public static final KiiJsonProperty PROPERTY_USER_ID = new KiiJsonProperty("userID");
+	public static final KiiJsonProperty<JsonArray> PROPERTY_MEMBERS = new KiiJsonProperty<JsonArray>(JsonArray.class, "members");
+	public static final KiiJsonProperty<String> PROPERTY_USER_ID = new KiiJsonProperty<String>(String.class, "userID");
 	
 	public KiiGroupMembers() {
 	}
@@ -24,7 +24,7 @@ public class KiiGroupMembers extends KiiJsonModel {
 	public List<String> getMembers() {
 		List<String> members = new ArrayList<>();
 		if (this.json.has(PROPERTY_MEMBERS.getName())) {
-			JsonArray array = PROPERTY_MEMBERS.getJsonArray(this.json);
+			JsonArray array = PROPERTY_MEMBERS.get(this.json);
 			for (int i = 0; i < array.size(); i++) {
 				JsonElement member = array.get(i);
 				if (member.isJsonPrimitive()) {
@@ -32,7 +32,7 @@ public class KiiGroupMembers extends KiiJsonModel {
 					members.add(member.getAsString());
 				} else if (member.isJsonObject()) {
 					// members [{"userID":"UserID1"}, {"userID":"UserID2"}, ...]
-					members.add(PROPERTY_USER_ID.getString(array.get(i).getAsJsonObject()));
+					members.add(PROPERTY_USER_ID.get(array.get(i).getAsJsonObject()));
 				}
 			}
 		}
@@ -41,7 +41,7 @@ public class KiiGroupMembers extends KiiJsonModel {
 	public KiiGroupMembers addMember(String userID) {
 		JsonArray members = null;
 		if (this.json.has(PROPERTY_MEMBERS.getName())) {
-			members = PROPERTY_MEMBERS.getJsonArray(this.json);
+			members = PROPERTY_MEMBERS.get(this.json);
 		} else {
 			members = new JsonArray();
 			this.json.add(PROPERTY_MEMBERS.getName(), members);

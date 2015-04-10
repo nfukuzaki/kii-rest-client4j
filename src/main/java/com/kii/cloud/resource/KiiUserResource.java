@@ -46,7 +46,7 @@ public class KiiUserResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			if (KiiUser.PROPERTY_HAS_PASSWORD.getBoolean(responseBody)) {
+			if (KiiUser.PROPERTY_HAS_PASSWORD.get(responseBody)) {
 				return new KiiNormalUser(responseBody);
 			} else {
 				return new KiiPseudoUser(responseBody);

@@ -40,8 +40,8 @@ public class KiiUsersResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.getString(responseBody);
-			String refreshToken = KiiUser.PROPERTY_REFRESH_TOKEN.getString(responseBody);
+			String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.get(responseBody);
+			String refreshToken = KiiUser.PROPERTY_REFRESH_TOKEN.get(responseBody);
 			responseBody.remove(KiiUser.PROPERTY_ACCESS_TOKEN.getName());
 			responseBody.remove(KiiUser.PROPERTY_REFRESH_TOKEN.getName());
 			KiiNormalUser registeredUser = new KiiNormalUser(responseBody);
@@ -65,7 +65,7 @@ public class KiiUsersResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.getString(responseBody);
+			String accessToken = KiiUser.PROPERTY_ACCESS_TOKEN.get(responseBody);
 			responseBody.remove(KiiUser.PROPERTY_ACCESS_TOKEN.getName());
 			KiiPseudoUser registeredUser = new KiiPseudoUser(responseBody);
 			registeredUser.setAccessToken(accessToken);

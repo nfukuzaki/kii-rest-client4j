@@ -11,35 +11,35 @@ public class KiiNormalUser extends KiiUser {
 	}
 	
 	public String getUsername() {
-		return PROPERTY_USERNAME.getString(this.json);
+		return PROPERTY_USERNAME.get(this.json);
 	}
 	public KiiNormalUser setUsername(String username) {
 		this.json.addProperty(PROPERTY_USERNAME.getName(), username);
 		return this;
 	}
 	public String getEmail() {
-		return PROPERTY_EMAIL_ADDRESS.getString(this.json);
+		return PROPERTY_EMAIL_ADDRESS.get(this.json);
 	}
 	public KiiNormalUser setEmail(String email) {
 		this.json.addProperty(PROPERTY_EMAIL_ADDRESS.getName(), email);
 		return this;
 	}
 	public String getPhone() {
-		return PROPERTY_PHONE_NUMBER.getString(this.json);
+		return PROPERTY_PHONE_NUMBER.get(this.json);
 	}
 	public KiiNormalUser setPhone(String phone) {
 		this.json.addProperty(PROPERTY_PHONE_NUMBER.getName(), phone);
 		return this;
 	}
 	public String getCountry() {
-		return PROPERTY_COUNTRY.getString(this.json);
+		return PROPERTY_COUNTRY.get(this.json);
 	}
 	public KiiNormalUser setCountry(String country) {
 		this.json.addProperty(PROPERTY_COUNTRY.getName(), country);
 		return this;
 	}
 	public String getDisplayName() {
-		return PROPERTY_DISPLAY_NAME.getString(this.json);
+		return PROPERTY_DISPLAY_NAME.get(this.json);
 	}
 	public KiiNormalUser setDisplayName(String displayName) {
 		this.json.addProperty(PROPERTY_DISPLAY_NAME.getName(), displayName);

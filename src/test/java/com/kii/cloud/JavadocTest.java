@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -57,7 +57,7 @@ public class JavadocTest {
 				false,
 				false,
 				false);
-		List<String> seeLinks = new ArrayList<String>();
+		Set<String> seeLinks = new HashSet<String>();
 		for (ClassDoc classDoc : rootDoc.classes()) {
 			for (MethodDoc methodDoc : classDoc.methods()) {
 				for (SeeTag seeTag : methodDoc.seeTags()) {
@@ -67,7 +67,7 @@ public class JavadocTest {
 				}
 			}
 		}
-		List<String> brokenLinks = new ArrayList<String>();
+		Set<String> brokenLinks = new HashSet<String>();
 		OkHttpClient client = OkHttpClientFactory.newInstance();
 		for (String url : seeLinks) {
 			Request request = new Request.Builder().url(url).get().build();

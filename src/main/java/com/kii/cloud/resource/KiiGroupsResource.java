@@ -41,10 +41,10 @@ public class KiiGroupsResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			String groupID = KiiGroup.PROPERTY_GROUP_ID.getString(responseBody);
+			String groupID = KiiGroup.PROPERTY_GROUP_ID.get(responseBody);
 			group.setGroupID(groupID);
 			List<String> notFoundusers = new ArrayList<String>();
-			JsonArray array = KiiGroup.PROPERTY_NOT_FOUND_USERS.getJsonArray(responseBody);
+			JsonArray array = KiiGroup.PROPERTY_NOT_FOUND_USERS.get(responseBody);
 			for (int i = 0; i < array.size(); i++) {
 				notFoundusers.add(array.get(i).getAsString());
 			}

@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 
 public class KiiGroupedAnalyticsResult extends KiiJsonModel {
 	
-	public static final KiiJsonProperty PROPERTY_SNAPSHOTS = new KiiJsonProperty("snapshots");
-	public static final KiiJsonProperty PROPERTY_NAME = new KiiJsonProperty("name");
-	public static final KiiJsonProperty PROPERTY_DATA = new KiiJsonProperty("data");
-	public static final KiiJsonProperty PROPERTY_POINT_START = new KiiJsonProperty("pointStart");
-	public static final KiiJsonProperty PROPERTY_POINT_INTERVAL = new KiiJsonProperty("pointInterval");
+	public static final KiiJsonProperty<JsonArray> PROPERTY_SNAPSHOTS = new KiiJsonProperty<JsonArray>(JsonArray.class, "snapshots");
+	public static final KiiJsonProperty<String> PROPERTY_NAME = new KiiJsonProperty<String>(String.class, "name");
+	public static final KiiJsonProperty<JsonArray> PROPERTY_DATA = new KiiJsonProperty<JsonArray>(JsonArray.class, "data");
+	public static final KiiJsonProperty<Long> PROPERTY_POINT_START = new KiiJsonProperty<Long>(Long.class, "pointStart");
+	public static final KiiJsonProperty<Integer> PROPERTY_POINT_INTERVAL = new KiiJsonProperty<Integer>(Integer.class, "pointInterval");
 	
 	public KiiGroupedAnalyticsResult(JsonObject json) {
 		super(json);
@@ -20,17 +20,17 @@ public class KiiGroupedAnalyticsResult extends KiiJsonModel {
 			super(json);
 		}
 		public String getName() {
-			return PROPERTY_NAME.getString(this.json);
+			return PROPERTY_NAME.get(this.json);
 		}
 		public long[] getData() {
-			JsonArray array = PROPERTY_POINT_START.getJsonArray(this.json);
+			JsonArray array = PROPERTY_DATA.get(this.json);
 			return null;
 		}
 		public long getPointStart() {
-			return PROPERTY_POINT_START.getLong(this.json);
+			return PROPERTY_POINT_START.get(this.json);
 		}
 		public int getPointInterval() {
-			return PROPERTY_POINT_INTERVAL.getInt(this.json);
+			return PROPERTY_POINT_INTERVAL.get(this.json);
 		}
 	}
 	

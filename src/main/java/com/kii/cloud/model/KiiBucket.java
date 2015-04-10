@@ -3,8 +3,8 @@ package com.kii.cloud.model;
 import com.google.gson.JsonObject;
 
 public class KiiBucket extends KiiJsonModel {
-	public static final KiiJsonProperty PROPERTY_BUCKET_TYPE = new KiiJsonProperty("bucketType");
-	public static final KiiJsonProperty PROPERTY_SIZE = new KiiJsonProperty("size");
+	public static final KiiJsonProperty<String> PROPERTY_BUCKET_TYPE = new KiiJsonProperty<String>(String.class, "bucketType");
+	public static final KiiJsonProperty<Long> PROPERTY_SIZE = new KiiJsonProperty<Long>(Long.class, "size");
 	
 	public KiiBucket() {
 	}
@@ -12,9 +12,9 @@ public class KiiBucket extends KiiJsonModel {
 		super(json);
 	}
 	public String getBucketType() {
-		return PROPERTY_BUCKET_TYPE.getString(this.json);
+		return PROPERTY_BUCKET_TYPE.get(this.json);
 	}
 	public long getSize() {
-		return PROPERTY_SIZE.getLong(this.json);
+		return PROPERTY_SIZE.get(this.json);
 	}
 }

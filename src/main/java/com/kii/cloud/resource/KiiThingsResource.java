@@ -34,8 +34,8 @@ public class KiiThingsResource extends KiiRestSubResource {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			
-			String accessToken = KiiThing.PROPERTY_ACCESS_TOKEN.getString(responseBody);
-			String refreshToken = KiiThing.PROPERTY_REFRESH_TOKEN.getString(responseBody);
+			String accessToken = KiiThing.PROPERTY_ACCESS_TOKEN.get(responseBody);
+			String refreshToken = KiiThing.PROPERTY_REFRESH_TOKEN.get(responseBody);
 			responseBody.remove(KiiThing.PROPERTY_ACCESS_TOKEN.getName());
 			responseBody.remove(KiiThing.PROPERTY_REFRESH_TOKEN.getName());
 			KiiThing registeredThing = new KiiThing(responseBody);

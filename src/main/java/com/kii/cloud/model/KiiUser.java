@@ -20,20 +20,20 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 			")+"
 	);
 	
-	public static final KiiJsonProperty PROPERTY_ACCESS_TOKEN = new KiiJsonProperty("_accessToken", "accessToken");
-	public static final KiiJsonProperty PROPERTY_REFRESH_TOKEN = new KiiJsonProperty("_refreshToken", "refresh_token");
-	public static final KiiJsonProperty PROPERTY_EXPIRES_IN = new KiiJsonProperty("expires_in");
-	public static final KiiJsonProperty PROPERTY_USER_ID = new KiiJsonProperty("userID", "id");
-	public static final KiiJsonProperty PROPERTY_INTERNAL_USER_ID = new KiiJsonProperty("internalUserID");
-	public static final KiiJsonProperty PROPERTY_USERNAME = new KiiJsonProperty("loginName");
-	public static final KiiJsonProperty PROPERTY_DISPLAY_NAME = new KiiJsonProperty("displayName");
-	public static final KiiJsonProperty PROPERTY_COUNTRY = new KiiJsonProperty("country");
-	public static final KiiJsonProperty PROPERTY_EMAIL_ADDRESS = new KiiJsonProperty("emailAddress");
-	public static final KiiJsonProperty PROPERTY_EMAIL_ADDRESS_VERIFIED = new KiiJsonProperty("emailAddressVerified");
-	public static final KiiJsonProperty PROPERTY_PHONE_NUMBER = new KiiJsonProperty("phoneNumber");
-	public static final KiiJsonProperty PROPERTY_PHONE_NUMBER_VERIFIED = new KiiJsonProperty("phoneNumberVerified");
-	public static final KiiJsonProperty PROPERTY_HAS_PASSWORD = new KiiJsonProperty("_hasPassword");
-	public static final KiiJsonProperty PROPERTY_DISABLED = new KiiJsonProperty("_disabled");
+	public static final KiiJsonProperty<String> PROPERTY_ACCESS_TOKEN = new KiiJsonProperty<String>(String.class, "_accessToken", "accessToken");
+	public static final KiiJsonProperty<String> PROPERTY_REFRESH_TOKEN = new KiiJsonProperty<String>(String.class, "_refreshToken", "refresh_token");
+	public static final KiiJsonProperty<Long> PROPERTY_EXPIRES_IN = new KiiJsonProperty<Long>(Long.class, "expires_in");
+	public static final KiiJsonProperty<String> PROPERTY_USER_ID = new KiiJsonProperty<String>(String.class, "userID", "id");
+	public static final KiiJsonProperty<String> PROPERTY_INTERNAL_USER_ID = new KiiJsonProperty<String>(String.class, "internalUserID");
+	public static final KiiJsonProperty<String> PROPERTY_USERNAME = new KiiJsonProperty<String>(String.class, "loginName");
+	public static final KiiJsonProperty<String> PROPERTY_DISPLAY_NAME = new KiiJsonProperty<String>(String.class, "displayName");
+	public static final KiiJsonProperty<String> PROPERTY_COUNTRY = new KiiJsonProperty<String>(String.class, "country");
+	public static final KiiJsonProperty<String> PROPERTY_EMAIL_ADDRESS = new KiiJsonProperty<String>(String.class, "emailAddress");
+	public static final KiiJsonProperty<Boolean> PROPERTY_EMAIL_ADDRESS_VERIFIED = new KiiJsonProperty<Boolean>(Boolean.class, "emailAddressVerified");
+	public static final KiiJsonProperty<String> PROPERTY_PHONE_NUMBER = new KiiJsonProperty<String>(String.class, "phoneNumber");
+	public static final KiiJsonProperty<Boolean> PROPERTY_PHONE_NUMBER_VERIFIED = new KiiJsonProperty<Boolean>(Boolean.class, "phoneNumberVerified");
+	public static final KiiJsonProperty<Boolean> PROPERTY_HAS_PASSWORD = new KiiJsonProperty<Boolean>(Boolean.class, "_hasPassword");
+	public static final KiiJsonProperty<Boolean> PROPERTY_DISABLED = new KiiJsonProperty<Boolean>(Boolean.class, "_disabled");
 	
 	public static final String ME = "me";
 	
@@ -51,7 +51,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	}
 	@Override
 	public String getAccessToken() {
-		return PROPERTY_ACCESS_TOKEN.getString(this.credentials);
+		return PROPERTY_ACCESS_TOKEN.get(this.credentials);
 	}
 	public KiiUser setAccessToken(String accessToken) {
 		credentials.addProperty(PROPERTY_ACCESS_TOKEN.getName(), accessToken);
@@ -59,7 +59,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	}
 	@Override
 	public String getRefreshToken() {
-		return PROPERTY_REFRESH_TOKEN.getString(this.credentials);
+		return PROPERTY_REFRESH_TOKEN.get(this.credentials);
 	}
 	public KiiUser setRefreshToken(String refreshToken) {
 		credentials.addProperty(PROPERTY_REFRESH_TOKEN.getName(), refreshToken);
@@ -73,14 +73,14 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public abstract boolean isPseudo();
 	
 	public String getUserID() {
-		return PROPERTY_USER_ID.getString(this.json);
+		return PROPERTY_USER_ID.get(this.json);
 	}
 	public KiiUser setUserID(String userID) {
 		this.json.addProperty(PROPERTY_USER_ID.getName(), userID);
 		return this;
 	}
 	public boolean isDisabled() {
-		return PROPERTY_DISABLED.getBoolean(this.json);
+		return PROPERTY_DISABLED.get(this.json);
 	}
 	public static String getAccountType(String identifier) {
 		if (KiiUser.EMAIL_ADDRESS_PATTERN.matcher(identifier).matches()) {
