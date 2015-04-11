@@ -176,6 +176,31 @@ public abstract class KiiRestResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	protected String parseResponseAsString(KiiRestRequest request, Response response) throws KiiRestException {
+		try {
+			String body = response.body().string();
+			if (!response.isSuccessful()) {
+				JsonObject errorDetail = null;
+				try {
+					errorDetail = (JsonObject)new JsonParser().parse(body);
+				} catch (Exception ignore) {
+				}
+				System.out.println(request.getCurl() + "  : " + response.code());
+				logHeader(response);
+				System.out.println(body);
+				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+			}
+			System.out.println(request.getCurl() + "  : " + response.code());
+			logHeader(response);
+			System.out.println(body);
+			if (StringUtils.isEmpty(body)) {
+				return null;
+			}
+			return body;
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
 	protected JsonObject parseResponseAsJsonObject(KiiRestRequest request, Response response) throws KiiRestException {
 		try {
 			String body = response.body().string();

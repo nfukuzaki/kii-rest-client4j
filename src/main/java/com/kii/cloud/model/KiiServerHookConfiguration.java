@@ -2,13 +2,31 @@ package com.kii.cloud.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.kii.cloud.util.GsonUtils;
 
 public class KiiServerHookConfiguration {
 	
 	private final List<TriggerConfiguration> triggerConfigurations = new ArrayList<TriggerConfiguration>();
 	private final List<SchedulerConfiguration> schedulerConfigurations = new ArrayList<SchedulerConfiguration>();
+	
+	public KiiServerHookConfiguration() {
+	}
+	public KiiServerHookConfiguration(JsonObject json) {
+		for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
+			if ("kiicloud://scheduler".equals(entry.getKey())) {
+				for (Map.Entry<String, JsonElement> schedulerEntry : ((JsonObject)entry.getValue()).entrySet()) {
+					schedulerConfigurations.add(new SchedulerConfiguration(schedulerEntry.getKey(), (JsonObject)schedulerEntry.getValue()));
+				}
+			} else {
+				triggerConfigurations.add(new TriggerConfiguration(entry.getKey(), (JsonArray)entry.getValue()));
+			}
+		}
+	}
 	
 	public JsonObject toJson() {
 		JsonObject json = new JsonObject();
@@ -31,12 +49,38 @@ public class KiiServerHookConfiguration {
 	}
 	public static class TriggerConfiguration {
 		private final String path;
+		private final List<TriggerAction> triggerActions = new ArrayList<TriggerAction>();
+		public TriggerConfiguration(String path) {
+			this.path = path;
+		}
+		public TriggerConfiguration(String path, JsonArray array) {
+			this.path = path;
+			for (int i = 0; i < array.size(); i++) {
+				this.triggerActions.add(new TriggerAction(array.get(i).getAsJsonObject()));
+			}
+		}
+		public TriggerConfiguration addTriggerAction(TriggerAction triggerAction) {
+			this.triggerActions.add(triggerAction);
+			return this;
+		}
+		public JsonArray toJson() {
+			JsonArray array = new JsonArray();
+			for (TriggerAction triggerAction : this.triggerActions) {
+				array.add(triggerAction.toJson());
+			}
+			return array;
+		}
+	}
+	public static class TriggerAction {
 		private final When when;
 		private final String endpoint;
-		public TriggerConfiguration(String path, When when, String endpoint) {
-			this.path = path;
+		public TriggerAction(When when, String endpoint) {
 			this.when = when;
 			this.endpoint = endpoint;
+		}
+		public TriggerAction(JsonObject json) {
+			this.when = Enum.valueOf(When.class, GsonUtils.getString(json, "when"));
+			this.endpoint = GsonUtils.getString(json, "endpoint");
 		}
 		public JsonObject toJson() {
 			JsonObject json = new JsonObject();
@@ -59,6 +103,16 @@ public class KiiServerHookConfiguration {
 				this.parameters = new JsonObject();
 			} else {
 				this.parameters = parameters;
+			}
+		}
+		public SchedulerConfiguration(String jobName, JsonObject json) {
+			this.jobName = jobName;
+			this.cronExpression = GsonUtils.getString(json, "cron");
+			this.endpoint = GsonUtils.getString(json, "endpoint");
+			if (json.has("parameters")) {
+				this.parameters = GsonUtils.getJsonObject(json, "parameters");
+			} else {
+				this.parameters = new JsonObject();
 			}
 		}
 		public JsonObject toJson() {

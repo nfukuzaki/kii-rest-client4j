@@ -76,12 +76,19 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiPushInstallationResource installations(InstallationType installationType, String installationRegistrationID) {
 		return new KiiPushInstallationResource(this.installations(), installationType, installationRegistrationID);
 	}
-	public KiiServerCodeResource servercode() {
-		return new KiiServerCodeResource(this);
+	public KiiServerCodesResource servercode() {
+		return new KiiServerCodesResource(this);
 	}
 	public KiiServerCodeResource servercode(String version) {
-		return new KiiServerCodeResource(this, version);
+		return new KiiServerCodeResource(servercode(), version);
 	}
+	public KiiServerCodeHooksResource hooks() {
+		return new KiiServerCodeHooksResource(this);
+	}
+	public KiiServerCodeHookResource hooks(String version) {
+		return new KiiServerCodeHookResource(this.hooks(), version);
+	}
+	
 	public KiiEventsResource events() {
 		return new KiiEventsResource(this);
 	}
