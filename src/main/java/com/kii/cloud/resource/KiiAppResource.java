@@ -7,7 +7,11 @@ import com.kii.cloud.model.push.KiiPushInstallation.InstallationType;
 import com.kii.cloud.model.storage.KiiGroup;
 import com.kii.cloud.model.storage.KiiThing;
 import com.kii.cloud.model.storage.KiiUser;
+import com.kii.cloud.resource.analytics.KiiAggregationRuleResource;
+import com.kii.cloud.resource.analytics.KiiAggregationRulesResource;
 import com.kii.cloud.resource.analytics.KiiAnalyticsResource;
+import com.kii.cloud.resource.analytics.KiiConversionRuleResource;
+import com.kii.cloud.resource.analytics.KiiConversionRulesResource;
 import com.kii.cloud.resource.analytics.KiiEventsResource;
 import com.kii.cloud.resource.conf.KiiAppConfigurationResource;
 import com.kii.cloud.resource.push.KiiPushInstallationResource;
@@ -122,6 +126,19 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiAnalyticsResource analytics(String aggregationRuleID) {
 		return new KiiAnalyticsResource(this, aggregationRuleID);
 	}
+	public KiiConversionRulesResource conversionRules() {
+		return new KiiConversionRulesResource(this);
+	}
+	public KiiConversionRuleResource conversionRules(String conversionRuleID) {
+		return new KiiConversionRuleResource(this.conversionRules(), conversionRuleID);
+	}
+	public KiiAggregationRulesResource aggregationRules() {
+		return new KiiAggregationRulesResource(this);
+	}
+	public KiiAggregationRuleResource aggregationRules(String aggregationRuleID) {
+		return new KiiAggregationRuleResource(this.aggregationRules(), aggregationRuleID);
+	}
+	
 	@Override
 	public String getPath() {
 		return this.endpoint + BASE_PATH + "/" + this.appID;
