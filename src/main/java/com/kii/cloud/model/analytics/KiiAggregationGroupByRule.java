@@ -4,30 +4,30 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.model.KiiJsonModel;
 import com.kii.cloud.model.KiiJsonProperty;
 
-public class KiiConversionMappingRule extends KiiJsonModel {
+public class KiiAggregationGroupByRule extends KiiJsonModel {
 	
 	public static final KiiJsonProperty<String> PROPERTY_NAME = new KiiJsonProperty<String>(String.class, "name");
-	public static final KiiJsonProperty<String> PROPERTY_SOURCE = new KiiJsonProperty<String>(String.class, "source");
+	public static final KiiJsonProperty<String> PROPERTY_LABEL = new KiiJsonProperty<String>(String.class, "label");
 	public static final KiiJsonProperty<String> PROPERTY_TYPE = new KiiJsonProperty<String>(String.class, "type");
 	
-	public KiiConversionMappingRule() {
+	public KiiAggregationGroupByRule() {
 	}
-	public KiiConversionMappingRule(JsonObject json) {
+	public KiiAggregationGroupByRule(JsonObject json) {
 		super(json);
 	}
 	
 	public String getName() {
 		return PROPERTY_NAME.get(this.json);
 	}
-	public KiiConversionMappingRule setName(String name) {
+	public KiiAggregationGroupByRule setName(String name) {
 		PROPERTY_NAME.set(this.json, name);
 		return this;
 	}
-	public String getSource() {
-		return PROPERTY_SOURCE.get(this.json);
+	public String getLabel() {
+		return PROPERTY_LABEL.get(this.json);
 	}
-	public KiiConversionMappingRule setSource(String source) {
-		PROPERTY_SOURCE.set(this.json, source);
+	public KiiAggregationGroupByRule setLabel(String label) {
+		PROPERTY_LABEL.set(this.json, label);
 		return this;
 	}
 	public FieldType getType() {
@@ -36,8 +36,9 @@ public class KiiConversionMappingRule extends KiiJsonModel {
 		}
 		return null;
 	}
-	public KiiConversionMappingRule setType(FieldType fieldType) {
+	public KiiAggregationGroupByRule setType(FieldType fieldType) {
 		PROPERTY_TYPE.set(this.json, fieldType.name());
 		return this;
 	}
+
 }

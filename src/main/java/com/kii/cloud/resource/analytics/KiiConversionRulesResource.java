@@ -17,6 +17,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the conversion rules resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/conversion-rules
+ * </ul>
+ */
 public class KiiConversionRulesResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/conversion-rules";
