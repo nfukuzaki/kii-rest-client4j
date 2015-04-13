@@ -1,6 +1,17 @@
 package com.kii.cloud.resource.push;
 
+import java.io.IOException;
+import java.util.Map;
+
+import com.google.gson.JsonObject;
+import com.kii.cloud.KiiRestException;
+import com.kii.cloud.model.push.KiiPushMessage;
+import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
+import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.util.GsonUtils;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Response;
 
 /**
  * Represents the push message resource like following URI:
@@ -13,12 +24,33 @@ import com.kii.cloud.resource.KiiRestSubResource;
  *
  */
 public class KiiPushMessageResource extends KiiRestSubResource {
+	
+	public static final String BASE_PATH = "/push/messages";
+	
+	public static final MediaType MEDIA_TYPE_SEND_PUSH_MESSAGE_REQUEST = MediaType.parse("application/vnd.kii.SendPushMessageRequest+json");
+	
 	public KiiPushMessageResource(KiiTopicResource parent) {
 		super(parent);
 	}
-
+	
+	/**
+	 * @param message
+	 * @return pushMessageID
+	 * @throws KiiRestException
+	 */
+	public String send(KiiPushMessage message) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_SEND_PUSH_MESSAGE_REQUEST, message.toJson());
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return GsonUtils.getString(responseBody, "pushMessageID");
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
 	@Override
 	public String getPath() {
-		return null;
+		return BASE_PATH;
 	}
 }
