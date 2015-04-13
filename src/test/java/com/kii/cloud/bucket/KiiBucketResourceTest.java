@@ -14,7 +14,7 @@ import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiBucket;
-import com.kii.cloud.model.KiiClause;
+import com.kii.cloud.model.KiiQueryClause;
 import com.kii.cloud.model.KiiNormalUser;
 import com.kii.cloud.model.KiiObject;
 import com.kii.cloud.model.KiiQuery;
@@ -52,7 +52,7 @@ public class KiiBucketResourceTest {
 		assertEquals(15, count);
 		
 		// querying object
-		KiiQuery query = new KiiQuery(KiiClause.lt("score", 9));
+		KiiQuery query = new KiiQuery(KiiQueryClause.lt("score", 9));
 		query.setLimit(5);
 		KiiQueryResult queryResult = rest.api().buckets(appBucketName).query(query);
 		List<KiiObject> results = queryResult.getResults();

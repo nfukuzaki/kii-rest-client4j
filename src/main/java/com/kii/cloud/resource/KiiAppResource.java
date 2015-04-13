@@ -82,8 +82,11 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiServerCodeResource servercode(String version) {
 		return new KiiServerCodeResource(servercode(), version);
 	}
+	public KiiServerCodeHooksResource hooks() {
+		return new KiiServerCodeHooksResource(this);
+	}
 	public KiiServerCodeHookResource hooks(String version) {
-		return new KiiServerCodeHookResource(this, version);
+		return new KiiServerCodeHookResource(this.hooks(), version);
 	}
 	
 	public KiiEventsResource events() {

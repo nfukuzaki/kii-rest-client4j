@@ -13,16 +13,16 @@ import com.squareup.okhttp.Response;
 
 public class KiiServerCodeHookResource extends KiiRestSubResource {
 	
-	public static final String BASE_PATH = "/hooks/versions";
+	public static final String BASE_PATH = "/versions";
 	public static final MediaType MEDIA_TYPE_HOOKS_DEPLOYMENT_REQUEST = MediaType.parse("application/vnd.kii.HooksDeploymentRequest+json");
 	
 	private final String version;
 	
-	public KiiServerCodeHookResource(KiiAppResource parent) {
+	public KiiServerCodeHookResource(KiiServerCodeHooksResource parent) {
 		super(parent);
 		this.version = "current";
 	}
-	public KiiServerCodeHookResource(KiiAppResource parent, String version) {
+	public KiiServerCodeHookResource(KiiServerCodeHooksResource parent, String version) {
 		super(parent);
 		this.version = version;
 	}
