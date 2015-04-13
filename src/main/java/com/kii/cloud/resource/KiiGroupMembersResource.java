@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
-import com.kii.cloud.model.KiiGroupMembers;
+import com.kii.cloud.model.storage.KiiGroupMembers;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 

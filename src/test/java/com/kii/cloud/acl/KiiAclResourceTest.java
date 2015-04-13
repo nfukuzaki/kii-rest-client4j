@@ -7,9 +7,9 @@ import com.kii.cloud.KiiRest;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
-import com.kii.cloud.model.KiiAcl.BucketAction;
-import com.kii.cloud.model.KiiAcl.Subject;
-import com.kii.cloud.model.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiAcl.BucketAction;
+import com.kii.cloud.model.storage.KiiAcl.Subject;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiAclResourceTest {

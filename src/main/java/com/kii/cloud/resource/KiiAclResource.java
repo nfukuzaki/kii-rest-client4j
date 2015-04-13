@@ -11,9 +11,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
-import com.kii.cloud.model.KiiAcl;
-import com.kii.cloud.model.KiiAcl.Action;
-import com.kii.cloud.model.KiiAcl.Subject;
+import com.kii.cloud.model.storage.KiiAcl;
+import com.kii.cloud.model.storage.KiiAcl.Action;
+import com.kii.cloud.model.storage.KiiAcl.Subject;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 

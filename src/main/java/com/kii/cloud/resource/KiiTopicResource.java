@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
-import com.kii.cloud.model.KiiPushMessage;
+import com.kii.cloud.model.push.KiiPushMessage;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;

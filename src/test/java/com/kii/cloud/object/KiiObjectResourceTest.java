@@ -10,9 +10,9 @@ import com.kii.cloud.KiiRest;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
-import com.kii.cloud.model.KiiGroup;
-import com.kii.cloud.model.KiiNormalUser;
-import com.kii.cloud.model.KiiObject;
+import com.kii.cloud.model.storage.KiiGroup;
+import com.kii.cloud.model.storage.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiObject;
 
 
 @RunWith(SkipAcceptableTestRunner.class)

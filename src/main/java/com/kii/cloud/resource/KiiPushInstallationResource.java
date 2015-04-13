@@ -5,9 +5,9 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
-import com.kii.cloud.model.KiiMqttEndpoint;
-import com.kii.cloud.model.KiiPushInstallation;
-import com.kii.cloud.model.KiiPushInstallation.InstallationType;
+import com.kii.cloud.model.push.KiiMqttEndpoint;
+import com.kii.cloud.model.push.KiiPushInstallation;
+import com.kii.cloud.model.push.KiiPushInstallation.InstallationType;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 

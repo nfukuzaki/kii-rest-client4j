@@ -3,8 +3,8 @@ package com.kii.cloud.resource;
 import java.util.List;
 
 import com.kii.cloud.KiiRestException;
-import com.kii.cloud.model.KiiAcl.ObjectAction;
-import com.kii.cloud.model.KiiAcl.Subject;
+import com.kii.cloud.model.storage.KiiAcl.ObjectAction;
+import com.kii.cloud.model.storage.KiiAcl.Subject;
 
 public class KiiObjectAclResource extends KiiAclResource {
 	public KiiObjectAclResource(KiiObjectResource parent) {

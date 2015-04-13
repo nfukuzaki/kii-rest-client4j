@@ -10,8 +10,8 @@ import com.kii.cloud.KiiRest;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
-import com.kii.cloud.model.KiiGroup;
-import com.kii.cloud.model.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiGroup;
+import com.kii.cloud.model.storage.KiiNormalUser;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiTopicResourceTest {

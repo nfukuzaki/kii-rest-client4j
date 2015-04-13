@@ -3,10 +3,10 @@ package com.kii.cloud.resource;
 import java.util.Map;
 
 import com.kii.cloud.model.KiiCredentialsContainer;
-import com.kii.cloud.model.KiiGroup;
-import com.kii.cloud.model.KiiPushInstallation.InstallationType;
-import com.kii.cloud.model.KiiThing;
-import com.kii.cloud.model.KiiUser;
+import com.kii.cloud.model.push.KiiPushInstallation.InstallationType;
+import com.kii.cloud.model.storage.KiiGroup;
+import com.kii.cloud.model.storage.KiiThing;
+import com.kii.cloud.model.storage.KiiUser;
 
 public class KiiAppResource extends KiiRestResource {
 	public static final String BASE_PATH = "/apps";

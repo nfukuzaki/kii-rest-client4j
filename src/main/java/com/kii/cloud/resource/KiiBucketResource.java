@@ -5,11 +5,11 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
-import com.kii.cloud.model.KiiBucket;
-import com.kii.cloud.model.KiiCountingQuery;
-import com.kii.cloud.model.KiiObject;
-import com.kii.cloud.model.KiiQuery;
-import com.kii.cloud.model.KiiQueryResult;
+import com.kii.cloud.model.storage.KiiBucket;
+import com.kii.cloud.model.storage.KiiCountingQuery;
+import com.kii.cloud.model.storage.KiiObject;
+import com.kii.cloud.model.storage.KiiQuery;
+import com.kii.cloud.model.storage.KiiQueryResult;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;

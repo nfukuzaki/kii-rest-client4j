@@ -6,11 +6,11 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.annotation.AnonymousAPI;
-import com.kii.cloud.model.KiiAnalyticsQuery;
-import com.kii.cloud.model.KiiAnalyticsResult;
-import com.kii.cloud.model.KiiAnalyticsResult.ResultType;
-import com.kii.cloud.model.KiiGroupedAnalyticsResult;
-import com.kii.cloud.model.KiiTabularAnalyticsResult;
+import com.kii.cloud.model.analytics.KiiAnalyticsQuery;
+import com.kii.cloud.model.analytics.KiiAnalyticsResult;
+import com.kii.cloud.model.analytics.KiiGroupedAnalyticsResult;
+import com.kii.cloud.model.analytics.KiiTabularAnalyticsResult;
+import com.kii.cloud.model.analytics.KiiAnalyticsResult.ResultType;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 

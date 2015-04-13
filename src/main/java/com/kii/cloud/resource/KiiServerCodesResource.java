@@ -9,7 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.annotation.AdminAPI;
-import com.kii.cloud.model.KiiServerCodeVersion;
+import com.kii.cloud.model.servercode.KiiServerCodeVersion;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;

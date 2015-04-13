@@ -7,7 +7,7 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.annotation.AnonymousAPI;
-import com.kii.cloud.model.KiiEvent;
+import com.kii.cloud.model.analytics.KiiEvent;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;

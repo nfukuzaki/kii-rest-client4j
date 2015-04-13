@@ -13,12 +13,12 @@ import com.kii.cloud.KiiRest;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
-import com.kii.cloud.model.KiiBucket;
-import com.kii.cloud.model.KiiQueryClause;
-import com.kii.cloud.model.KiiNormalUser;
-import com.kii.cloud.model.KiiObject;
-import com.kii.cloud.model.KiiQuery;
-import com.kii.cloud.model.KiiQueryResult;
+import com.kii.cloud.model.storage.KiiBucket;
+import com.kii.cloud.model.storage.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiObject;
+import com.kii.cloud.model.storage.KiiQuery;
+import com.kii.cloud.model.storage.KiiQueryClause;
+import com.kii.cloud.model.storage.KiiQueryResult;
 import com.kii.cloud.resource.KiiObjectsResource;
 
 @RunWith(SkipAcceptableTestRunner.class)

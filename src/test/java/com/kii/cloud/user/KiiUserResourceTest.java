@@ -12,10 +12,10 @@ import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.TestUtils;
-import com.kii.cloud.model.KiiNormalUser;
-import com.kii.cloud.model.KiiPseudoUser;
-import com.kii.cloud.model.KiiUser;
 import com.kii.cloud.model.KiiUserCredentials;
+import com.kii.cloud.model.storage.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiPseudoUser;
+import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiUserResource.NotificationMethod;
 
 @RunWith(SkipAcceptableTestRunner.class)

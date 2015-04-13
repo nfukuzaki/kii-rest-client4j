@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.annotation.AdminAPI;
-import com.kii.cloud.model.KiiServerHookConfiguration;
+import com.kii.cloud.model.servercode.KiiServerHookConfiguration;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;

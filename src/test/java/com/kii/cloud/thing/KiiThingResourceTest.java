@@ -7,8 +7,8 @@ import com.kii.cloud.KiiRest;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestEnvironments;
-import com.kii.cloud.model.KiiNormalUser;
-import com.kii.cloud.model.KiiThing;
+import com.kii.cloud.model.storage.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiThing;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiThingResourceTest {
