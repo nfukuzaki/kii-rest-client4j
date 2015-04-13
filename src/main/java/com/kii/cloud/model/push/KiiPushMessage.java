@@ -5,69 +5,79 @@ import com.kii.cloud.util.GsonUtils;
 
 public class KiiPushMessage {
 	
-	private JsonObject message;
-	private JsonObject data;
-	private APNSMessage apns;
-	private GCMMessage gcm;
-	private JPushMessage jpush;
-	private MqttMessage mqtt;
+	private final JsonObject messageMeta = new JsonObject();
+	private final JsonObject messageBody;
+	private APNSMessage apns = null;
+	private GCMMessage gcm = null;
+	private JPushMessage jpush = null;
+	private MqttMessage mqtt = null;
 	
+	public KiiPushMessage(JsonObject messageBody) {
+		if (messageBody == null) {
+			throw new IllegalArgumentException("messageBody is null");
+		}
+		this.messageBody = messageBody;
+	}
+	public KiiPushMessage setAPNS(APNSMessage apns) {
+		this.apns = apns;
+		return this;
+	}
+	public KiiPushMessage setGCM(GCMMessage gcm) {
+		this.gcm = gcm;
+		return this;
+	}
+	public KiiPushMessage setJPush(JPushMessage jpush) {
+		this.jpush = jpush;
+		return this;
+	}
+	public KiiPushMessage setMqtt(MqttMessage mqtt) {
+		this.mqtt = mqtt;
+		return this;
+	}
+	
+	public KiiPushMessage setPushMessageType(String pushMessageType) {
+		this.messageMeta.addProperty("pushMessageType", pushMessageType);
+		return this;
+	}
+	public KiiPushMessage setSendAppID(boolean isSendAppId) {
+		this.messageMeta.addProperty("sendAppID", isSendAppId);
+		return this;
+	}
+	public KiiPushMessage setSendSender(boolean sendSender) {
+		this.messageMeta.addProperty("sendSender", sendSender);
+		return this;
+	}
+	public KiiPushMessage setSendWhen(boolean sendWhen) {
+		this.messageMeta.addProperty("sendWhen", sendWhen);
+		return this;
+	}
+	public KiiPushMessage setSendOrigin(boolean sendOrigin) {
+		this.messageMeta.addProperty("sendOrigin", sendOrigin);
+		return this;
+	}
+	public KiiPushMessage setSendObjectScope(boolean sendObjectScope) {
+		this.messageMeta.addProperty("sendObjectScope", sendObjectScope);
+		return this;
+	}
+	public KiiPushMessage setSendTopicID(boolean sendTopicID) {
+		this.messageMeta.addProperty("sendTopicID", sendTopicID);
+		return this;
+	}
+	public KiiPushMessage setSendToProduction(boolean sendToProduction) {
+		this.messageMeta.addProperty("sendToProduction", sendToProduction);
+		return this;
+	}
+	public KiiPushMessage setSendToDevelopment(boolean sendToDevelopment) {
+		this.messageMeta.addProperty("sendToDevelopment", sendToDevelopment);
+		return this;
+	}
 	public JsonObject toJson() {
-		JsonObject result = GsonUtils.clone(this.message);
-		result.add("data", GsonUtils.clone(this.data));
+		JsonObject result = GsonUtils.clone(this.messageMeta);
+		result.add("data", GsonUtils.clone(this.messageBody));
 		result.add("apns", this.apns.toJson());
 		result.add("gcm", this.gcm.toJson());
 		result.add("jpush", this.jpush.toJson());
 		result.add("mqtt", this.mqtt.toJson());
 		return result;
-	}
-	
-	public static class APNSMessage {
-		private JsonObject message;
-		private JsonObject data;
-		private JsonObject alert;
-		public JsonObject toJson() {
-			JsonObject result = GsonUtils.clone(this.message);
-			if (this.data != null) {
-				result.add("data", GsonUtils.clone(this.data));
-			}
-			if (this.alert != null) {
-				result.add("alert", GsonUtils.clone(this.alert));
-			}
-			return result;
-		}
-	}
-	public static class GCMMessage {
-		private JsonObject message;
-		private JsonObject data;
-		public JsonObject toJson() {
-			JsonObject result = GsonUtils.clone(this.message);
-			if (this.data != null) {
-				result.add("data", GsonUtils.clone(this.data));
-			}
-			return result;
-		}
-	}
-	public static class JPushMessage {
-		private JsonObject message;
-		private JsonObject data;
-		public JsonObject toJson() {
-			JsonObject result = GsonUtils.clone(this.message);
-			if (this.data != null) {
-				result.add("data", GsonUtils.clone(this.data));
-			}
-			return result;
-		}
-	}
-	public static class MqttMessage {
-		private JsonObject message;
-		private JsonObject data;
-		public JsonObject toJson() {
-			JsonObject result = GsonUtils.clone(this.message);
-			if (this.data != null) {
-				result.add("data", GsonUtils.clone(this.data));
-			}
-			return result;
-		}
 	}
 }
