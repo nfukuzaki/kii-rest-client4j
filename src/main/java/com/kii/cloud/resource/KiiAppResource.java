@@ -7,6 +7,24 @@ import com.kii.cloud.model.push.KiiPushInstallation.InstallationType;
 import com.kii.cloud.model.storage.KiiGroup;
 import com.kii.cloud.model.storage.KiiThing;
 import com.kii.cloud.model.storage.KiiUser;
+import com.kii.cloud.resource.analytics.KiiAnalyticsResource;
+import com.kii.cloud.resource.analytics.KiiEventsResource;
+import com.kii.cloud.resource.push.KiiPushInstallationResource;
+import com.kii.cloud.resource.push.KiiPushInstallationsResource;
+import com.kii.cloud.resource.push.KiiTopicResource;
+import com.kii.cloud.resource.servercode.KiiServerCodeHookResource;
+import com.kii.cloud.resource.servercode.KiiServerCodeHooksResource;
+import com.kii.cloud.resource.servercode.KiiServerCodeResource;
+import com.kii.cloud.resource.servercode.KiiServerCodesResource;
+import com.kii.cloud.resource.storage.KiiBucketResource;
+import com.kii.cloud.resource.storage.KiiEncryptedBucketResource;
+import com.kii.cloud.resource.storage.KiiGroupResource;
+import com.kii.cloud.resource.storage.KiiGroupsResource;
+import com.kii.cloud.resource.storage.KiiScopeAclResource;
+import com.kii.cloud.resource.storage.KiiThingResource;
+import com.kii.cloud.resource.storage.KiiThingsResource;
+import com.kii.cloud.resource.storage.KiiUserResource;
+import com.kii.cloud.resource.storage.KiiUsersResource;
 
 public class KiiAppResource extends KiiRestResource {
 	public static final String BASE_PATH = "/apps";

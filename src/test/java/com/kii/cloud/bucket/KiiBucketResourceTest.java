@@ -19,7 +19,7 @@ import com.kii.cloud.model.storage.KiiObject;
 import com.kii.cloud.model.storage.KiiQuery;
 import com.kii.cloud.model.storage.KiiQueryClause;
 import com.kii.cloud.model.storage.KiiQueryResult;
-import com.kii.cloud.resource.KiiObjectsResource;
+import com.kii.cloud.resource.storage.KiiObjectsResource;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiBucketResourceTest {

@@ -20,7 +20,7 @@ import com.kii.cloud.model.storage.KiiChunkedDownloadContext;
 import com.kii.cloud.model.storage.KiiChunkedUploadContext;
 import com.kii.cloud.model.storage.KiiNormalUser;
 import com.kii.cloud.model.storage.KiiObject;
-import com.kii.cloud.resource.KiiObjectBodyResource;
+import com.kii.cloud.resource.storage.KiiObjectBodyResource;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;

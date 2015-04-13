@@ -16,7 +16,7 @@ import com.kii.cloud.model.KiiUserCredentials;
 import com.kii.cloud.model.storage.KiiNormalUser;
 import com.kii.cloud.model.storage.KiiPseudoUser;
 import com.kii.cloud.model.storage.KiiUser;
-import com.kii.cloud.resource.KiiUserResource.NotificationMethod;
+import com.kii.cloud.resource.storage.KiiUserResource.NotificationMethod;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiUserResourceTest {
