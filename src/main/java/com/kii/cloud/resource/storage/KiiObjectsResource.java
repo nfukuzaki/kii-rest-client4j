@@ -12,6 +12,16 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the objects resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_NAME}/objects
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_NAME}/objects
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_NAME}/objects
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_NAME}/objects
+ * </ul>
+ *
+ */
 public class KiiObjectsResource extends KiiRestSubResource {
 	public static final String BASE_PATH = "/objects";
 	public KiiObjectsResource(KiiBucketResource parent) {

@@ -18,6 +18,16 @@ import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the bucket resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_NAME}
+ * </ul>
+ *
+ */
 public class KiiBucketResource extends KiiRestSubResource {
 	
 	public static final MediaType MEDIA_TYPE_BUCKET_CREATION_REQUEST = MediaType.parse("application/vnd.kii.BucketCreationRequest+json");

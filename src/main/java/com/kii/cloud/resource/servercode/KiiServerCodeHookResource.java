@@ -13,6 +13,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the specified version server hook resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/hooks/versions/{SERVER_CODE_VERSION}
+ * </ul>
+ */
 public class KiiServerCodeHookResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/versions";

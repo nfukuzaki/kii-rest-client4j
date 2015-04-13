@@ -11,6 +11,12 @@ import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the group members resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/members
+ * </ul>
+ */
 public class KiiGroupMembersResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/members";

@@ -17,6 +17,16 @@ import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the topic resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/topics/{TOPIC_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/topics/{TOPIC_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/topics/{TOPIC_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/topics/{TOPIC_NAME}
+ * </ul>
+ *
+ */
 public class KiiTopicResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/topics";

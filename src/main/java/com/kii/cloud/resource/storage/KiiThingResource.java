@@ -12,6 +12,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the thing resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}
+ * </ul>
+ */
 public class KiiThingResource extends KiiRestSubResource {
 	
 	public static final MediaType MEDIA_TYPE_THING_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.ThingUpdateRequest+json");

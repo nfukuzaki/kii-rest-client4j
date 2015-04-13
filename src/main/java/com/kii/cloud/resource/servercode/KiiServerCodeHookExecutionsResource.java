@@ -15,6 +15,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the execution result of server hook resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/hooks/executions
+ * </ul>
+ */
 public class KiiServerCodeHookExecutionsResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/executions";

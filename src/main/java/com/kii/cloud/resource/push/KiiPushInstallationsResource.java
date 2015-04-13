@@ -17,6 +17,12 @@ import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the push installation resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/installations
+ * </ul>
+ */
 public class KiiPushInstallationsResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/installations";

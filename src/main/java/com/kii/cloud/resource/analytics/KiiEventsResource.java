@@ -15,6 +15,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the event resource for analytics like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/events
+ * </ul>
+ */
 public class KiiEventsResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/events";

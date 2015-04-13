@@ -25,6 +25,10 @@ import com.squareup.okhttp.Request.Builder;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+/**
+ * This class is base class for all resource classes.
+ * You must extend this class to implement new resource class.
+ */
 public abstract class KiiRestResource {
 	
 	public static final MediaType MEDIA_TYPE_APPLICATION_JSON = MediaType.parse("application/json");

@@ -17,6 +17,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the users resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/users
+ * </ul>
+ */
 public class KiiUsersResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/users";

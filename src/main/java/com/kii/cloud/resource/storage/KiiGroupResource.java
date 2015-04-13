@@ -13,6 +13,12 @@ import com.kii.cloud.resource.push.KiiTopicResource;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the group resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}
+ * </ul>
+ */
 public class KiiGroupResource extends KiiRestSubResource {
 	
 	public static final MediaType MEDIA_TYPE_GROUP_OWNER_CHANGE_REQUEST = MediaType.parse("application/vnd.kii.GroupOwnerChangeRequest+json");

@@ -14,6 +14,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the things resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/things
+ * </ul>
+ */
 public class KiiThingsResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/things";

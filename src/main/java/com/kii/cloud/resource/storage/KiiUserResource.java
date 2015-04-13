@@ -17,6 +17,12 @@ import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the users resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}
+ * </ul>
+ */
 public class KiiUserResource extends KiiRestSubResource {
 	
 	public static final MediaType MEDIA_TYPE_USER_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.UserUpdateRequest+json");

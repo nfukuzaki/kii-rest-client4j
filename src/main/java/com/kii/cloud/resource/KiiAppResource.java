@@ -26,6 +26,14 @@ import com.kii.cloud.resource.storage.KiiThingsResource;
 import com.kii.cloud.resource.storage.KiiUserResource;
 import com.kii.cloud.resource.storage.KiiUsersResource;
 
+/**
+ * Represents the application resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}
+ * </ul>
+ * <p>
+ * This resource is the root for all other resources.
+ */
 public class KiiAppResource extends KiiRestResource {
 	public static final String BASE_PATH = "/apps";
 	

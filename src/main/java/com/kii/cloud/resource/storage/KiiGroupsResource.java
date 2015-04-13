@@ -18,6 +18,12 @@ import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the groups resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/groups
+ * </ul>
+ */
 public class KiiGroupsResource extends KiiRestSubResource {
 	
 	public static final MediaType MEDIA_TYPE_GROUP_CREATION_REQUEST = MediaType.parse("application/vnd.kii.GroupCreationRequest+json");

@@ -20,6 +20,9 @@ import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
+/**
+ * This class is base class for the ACL resource classes.
+ */
 public abstract class KiiAclResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/acl";

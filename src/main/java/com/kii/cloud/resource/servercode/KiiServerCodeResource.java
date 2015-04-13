@@ -15,6 +15,12 @@ import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the specified version server code resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/server-code/versions/{SERVER_CODE_VERSION}
+ * </ul>
+ */
 public class KiiServerCodeResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/versions";

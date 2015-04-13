@@ -12,6 +12,16 @@ import com.kii.cloud.model.KiiUserCredentials;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the oauth resource like following URI:
+ * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/oauth2/token
+ * </ul>
+ * <p>
+ * Basically This resource is same as the "https://hostname/api/oauth2/token"
+ * 
+ */
 public class KiiOAuthResource extends KiiRestSubResource {
 	public static final String BASE_PATH = "/oauth2/token";
 	public KiiOAuthResource(KiiRestResource parent) {
@@ -24,6 +34,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
+	@AnonymousAPI
 	public KiiUserCredentials getAccessToken(String identifier, String password) throws KiiRestException {
 		return this.getAccessToken(identifier, password, null);
 	}
@@ -61,6 +72,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/admin-features/
 	 */
+	@AnonymousAPI
 	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret) throws KiiRestException {
 		return this.getAdminAccessToken(clientID, clientSecret, null);
 	}
@@ -97,6 +109,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
+	@AnonymousAPI
 	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials) throws KiiRestException {
 		return refreshAccessToken(credentials, null);
 	}

@@ -13,6 +13,13 @@ import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the specified push installation resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/installations/{INSTALLATION_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/installations/{INSTALLATION_TYPE}:{INSTALLATION_REGISTRATION_ID}
+ * </ul>
+ */
 public class KiiPushInstallationResource extends KiiRestSubResource {
 	
 	private final InstallationType installationType;

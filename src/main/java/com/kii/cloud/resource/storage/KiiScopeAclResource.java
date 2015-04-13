@@ -7,6 +7,16 @@ import com.kii.cloud.model.storage.KiiAcl.ScopeAction;
 import com.kii.cloud.model.storage.KiiAcl.Subject;
 import com.kii.cloud.resource.KiiAppResource;
 
+/**
+ * Represents the scope acl resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/acl
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/acl
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/acl
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/acl
+ * </ul>
+ *
+ */
 public class KiiScopeAclResource extends KiiAclResource {
 	public KiiScopeAclResource(KiiAppResource parent) {
 		super(parent);

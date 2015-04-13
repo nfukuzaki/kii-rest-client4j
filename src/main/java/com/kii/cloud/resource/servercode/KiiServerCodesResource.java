@@ -18,6 +18,12 @@ import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the server code resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/server-code
+ * </ul>
+ */
 public class KiiServerCodesResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/server-code";

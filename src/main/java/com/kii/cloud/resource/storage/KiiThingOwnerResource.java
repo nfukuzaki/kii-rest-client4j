@@ -16,6 +16,12 @@ import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the ownership of thing resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/ownership
+ * </ul>
+ */
 public class KiiThingOwnerResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/ownership";

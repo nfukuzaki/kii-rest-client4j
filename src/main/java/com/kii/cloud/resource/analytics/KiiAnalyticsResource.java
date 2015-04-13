@@ -17,6 +17,12 @@ import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the analytics resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/analytics
+ * </ul>
+ */
 public class KiiAnalyticsResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/analytics";

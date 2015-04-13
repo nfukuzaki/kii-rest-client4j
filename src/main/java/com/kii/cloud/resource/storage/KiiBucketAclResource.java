@@ -6,6 +6,16 @@ import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.storage.KiiAcl.BucketAction;
 import com.kii.cloud.model.storage.KiiAcl.Subject;
 
+/**
+ * Represents the bucket acl resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_NAME}/acl
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_NAME}/acl
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_NAME}/acl
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_NAME}/acl
+ * </ul>
+ *
+ */
 public class KiiBucketAclResource extends KiiAclResource {
 	public KiiBucketAclResource(KiiBucketResource parent) {
 		super(parent);
