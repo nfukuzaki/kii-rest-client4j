@@ -1,4 +1,6 @@
-package com.kii.cloud.resource;
+package com.kii.cloud.resource.conf;
+
+import com.kii.cloud.resource.KiiRestSubResource;
 
 public class KiiThingTypesConfigurationResource extends KiiRestSubResource {
 	

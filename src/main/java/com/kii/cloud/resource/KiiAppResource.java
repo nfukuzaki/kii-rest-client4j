@@ -9,6 +9,7 @@ import com.kii.cloud.model.storage.KiiThing;
 import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.analytics.KiiAnalyticsResource;
 import com.kii.cloud.resource.analytics.KiiEventsResource;
+import com.kii.cloud.resource.conf.KiiAppConfigurationResource;
 import com.kii.cloud.resource.push.KiiPushInstallationResource;
 import com.kii.cloud.resource.push.KiiPushInstallationsResource;
 import com.kii.cloud.resource.push.KiiTopicResource;
