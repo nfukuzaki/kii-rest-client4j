@@ -14,14 +14,14 @@ public class KiiPseudoUser extends KiiUser {
 		return PROPERTY_COUNTRY.get(this.json);
 	}
 	public KiiPseudoUser setCountry(String country) {
-		this.json.addProperty(PROPERTY_COUNTRY.getName(), country);
+		PROPERTY_COUNTRY.set(this.json, country);
 		return this;
 	}
 	public String getDisplayName() {
 		return PROPERTY_DISPLAY_NAME.get(this.json);
 	}
 	public KiiPseudoUser setDisplayName(String displayName) {
-		this.json.addProperty(PROPERTY_DISPLAY_NAME.getName(), displayName);
+		PROPERTY_DISPLAY_NAME.set(this.json, displayName);
 		return this;
 	}
 	@Override

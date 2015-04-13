@@ -100,13 +100,13 @@ public class KiiUserResource extends KiiRestSubResource {
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("password", password);
 		if (!StringUtils.isEmpty(username)) {
-			requestBody.addProperty(KiiUser.PROPERTY_USERNAME.getName(), username);
+			KiiUser.PROPERTY_USERNAME.set(requestBody, username);
 		}
 		if (!StringUtils.isEmpty(email)) {
-			requestBody.addProperty(KiiUser.PROPERTY_EMAIL_ADDRESS.getName(), email);
+			KiiUser.PROPERTY_EMAIL_ADDRESS.set(requestBody, email);
 		}
 		if (!StringUtils.isEmpty(phone)) {
-			requestBody.addProperty(KiiUser.PROPERTY_PHONE_NUMBER.getName(), phone);
+			KiiUser.PROPERTY_PHONE_NUMBER.set(requestBody, phone);
 		}
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_USER_UPDATE_REQUEST, requestBody);
 		try {

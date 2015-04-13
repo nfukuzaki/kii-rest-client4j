@@ -54,7 +54,7 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 		return PROPERTY_ACCESS_TOKEN.get(this.credentials);
 	}
 	public KiiThing setAccessToken(String accessToken) {
-		credentials.addProperty(PROPERTY_ACCESS_TOKEN.getName(), accessToken);
+		PROPERTY_ACCESS_TOKEN.set(this.credentials, accessToken);
 		return this;
 	}
 	@Override
@@ -62,14 +62,14 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 		return PROPERTY_REFRESH_TOKEN.get(this.credentials);
 	}
 	public KiiThing setRefreshToken(String refreshToken) {
-		credentials.addProperty(PROPERTY_REFRESH_TOKEN.getName(), refreshToken);
+		PROPERTY_REFRESH_TOKEN.set(this.credentials, refreshToken);
 		return this;
 	}
 	public Long getCreated() {
 		return PROPERTY_CREATED.get(this.json);
 	}
 	public KiiThing setCreated(Long created) {
-		this.json.addProperty(PROPERTY_CREATED.getName(), created);
+		PROPERTY_CREATED.set(this.json, created);
 		return this;
 	}
 	@Override
@@ -81,7 +81,7 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 		return PROPERTY_THING_ID.get(this.json);
 	}
 	public KiiThing setThingID(String thingID) {
-		this.json.addProperty(PROPERTY_THING_ID.getName(), thingID);
+		PROPERTY_THING_ID.set(this.json, thingID);
 		return this;
 	}
 	
@@ -89,119 +89,119 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 		return PROPERTY_VENDOR_THING_ID.get(this.json);
 	}
 	public KiiThing setVendorThingID(String vendorThingID) {
-		this.json.addProperty(PROPERTY_VENDOR_THING_ID.getName(), vendorThingID);
+		PROPERTY_VENDOR_THING_ID.set(this.json, vendorThingID);
 		return this;
 	}
 	public String getPassword() {
 		return PROPERTY_PASSWORD.get(this.json);
 	}
 	public KiiThing setPassword(String password) {
-		this.json.addProperty(PROPERTY_PASSWORD.getName(), password);
+		PROPERTY_PASSWORD.set(this.json, password);
 		return this;
 	}
 	public String getThingType() {
 		return PROPERTY_THING_TYPE.get(this.json);
 	}
 	public KiiThing setThingType(String thingType) {
-		this.json.addProperty(PROPERTY_THING_TYPE.getName(), thingType);
+		PROPERTY_THING_TYPE.set(this.json, thingType);
 		return this;
 	}
 	public String getVendor() {
 		return PROPERTY_VENDOR.get(this.json);
 	}
 	public KiiThing setVendor(String vendor) {
-		this.json.addProperty(PROPERTY_VENDOR.getName(), vendor);
+		PROPERTY_VENDOR.set(this.json, vendor);
 		return this;
 	}
 	public String getFirmwareVersion() {
 		return PROPERTY_FIRMWARE_VERSION.get(this.json);
 	}
 	public KiiThing setFirmwareVersion(String firmwareVersion) {
-		this.json.addProperty(PROPERTY_FIRMWARE_VERSION.getName(), firmwareVersion);
+		PROPERTY_FIRMWARE_VERSION.set(this.json, firmwareVersion);
 		return this;
 	}
 	public String getProductName() {
 		return PROPERTY_PRODUCT_NAME.get(this.json);
 	}
 	public KiiThing setProductName(String productName) {
-		this.json.addProperty(PROPERTY_PRODUCT_NAME.getName(), productName);
+		PROPERTY_PRODUCT_NAME.set(this.json, productName);
 		return this;
 	}
 	public String getLog() {
 		return PROPERTY_LOT.get(this.json);
 	}
 	public KiiThing setLog(String lot) {
-		this.json.addProperty(PROPERTY_LOT.getName(), lot);
+		PROPERTY_LOT.set(this.json, lot);
 		return this;
 	}
 	public String getStringField1() {
 		return PROPERTY_STRING_FIELD_1.get(this.json);
 	}
 	public KiiThing setStringField1(String stringField) {
-		this.json.addProperty(PROPERTY_STRING_FIELD_1.getName(), stringField);
+		PROPERTY_STRING_FIELD_1.set(this.json, stringField);
 		return this;
 	}
 	public String getStringField2() {
 		return PROPERTY_STRING_FIELD_2.get(this.json);
 	}
 	public KiiThing setStringField2(String stringField) {
-		this.json.addProperty(PROPERTY_STRING_FIELD_2.getName(), stringField);
+		PROPERTY_STRING_FIELD_2.set(this.json, stringField);
 		return this;
 	}
 	public String getStringField3() {
 		return PROPERTY_STRING_FIELD_3.get(this.json);
 	}
 	public KiiThing setStringField3(String stringField) {
-		this.json.addProperty(PROPERTY_STRING_FIELD_3.getName(), stringField);
+		PROPERTY_STRING_FIELD_3.set(this.json, stringField);
 		return this;
 	}
 	public String getStringField4() {
 		return PROPERTY_STRING_FIELD_4.get(this.json);
 	}
 	public KiiThing setStringField4(String stringField) {
-		this.json.addProperty(PROPERTY_STRING_FIELD_4.getName(), stringField);
+		PROPERTY_STRING_FIELD_4.set(this.json, stringField);
 		return this;
 	}
 	public String getStringField5() {
 		return PROPERTY_STRING_FIELD_5.get(this.json);
 	}
 	public KiiThing setStringField5(String stringField) {
-		this.json.addProperty(PROPERTY_STRING_FIELD_5.getName(), stringField);
+		PROPERTY_STRING_FIELD_5.set(this.json, stringField);
 		return this;
 	}
 	public Long getNumberField1() {
 		return PROPERTY_NUMBER_FIELD_1.get(this.json);
 	}
-	public KiiThing setNumberField1(String numberField) {
-		this.json.addProperty(PROPERTY_NUMBER_FIELD_1.getName(), numberField);
+	public KiiThing setNumberField1(Long numberField) {
+		PROPERTY_NUMBER_FIELD_1.set(this.json, numberField);
 		return this;
 	}
 	public Long getNumberField2() {
 		return PROPERTY_NUMBER_FIELD_2.get(this.json);
 	}
-	public KiiThing setNumberField2(String numberField) {
-		this.json.addProperty(PROPERTY_NUMBER_FIELD_2.getName(), numberField);
+	public KiiThing setNumberField2(Long numberField) {
+		PROPERTY_NUMBER_FIELD_2.set(this.json, numberField);
 		return this;
 	}
 	public Long getNumberField3() {
 		return PROPERTY_NUMBER_FIELD_3.get(this.json);
 	}
-	public KiiThing setNumberField3(String numberField) {
-		this.json.addProperty(PROPERTY_NUMBER_FIELD_3.getName(), numberField);
+	public KiiThing setNumberField3(Long numberField) {
+		PROPERTY_NUMBER_FIELD_3.set(this.json, numberField);
 		return this;
 	}
 	public Long getNumberField4() {
 		return PROPERTY_NUMBER_FIELD_4.get(this.json);
 	}
-	public KiiThing setNumberField4(String numberField) {
-		this.json.addProperty(PROPERTY_NUMBER_FIELD_4.getName(), numberField);
+	public KiiThing setNumberField4(Long numberField) {
+		PROPERTY_NUMBER_FIELD_4.set(this.json, numberField);
 		return this;
 	}
 	public Long getNumberField5() {
 		return PROPERTY_NUMBER_FIELD_5.get(this.json);
 	}
-	public KiiThing setNumberField5(String numberField) {
-		this.json.addProperty(PROPERTY_NUMBER_FIELD_5.getName(), numberField);
+	public KiiThing setNumberField5(Long numberField) {
+		PROPERTY_NUMBER_FIELD_5.set(this.json, numberField);
 		return this;
 	}
 	public String getIdentifier() {

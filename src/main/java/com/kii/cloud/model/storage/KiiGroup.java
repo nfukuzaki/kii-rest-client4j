@@ -23,21 +23,21 @@ public class KiiGroup extends KiiJsonModel {
 		return PROPERTY_GROUP_ID.get(this.json);
 	}
 	public KiiGroup setGroupID(String groupID) {
-		this.json.addProperty(PROPERTY_GROUP_ID.getName(), groupID);
+		PROPERTY_GROUP_ID.set(this.json, groupID);
 		return this;
 	}
 	public String getName() {
 		return PROPERTY_NAME.get(this.json);
 	}
 	public KiiGroup setName(String name) {
-		this.json.addProperty(PROPERTY_NAME.getName(), name);
+		PROPERTY_NAME.set(this.json, name);
 		return this;
 	}
 	public String getOwner() {
 		return PROPERTY_OWNER.get(this.json);
 	}
 	public KiiGroup setOwner(String userID) {
-		this.json.addProperty(PROPERTY_OWNER.getName(), userID);
+		PROPERTY_OWNER.set(this.json, userID);
 		return this;
 	}
 }

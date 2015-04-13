@@ -30,7 +30,10 @@ public class KiiScheduleExecutionResult extends KiiJsonModel {
 		return PROPERTY_JOB_NAME.get(this.json);
 	}
 	public Status getStatus() {
-		return Enum.valueOf(Status.class, PROPERTY_STATUS.get(this.json));
+		if (PROPERTY_STATUS.has(this.json)) {
+			return Enum.valueOf(Status.class, PROPERTY_STATUS.get(this.json));
+		}
+		return null;
 	}
 	public Long getStartedAt() {
 		return PROPERTY_STARTED_AT.get(this.json);

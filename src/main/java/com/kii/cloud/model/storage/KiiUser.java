@@ -57,7 +57,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 		return PROPERTY_ACCESS_TOKEN.get(this.credentials);
 	}
 	public KiiUser setAccessToken(String accessToken) {
-		credentials.addProperty(PROPERTY_ACCESS_TOKEN.getName(), accessToken);
+		PROPERTY_ACCESS_TOKEN.set(this.credentials, accessToken);
 		return this;
 	}
 	@Override
@@ -65,7 +65,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 		return PROPERTY_REFRESH_TOKEN.get(this.credentials);
 	}
 	public KiiUser setRefreshToken(String refreshToken) {
-		credentials.addProperty(PROPERTY_REFRESH_TOKEN.getName(), refreshToken);
+		PROPERTY_REFRESH_TOKEN.set(this.credentials, refreshToken);
 		return this;
 	}
 	@Override
@@ -79,7 +79,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 		return PROPERTY_USER_ID.get(this.json);
 	}
 	public KiiUser setUserID(String userID) {
-		this.json.addProperty(PROPERTY_USER_ID.getName(), userID);
+		PROPERTY_USER_ID.set(this.json, userID);
 		return this;
 	}
 	public boolean isDisabled() {

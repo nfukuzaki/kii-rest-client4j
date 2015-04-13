@@ -44,7 +44,7 @@ public class KiiGroupsResource extends KiiRestSubResource {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = GsonUtils.clone(group.getJsonObject());
 		if (members != null) {
-			requestBody.add(KiiGroupMembers.PROPERTY_MEMBERS.getName(), members.toJsonArrayAsRequest());
+			KiiGroupMembers.PROPERTY_MEMBERS.set(requestBody, members.toJsonArrayAsRequest());
 		}
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_GROUP_CREATION_REQUEST, requestBody);
 		try {

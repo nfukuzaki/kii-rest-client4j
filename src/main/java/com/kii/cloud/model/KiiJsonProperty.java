@@ -56,6 +56,28 @@ public class KiiJsonProperty<T> {
 		}
 		return null;
 	}
+	public void set(JsonObject json, T value) {
+		if (json == null) {
+			return;
+		}
+		if (this.propertyType == String.class) {
+			json.addProperty(this.getName(), (String)value);
+		} else if (this.propertyType == Integer.class) {
+			json.addProperty(this.getName(), (Integer)value);
+		} else if (this.propertyType == Long.class) {
+			json.addProperty(this.getName(), (Long)value);
+		} else if (this.propertyType == BigDecimal.class) {
+			json.addProperty(this.getName(), (BigDecimal)value);
+		} else if (this.propertyType == JsonObject.class) {
+			json.add(this.getName(), (JsonObject)value);
+		} else if (this.propertyType == JsonArray.class) {
+			json.add(this.getName(), (JsonArray)value);
+		} else if (this.propertyType == Boolean.class) {
+			json.addProperty(this.getName(), (Boolean)value);
+		} else {
+			throw new RuntimeException("Unexpected type of property.");
+		}
+	}
 	private String getString(JsonObject json) {
 		if (json.has(this.name)) {
 			return GsonUtils.getString(json, this.name);

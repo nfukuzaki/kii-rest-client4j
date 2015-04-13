@@ -25,7 +25,7 @@ public class KiiGroupMembers extends KiiJsonModel {
 	 */
 	public List<String> getMembers() {
 		List<String> members = new ArrayList<>();
-		if (this.json.has(PROPERTY_MEMBERS.getName())) {
+		if (PROPERTY_MEMBERS.has(this.json)) {
 			JsonArray array = PROPERTY_MEMBERS.get(this.json);
 			for (int i = 0; i < array.size(); i++) {
 				JsonElement member = array.get(i);
@@ -42,11 +42,11 @@ public class KiiGroupMembers extends KiiJsonModel {
 	}
 	public KiiGroupMembers addMember(String userID) {
 		JsonArray members = null;
-		if (this.json.has(PROPERTY_MEMBERS.getName())) {
+		if (PROPERTY_MEMBERS.has(this.json)) {
 			members = PROPERTY_MEMBERS.get(this.json);
 		} else {
 			members = new JsonArray();
-			this.json.add(PROPERTY_MEMBERS.getName(), members);
+			PROPERTY_MEMBERS.set(this.json, members);
 		}
 		JsonObject member = new JsonObject();
 		member.addProperty(PROPERTY_USER_ID.getName(), userID);

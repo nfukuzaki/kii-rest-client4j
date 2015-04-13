@@ -24,56 +24,56 @@ public class KiiMqttEndpoint extends KiiJsonModel {
 		return PROPERTY_INSTALLATION_ID.get(this.json);
 	}
 	public KiiMqttEndpoint setInstallationID(String installationID) {
-		this.json.addProperty(PROPERTY_INSTALLATION_ID.getName(), installationID);
+		PROPERTY_INSTALLATION_ID.set(this.json, installationID);
 		return this;
 	}
 	public String getUsername() {
 		return PROPERTY_USERNAME.get(this.json);
 	}
 	public KiiMqttEndpoint setUsername(String username) {
-		this.json.addProperty(PROPERTY_USERNAME.getName(), username);
+		PROPERTY_USERNAME.set(this.json, username);
 		return this;
 	}
 	public String getPassword() {
 		return PROPERTY_PASSWORD.get(this.json);
 	}
 	public KiiMqttEndpoint setPassword(String password) {
-		this.json.addProperty(PROPERTY_PASSWORD.getName(), password);
+		PROPERTY_PASSWORD.set(this.json, password);
 		return this;
 	}
 	public String getMqttTopic() {
 		return PROPERTY_MQTT_TOPIC.get(this.json);
 	}
 	public KiiMqttEndpoint setMqttTopic(String mqttTopic) {
-		this.json.addProperty(PROPERTY_MQTT_TOPIC.getName(), mqttTopic);
+		PROPERTY_MQTT_TOPIC.set(this.json, mqttTopic);
 		return this;
 	}
 	public String getHost() {
 		return PROPERTY_HOST.get(this.json);
 	}
 	public KiiMqttEndpoint setHost(String host) {
-		this.json.addProperty(PROPERTY_HOST.getName(), host);
+		PROPERTY_HOST.set(this.json, host);
 		return this;
 	}
 	public int getPortTcp() {
 		return PROPERTY_PORT_TCP.get(this.json);
 	}
 	public KiiMqttEndpoint setPortTcp(int portTcp) {
-		this.json.addProperty(PROPERTY_PORT_TCP.getName(), portTcp);
+		PROPERTY_PORT_TCP.set(this.json, portTcp);
 		return this;
 	}
 	public int getPortSsl() {
 		return PROPERTY_PORT_SSL.get(this.json);
 	}
 	public KiiMqttEndpoint setPortSsl(int portSsl) {
-		this.json.addProperty(PROPERTY_PORT_SSL.getName(), portSsl);
+		PROPERTY_PORT_SSL.set(this.json, portSsl);
 		return this;
 	}
 	public int getMqttTtl() {
 		return PROPERTY_X_MQTT_TTL.get(this.json);
 	}
 	public KiiMqttEndpoint setMqttTtl(int mqttTtl) {
-		this.json.addProperty(PROPERTY_X_MQTT_TTL.getName(), mqttTtl);
+		PROPERTY_X_MQTT_TTL.set(this.json, mqttTtl);
 		return this;
 	}
 }

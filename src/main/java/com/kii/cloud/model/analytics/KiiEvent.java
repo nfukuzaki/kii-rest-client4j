@@ -15,28 +15,28 @@ public class KiiEvent extends KiiCustomableJsonModel<KiiEvent> {
 		return PROPERTY_TYPE.get(this.json);
 	}
 	public KiiEvent setType(String type) {
-		this.json.addProperty(PROPERTY_TYPE.getName(), type);
+		PROPERTY_TYPE.set(this.json, type);
 		return this;
 	}
 	public String getDeviceID() {
 		return PROPERTY_DEVICE_ID.get(this.json);
 	}
 	public KiiEvent setDeviceID(String deviceID) {
-		this.json.addProperty(PROPERTY_DEVICE_ID.getName(), deviceID);
+		PROPERTY_DEVICE_ID.set(this.json, deviceID);
 		return this;
 	}
 	public Long getTriggeredAt() {
 		return PROPERTY_TRIGGERED_AT.get(this.json);
 	}
 	public KiiEvent setTriggeredAt(Long triggeredAt) {
-		this.json.addProperty(PROPERTY_TRIGGERED_AT.getName(), triggeredAt);
+		PROPERTY_TRIGGERED_AT.set(this.json, triggeredAt);
 		return this;
 	}
 	public Long getUploadedAt() {
 		return PROPERTY_UPLOADED_AT.get(this.json);
 	}
 	public KiiEvent setUploadedAt(Long uploadedAt) {
-		this.json.addProperty(PROPERTY_UPLOADED_AT.getName(), uploadedAt);
+		PROPERTY_UPLOADED_AT.set(this.json, uploadedAt);
 		return this;
 	}
 }

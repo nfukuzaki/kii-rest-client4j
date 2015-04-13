@@ -30,36 +30,38 @@ public class KiiPushInstallation extends KiiJsonModel {
 		return PROPERTY_INSTALLATION_ID.get(this.json);
 	}
 	public KiiPushInstallation setInstallationID(String installationID) {
-		this.json.addProperty(PROPERTY_INSTALLATION_ID.getName(), installationID);
+		PROPERTY_INSTALLATION_ID.set(this.json, installationID);
 		return this;
 	}
 	public String getInstallationRegistrationID() {
 		return PROPERTY_INSTALLATION_REGISTRATION_ID.get(this.json);
 	}
 	public KiiPushInstallation setInstallationRegistrationID(String installationRegistrationID) {
-		this.json.addProperty(PROPERTY_INSTALLATION_REGISTRATION_ID.getName(), installationRegistrationID);
+		PROPERTY_INSTALLATION_REGISTRATION_ID.set(this.json, installationRegistrationID);
 		return this;
 	}
 	public InstallationType getEnstallationType() {
-		String installationType = PROPERTY_INSTALLATION_TYPE.get(this.json);
-		return Enum.valueOf(InstallationType.class, installationType);
+		if (PROPERTY_INSTALLATION_TYPE.has(this.json)) {
+			return Enum.valueOf(InstallationType.class, PROPERTY_INSTALLATION_TYPE.get(this.json));
+		}
+		return null;
 	}
 	public KiiPushInstallation setInstallationType(InstallationType installationType) {
-		this.json.addProperty(PROPERTY_INSTALLATION_TYPE.getName(), installationType.name());
+		PROPERTY_INSTALLATION_TYPE.set(this.json, installationType.name());
 		return this;
 	}
 	public String getUserID() {
 		return PROPERTY_USER_ID.get(this.json);
 	}
 	public KiiPushInstallation setUserID(String userID) {
-		this.json.addProperty(PROPERTY_USER_ID.getName(), userID);
+		PROPERTY_USER_ID.set(this.json, userID);
 		return this;
 	}
 	public String getThingID() {
 		return PROPERTY_THING_ID.get(this.json);
 	}
 	public KiiPushInstallation setThingID(String thingID) {
-		this.json.addProperty(PROPERTY_THING_ID.getName(), thingID);
+		PROPERTY_THING_ID.set(this.json, thingID);
 		return this;
 	}
 	public boolean getDevelopment() {
@@ -69,7 +71,7 @@ public class KiiPushInstallation extends KiiJsonModel {
 		return PROPERTY_DEVELOPMENT.get(this.json);
 	}
 	public KiiPushInstallation setDevelopment(boolean development) {
-		this.json.addProperty(PROPERTY_DEVELOPMENT.getName(), development);
+		PROPERTY_DEVELOPMENT.set(this.json, development);
 		return this;
 	}
 }
