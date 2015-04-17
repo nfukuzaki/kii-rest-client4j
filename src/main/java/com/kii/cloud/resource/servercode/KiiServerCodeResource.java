@@ -1,9 +1,7 @@
 package com.kii.cloud.resource.servercode;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-import java.util.zip.ZipInputStream;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
