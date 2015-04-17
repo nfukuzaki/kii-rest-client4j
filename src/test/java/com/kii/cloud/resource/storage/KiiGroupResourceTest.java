@@ -1,4 +1,4 @@
-package com.kii.cloud.group;
+package com.kii.cloud.resource.storage;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

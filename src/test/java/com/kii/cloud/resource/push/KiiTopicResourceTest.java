@@ -1,4 +1,4 @@
-package com.kii.cloud.push;
+package com.kii.cloud.resource.push;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;

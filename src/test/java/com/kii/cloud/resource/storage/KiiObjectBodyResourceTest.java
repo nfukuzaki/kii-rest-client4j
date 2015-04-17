@@ -1,4 +1,4 @@
-package com.kii.cloud.object;
+package com.kii.cloud.resource.storage;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;

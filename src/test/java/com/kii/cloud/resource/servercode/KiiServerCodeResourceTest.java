@@ -1,4 +1,4 @@
-package com.kii.cloud.servercode;
+package com.kii.cloud.resource.servercode;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

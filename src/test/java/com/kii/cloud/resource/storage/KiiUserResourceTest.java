@@ -1,4 +1,4 @@
-package com.kii.cloud.user;
+package com.kii.cloud.resource.storage;
 
 import static org.junit.Assert.assertEquals;
 
