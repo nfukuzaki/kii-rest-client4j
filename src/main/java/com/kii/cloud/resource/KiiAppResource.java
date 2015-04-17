@@ -21,6 +21,7 @@ import com.kii.cloud.resource.servercode.KiiServerCodeHookResource;
 import com.kii.cloud.resource.servercode.KiiServerCodeHooksResource;
 import com.kii.cloud.resource.servercode.KiiServerCodeResource;
 import com.kii.cloud.resource.servercode.KiiServerCodesResource;
+import com.kii.cloud.resource.social.SocialIntegrationResource;
 import com.kii.cloud.resource.storage.KiiBucketResource;
 import com.kii.cloud.resource.storage.KiiEncryptedBucketResource;
 import com.kii.cloud.resource.storage.KiiGroupResource;
@@ -137,6 +138,9 @@ public class KiiAppResource extends KiiRestResource {
 	}
 	public KiiAggregationRuleResource aggregationRules(String aggregationRuleID) {
 		return new KiiAggregationRuleResource(this.aggregationRules(), aggregationRuleID);
+	}
+	public SocialIntegrationResource social() {
+		return new SocialIntegrationResource(this);
 	}
 	
 	@Override
