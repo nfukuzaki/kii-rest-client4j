@@ -18,7 +18,7 @@ public class GsonUtils {
 		if (json == null || json.isJsonNull()) {
 			return null;
 		}
-		if (json.has(name)) {
+		if (json.has(name) && !json.get(name).isJsonNull()) {
 			return json.get(name).getAsString();
 		}
 		return null;
@@ -27,7 +27,7 @@ public class GsonUtils {
 		if (json == null || json.isJsonNull()) {
 			return null;
 		}
-		if (json.has(name)) {
+		if (json.has(name) && !json.get(name).isJsonNull()) {
 			return json.get(name).getAsBoolean();
 		}
 		return null;
@@ -36,7 +36,7 @@ public class GsonUtils {
 		if (json == null || json.isJsonNull()) {
 			return null;
 		}
-		if (json.has(name)) {
+		if (json.has(name) && !json.get(name).isJsonNull()) {
 			return json.get(name).getAsInt();
 		}
 		return null;
@@ -45,7 +45,7 @@ public class GsonUtils {
 		if (json == null || json.isJsonNull()) {
 			return null;
 		}
-		if (json.has(name)) {
+		if (json.has(name) && !json.get(name).isJsonNull()) {
 			return json.get(name).getAsLong();
 		}
 		return null;
@@ -54,7 +54,7 @@ public class GsonUtils {
 		if (json == null || json.isJsonNull()) {
 			return null;
 		}
-		if (json.has(name)) {
+		if (json.has(name) && !json.get(name).isJsonNull()) {
 			return json.get(name).getAsBigDecimal();
 		}
 		return null;
@@ -63,7 +63,7 @@ public class GsonUtils {
 		if (json == null || json.isJsonNull()) {
 			return null;
 		}
-		if (json.has(name)) {
+		if (json.has(name) && !json.get(name).isJsonNull()) {
 			return json.get(name).getAsJsonObject();
 		}
 		return null;
@@ -72,7 +72,7 @@ public class GsonUtils {
 		if (json == null || json.isJsonNull()) {
 			return null;
 		}
-		if (json.has(name)) {
+		if (json.has(name) && !json.get(name).isJsonNull()) {
 			return json.get(name).getAsJsonArray();
 		}
 		return null;

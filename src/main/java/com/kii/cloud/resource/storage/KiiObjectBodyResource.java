@@ -118,7 +118,8 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 */
 	public void upload(String contentType, InputStream stream) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MediaType.parse(contentType), stream);
+//		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MediaType.parse(contentType), stream);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, null, stream);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);

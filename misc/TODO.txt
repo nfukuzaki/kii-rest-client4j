@@ -1,4 +1,3 @@
-Management aggregation rule and conversion rule
 Management server configuration
 ABTest
 Social

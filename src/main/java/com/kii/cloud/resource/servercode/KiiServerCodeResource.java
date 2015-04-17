@@ -77,7 +77,7 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 		if (args == null) {
 			args = new JsonObject();
 		}
-		KiiRestRequest request = new KiiRestRequest(getUrl("/" + endpoint), Method.PUT, headers, MEDIA_TYPE_APPLICATION_JSON, args);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/" + endpoint), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, args);
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
