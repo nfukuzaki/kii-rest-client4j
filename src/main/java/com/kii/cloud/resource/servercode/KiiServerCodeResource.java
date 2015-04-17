@@ -40,14 +40,12 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	@AdminAPI
-	public ZipInputStream get() throws KiiRestException {
+	public String get() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		headers.put("Accept", "application/zip");
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
 		try {
 			Response response = this.execute(request);
-			InputStream responseBody = this.parseResponseAsInputStream(request, response);
-			return new ZipInputStream(responseBody);
+			return this.parseResponseAsString(request, response);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

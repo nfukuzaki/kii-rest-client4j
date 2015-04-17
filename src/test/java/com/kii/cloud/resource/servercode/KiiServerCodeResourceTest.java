@@ -1,20 +1,30 @@
 package com.kii.cloud.resource.servercode;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRest;
+import com.kii.cloud.KiiRestException;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestAppFilter;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiAdminCredentials;
+import com.kii.cloud.model.servercode.KiiServerCodeVersion;
+import com.kii.cloud.util.GsonUtils;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiServerCodeResourceTest {
 	@Test
-	public void test() throws Exception {
+	public void executeCurrentVersionTest() throws Exception {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
@@ -22,85 +32,89 @@ public class KiiServerCodeResourceTest {
 		rest.setCredentials(cred);
 		
 		StringBuilder javascript = new StringBuilder();
-		javascript.append("function updateObject(params, context, done){" + "\n");
-		javascript.append("    console.log(\"updateObject\");" + "\n");
-		javascript.append("    Kii.initializeWithSite(context.headers[\"X-Kii-AppID\"], context.headers[\"X-Kii-AppKey\"], params[\"baseUrl\"]);" + "\n");
-		javascript.append("    var uri = params[\"uri\"];" + "\n");
-		javascript.append("    var score = params[\"score\"];" + "\n");
-		javascript.append("    var name = params[\"name\"];" + "\n");
-		javascript.append("    var token = context.getAccessToken();" + "\n");
-		javascript.append("    KiiUser.authenticateWithToken(token, {" + "\n");
-		javascript.append("        success: function(theAuthedUser) {" + "\n");
-		javascript.append("            var object = KiiObject.objectWithURI(uri);" + "\n");
-		javascript.append("            object.set(\"score\", score);" + "\n");
-		javascript.append("            object.set(\"name\", name);" + "\n");
-		javascript.append("            object.save({" + "\n");
-		javascript.append("              success: function(theObject) {" + "\n");
-		javascript.append("                done(theObject);" + "\n");
-		javascript.append("              }," + "\n");
-		javascript.append("              failure: function(theObject, errorString) {" + "\n");
-		javascript.append("                done(errorString);" + "\n");
-		javascript.append("              }" + "\n");
-		javascript.append("            });" + "\n");
-		javascript.append("        }," + "\n");
-		javascript.append("        failure: function(theUser, anErrorString) {" + "\n");
-		javascript.append("            done(anErrorString);" + "\n");
-		javascript.append("        }" + "\n");
-		javascript.append("    });" + "\n");
-		javascript.append("    " + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnUndefined(params,context){" + "\n");
-		javascript.append("    console.log(\"returnUndefined\");" + "\n");
-		javascript.append("    var test;" + "\n");
-		javascript.append("    return test;" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnNull(params,context){" + "\n");
-		javascript.append("    console.log(\"returnNull\");" + "\n");
-		javascript.append("    return null;" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnObject(params,context){" + "\n");
-		javascript.append("    console.log(\"returnObject\");" + "\n");
-		javascript.append("    return {int:5, bool:false, str:\"string\", double:2.1234};" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnArray(params,context){" + "\n");
-		javascript.append("    console.log(\"returnArray\");" + "\n");
-		javascript.append("    return [1];" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnNumber(params,context){" + "\n");
+		javascript.append("function returnNumber(params, context){" + "\n");
 		javascript.append("    console.log(\"returnNumber\");" + "\n");
 		javascript.append("    return 3.14;" + "\n");
 		javascript.append("}" + "\n");
-		javascript.append("function returnString(params,context){" + "\n");
-		javascript.append("    console.log(\"returnString\");" + "\n");
-		javascript.append("    return \"cloud-code\";" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnBool(params,context){" + "\n");
-		javascript.append("    console.log(\"returnBool\");" + "\n");
-		javascript.append("    return true;" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnDate(params,context){" + "\n");
-		javascript.append("    console.log(\"returnDate\");" + "\n");
-		javascript.append("    return new Date(2013,07,01,01,01,01);" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnMap(params,context){" + "\n");
-		javascript.append("    console.log(\"returnMap\");" + "\n");
-		javascript.append("    var map = {};" + "\n");
-		javascript.append("    map['key1'] = 'value1';" + "\n");
-		javascript.append("    return map;" + "\n");
-		javascript.append("}" + "\n");
-		javascript.append("function returnFunction(params,context){" + "\n");
-		javascript.append("    console.log(\"returnFunction\");" + "\n");
-		javascript.append("    function a(x){" + "\n");
-		javascript.append("        return function (y) {" + "\n");
-		javascript.append("            return x + y;" + "\n");
-		javascript.append("        }" + "\n");
-		javascript.append("     }" + "\n");
-		javascript.append("    return a(10);" + "\n");
-		javascript.append("}" + "\n");
 		String versionID = rest.api().servercode().deploy(javascript.toString());
+		rest.api().servercode().setCurrentVersion(versionID);
 		
 		rest.setCredentials(null);
-		JsonObject result = rest.api().servercode(versionID).execute("returnMap", null);
-		System.out.println(result);
+		JsonObject result = rest.api().servercode("current").execute("returnNumber", null);
+		assertEquals(new BigDecimal("3.14"), GsonUtils.getBigDecimal(result, "returnedValue"));
+		assertEquals(2, (int)GsonUtils.getInt(result, "x_step_count"));
+	}
+	@Test
+	public void executeSpecifiedVersionTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		
+		StringBuilder javascript1 = new StringBuilder();
+		javascript1.append("function returnNumber(params, context){" + "\n");
+		javascript1.append("    console.log(\"returnNumber\");" + "\n");
+		javascript1.append("    return 3.14;" + "\n");
+		javascript1.append("}" + "\n");
+		String versionID1 = rest.api().servercode().deploy(javascript1.toString());
+		rest.api().servercode().setCurrentVersion(versionID1);
+		
+		StringBuilder javascript2 = new StringBuilder();
+		javascript2.append("function returnNumber(params, context){" + "\n");
+		javascript2.append("    console.log(\"returnNumber\");" + "\n");
+		javascript2.append("    return 3;" + "\n");
+		javascript2.append("}" + "\n");
+		String versionID2 = rest.api().servercode().deploy(javascript2.toString());
+		rest.api().servercode().setCurrentVersion(versionID2);
+		
+		rest.setCredentials(null);
+		JsonObject result = rest.api().servercode(versionID1).execute("returnNumber", null);
+		assertEquals(new BigDecimal("3.14"), GsonUtils.getBigDecimal(result, "returnedValue"));
+		assertEquals(2, (int)GsonUtils.getInt(result, "x_step_count"));
+	}
+	@Test
+	public void manageServerCodeTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		
+		// deploying server code
+		StringBuilder javascript = new StringBuilder();
+		javascript.append("function returnNumber(params, context){" + "\n");
+		javascript.append("    return 3.14;" + "\n");
+		javascript.append("}" + "\n");
+		String versionID = rest.api().servercode().deploy(javascript.toString());
+		// set current version
+		rest.api().servercode().setCurrentVersion(versionID);
+		String currentVersionID = rest.api().servercode().getCurrentVersion();
+		assertEquals(versionID, currentVersionID);
+		// reset current version
+		rest.api().servercode().resetCurrentVersion();
+		try {
+			currentVersionID = rest.api().servercode().getCurrentVersion();
+			fail("KiiRestException must be thrown.");
+		} catch (KiiRestException e) {
+			assertEquals(404, e.getStatus());
+		}
+		// listing all versions
+		List<KiiServerCodeVersion> versionIdList = rest.api().servercode().list();
+		int versionsCount = versionIdList.size();
+		assertTrue(1 < versionsCount);
+		
+		// getting server code.
+		String script = rest.api().servercode(versionID).get();
+		assertEquals(javascript.toString(), script);
+		
+		// deleting server code
+		rest.api().servercode(versionID).delete();
+		try {
+			rest.api().servercode(versionID).get();
+			fail("KiiRestException must be thrown.");
+		} catch (KiiRestException e) {
+			assertEquals(404, e.getStatus());
+		}
 	}
 }
