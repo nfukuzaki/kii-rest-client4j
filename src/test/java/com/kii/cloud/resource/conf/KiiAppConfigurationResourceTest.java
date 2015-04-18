@@ -21,5 +21,7 @@ public class KiiAppConfigurationResourceTest {
 		rest.setCredentials(cred);
 		
 		rest.api().configuration().parameters().get();
+		
+		rest.api().configuration().parameters().set("defaultTokenExpirationSeconds", Integer.MAX_VALUE);
 	}
 }

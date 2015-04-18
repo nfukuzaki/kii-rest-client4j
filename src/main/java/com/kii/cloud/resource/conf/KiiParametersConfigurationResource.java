@@ -32,6 +32,23 @@ public class KiiParametersConfigurationResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	@AdminAPI
+	public void set(String name, Object value) throws KiiRestException {
+		String requestBody = null;
+		if (value == null) {
+			requestBody = "null";
+		} else {
+			requestBody = value.toString();
+		}
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/" + name), Method.PUT, headers, MEDIA_TYPE_TEXT_PLAIN, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
 	@Override
 	public String getPath() {
 		return BASE_PATH;
