@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiCustomableJsonModel;
 import com.kii.cloud.model.KiiJsonProperty;
+import com.kii.cloud.model.validation.RangeLengthValidator;
+import com.kii.cloud.model.validation.RegularExpressionValidator;
 
 public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements KiiCredentialsContainer {
 	
@@ -13,6 +15,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public static final Pattern GLOBAL_PHONE_PATTERN = Pattern.compile("^[\\+][0-9.-]+");
 	public static final Pattern LOCAL_PHONE_PATTERN = Pattern.compile("^[0-9]*$");
 	public static final Pattern USER_ID_PATTERN = Pattern.compile("^[a-z0-9]{12}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{8}$");
+	public static final Pattern COUNTRY_PATTERN = Pattern.compile("^[A-Z]{2}$");
 	public static final Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
 			"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
 			"\\@" +
@@ -28,12 +31,12 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public static final KiiJsonProperty<Long> PROPERTY_EXPIRES_IN = new KiiJsonProperty<Long>(Long.class, "expires_in");
 	public static final KiiJsonProperty<String> PROPERTY_USER_ID = new KiiJsonProperty<String>(String.class, "userID", "id");
 	public static final KiiJsonProperty<String> PROPERTY_INTERNAL_USER_ID = new KiiJsonProperty<String>(String.class, "internalUserID");
-	public static final KiiJsonProperty<String> PROPERTY_USERNAME = new KiiJsonProperty<String>(String.class, "loginName");
-	public static final KiiJsonProperty<String> PROPERTY_DISPLAY_NAME = new KiiJsonProperty<String>(String.class, "displayName");
-	public static final KiiJsonProperty<String> PROPERTY_COUNTRY = new KiiJsonProperty<String>(String.class, "country");
-	public static final KiiJsonProperty<String> PROPERTY_EMAIL_ADDRESS = new KiiJsonProperty<String>(String.class, "emailAddress");
+	public static final KiiJsonProperty<String> PROPERTY_USERNAME = new KiiJsonProperty<String>(String.class, "loginName", new RegularExpressionValidator(USERNAME_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_DISPLAY_NAME = new KiiJsonProperty<String>(String.class, "displayName", new RangeLengthValidator(1, 50));
+	public static final KiiJsonProperty<String> PROPERTY_COUNTRY = new KiiJsonProperty<String>(String.class, "country", new RegularExpressionValidator(COUNTRY_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_EMAIL_ADDRESS = new KiiJsonProperty<String>(String.class, "emailAddress", new RegularExpressionValidator(EMAIL_ADDRESS_PATTERN));
 	public static final KiiJsonProperty<Boolean> PROPERTY_EMAIL_ADDRESS_VERIFIED = new KiiJsonProperty<Boolean>(Boolean.class, "emailAddressVerified");
-	public static final KiiJsonProperty<String> PROPERTY_PHONE_NUMBER = new KiiJsonProperty<String>(String.class, "phoneNumber");
+	public static final KiiJsonProperty<String> PROPERTY_PHONE_NUMBER = new KiiJsonProperty<String>(String.class, "phoneNumber", new RegularExpressionValidator(GLOBAL_PHONE_PATTERN, LOCAL_PHONE_PATTERN));
 	public static final KiiJsonProperty<Boolean> PROPERTY_PHONE_NUMBER_VERIFIED = new KiiJsonProperty<Boolean>(Boolean.class, "phoneNumberVerified");
 	public static final KiiJsonProperty<Boolean> PROPERTY_HAS_PASSWORD = new KiiJsonProperty<Boolean>(Boolean.class, "_hasPassword");
 	public static final KiiJsonProperty<Boolean> PROPERTY_DISABLED = new KiiJsonProperty<Boolean>(Boolean.class, "_disabled");

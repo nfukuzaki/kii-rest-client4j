@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiCustomableJsonModel;
 import com.kii.cloud.model.KiiJsonProperty;
+import com.kii.cloud.model.validation.RegularExpressionValidator;
 
 public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCredentialsContainer {
 	
@@ -17,18 +18,18 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 	public static final KiiJsonProperty<String> PROPERTY_ACCESS_TOKEN = new KiiJsonProperty<String>(String.class, "_accessToken");
 	public static final KiiJsonProperty<String> PROPERTY_REFRESH_TOKEN = new KiiJsonProperty<String>(String.class, "_refreshToken");
 	public static final KiiJsonProperty<String> PROPERTY_THING_ID = new KiiJsonProperty<String>(String.class, "_thingID");
-	public static final KiiJsonProperty<String> PROPERTY_VENDOR_THING_ID = new KiiJsonProperty<String>(String.class, "_vendorThingID");
-	public static final KiiJsonProperty<String> PROPERTY_PASSWORD = new KiiJsonProperty<String>(String.class, "_password");
-	public static final KiiJsonProperty<String> PROPERTY_THING_TYPE = new KiiJsonProperty<String>(String.class, "_thingType");
-	public static final KiiJsonProperty<String> PROPERTY_VENDOR = new KiiJsonProperty<String>(String.class, "_vendor");
-	public static final KiiJsonProperty<String> PROPERTY_FIRMWARE_VERSION = new KiiJsonProperty<String>(String.class, "_firmwareVersion");
-	public static final KiiJsonProperty<String> PROPERTY_PRODUCT_NAME = new KiiJsonProperty<String>(String.class, "_productName");
-	public static final KiiJsonProperty<String> PROPERTY_LOT = new KiiJsonProperty<String>(String.class, "_lot");
-	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_1 = new KiiJsonProperty<String>(String.class, "_stringField1");
-	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_2 = new KiiJsonProperty<String>(String.class, "_stringField2");
-	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_3 = new KiiJsonProperty<String>(String.class, "_stringField3");
-	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_4 = new KiiJsonProperty<String>(String.class, "_stringField4");
-	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_5 = new KiiJsonProperty<String>(String.class, "_stringField5");
+	public static final KiiJsonProperty<String> PROPERTY_VENDOR_THING_ID = new KiiJsonProperty<String>(String.class, "_vendorThingID", new RegularExpressionValidator(VENDOR_THING_ID_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_PASSWORD = new KiiJsonProperty<String>(String.class, "_password", new RegularExpressionValidator(THING_PASSWORD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_THING_TYPE = new KiiJsonProperty<String>(String.class, "_thingType", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_VENDOR = new KiiJsonProperty<String>(String.class, "_vendor", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_FIRMWARE_VERSION = new KiiJsonProperty<String>(String.class, "_firmwareVersion", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_PRODUCT_NAME = new KiiJsonProperty<String>(String.class, "_productName", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_LOT = new KiiJsonProperty<String>(String.class, "_lot", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_1 = new KiiJsonProperty<String>(String.class, "_stringField1", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_2 = new KiiJsonProperty<String>(String.class, "_stringField2", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_3 = new KiiJsonProperty<String>(String.class, "_stringField3", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_4 = new KiiJsonProperty<String>(String.class, "_stringField4", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
+	public static final KiiJsonProperty<String> PROPERTY_STRING_FIELD_5 = new KiiJsonProperty<String>(String.class, "_stringField5", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
 	public static final KiiJsonProperty<Long> PROPERTY_NUMBER_FIELD_1 = new KiiJsonProperty<Long>(Long.class, "_numberField1");
 	public static final KiiJsonProperty<Long> PROPERTY_NUMBER_FIELD_2 = new KiiJsonProperty<Long>(Long.class, "_numberField2");
 	public static final KiiJsonProperty<Long> PROPERTY_NUMBER_FIELD_3 = new KiiJsonProperty<Long>(Long.class, "_numberField3");
