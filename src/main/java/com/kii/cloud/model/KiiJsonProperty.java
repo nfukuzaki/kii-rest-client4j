@@ -4,18 +4,24 @@ import java.math.BigDecimal;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.kii.cloud.model.validation.KiiJsonPropertyValidator;
 import com.kii.cloud.util.GsonUtils;
 
 public class KiiJsonProperty<T> {
 	
 	private final String name;
-	private final String[] aliases;
+	private final String alias;
 	private final Class<T> propertyType;
+	private final KiiJsonPropertyValidator[] validators;
 	
-	public KiiJsonProperty(Class<T> propertyType, String name, String... aliases) {
+	public KiiJsonProperty(Class<T> propertyType, String name, KiiJsonPropertyValidator... validators) {
+		this(propertyType, name, null, validators);
+	}
+	public KiiJsonProperty(Class<T> propertyType, String name, String alias, KiiJsonPropertyValidator... validators) {
 		this.propertyType = propertyType;
 		this.name = name;
-		this.aliases = aliases;
+		this.alias = alias;
+		this.validators = validators;
 	}
 	public String getName() {
 		return this.name;
@@ -27,10 +33,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return true;
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return true;
-			}
+		if (json.has(this.alias)) {
+			return true;
 		}
 		return false;
 	}
@@ -60,6 +64,9 @@ public class KiiJsonProperty<T> {
 		if (json == null) {
 			return;
 		}
+		for (KiiJsonPropertyValidator validator : this.validators) {
+			validator.validate(this, value);
+		}
 		if (this.propertyType == String.class) {
 			json.addProperty(this.getName(), (String)value);
 		} else if (this.propertyType == Integer.class) {
@@ -82,10 +89,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return GsonUtils.getString(json, this.name);
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return GsonUtils.getString(json, alias);
-			}
+		if (this.alias != null && json.has(this.alias)) {
+			return GsonUtils.getString(json, this.alias);
 		}
 		return null;
 	}
@@ -93,10 +98,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return GsonUtils.getBoolean(json, this.name);
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return GsonUtils.getBoolean(json, alias);
-			}
+		if (this.alias != null && json.has(this.alias)) {
+			return GsonUtils.getBoolean(json, this.alias);
 		}
 		return null;
 	}
@@ -104,10 +107,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return GsonUtils.getInt(json, this.name);
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return GsonUtils.getInt(json, alias);
-			}
+		if (this.alias != null && json.has(this.alias)) {
+			return GsonUtils.getInt(json, this.alias);
 		}
 		return null;
 	}
@@ -115,10 +116,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return GsonUtils.getLong(json, this.name);
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return GsonUtils.getLong(json, alias);
-			}
+		if (this.alias != null && json.has(this.alias)) {
+			return GsonUtils.getLong(json, this.alias);
 		}
 		return null;
 	}
@@ -126,10 +125,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return GsonUtils.getBigDecimal(json, this.name);
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return GsonUtils.getBigDecimal(json, alias);
-			}
+		if (this.alias != null && json.has(this.alias)) {
+			return GsonUtils.getBigDecimal(json, this.alias);
 		}
 		return null;
 	}
@@ -137,10 +134,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return GsonUtils.getJsonObject(json, this.name);
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return GsonUtils.getJsonObject(json, alias);
-			}
+		if (this.alias != null && json.has(this.alias)) {
+			return GsonUtils.getJsonObject(json, this.alias);
 		}
 		return null;
 	}
@@ -148,10 +143,8 @@ public class KiiJsonProperty<T> {
 		if (json.has(this.name)) {
 			return GsonUtils.getJsonArray(json, this.name);
 		}
-		for (String alias : this.aliases) {
-			if (json.has(alias)) {
-				return GsonUtils.getJsonArray(json, alias);
-			}
+		if (this.alias != null && json.has(this.alias)) {
+			return GsonUtils.getJsonArray(json, this.alias);
 		}
 		return null;
 	}
