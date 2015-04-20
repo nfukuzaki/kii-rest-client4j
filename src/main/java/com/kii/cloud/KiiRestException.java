@@ -1,6 +1,7 @@
 package com.kii.cloud;
 
 import com.google.gson.JsonObject;
+import com.kii.cloud.util.GsonUtils;
 
 public class KiiRestException extends Exception {
 	private static final long serialVersionUID = 1L;
@@ -25,6 +26,12 @@ public class KiiRestException extends Exception {
 	}
 	public JsonObject getBody() {
 		return body;
+	}
+	public String getErrorCode() {
+		if (this.body == null) {
+			return null;
+		}
+		return GsonUtils.getString(this.body, "errorCode");
 	}
 	@Override
 	public String toString() {
