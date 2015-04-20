@@ -7,6 +7,10 @@ public class GCMMessage {
 	private final JsonObject messageMeta = new JsonObject();
 	private final JsonObject messageBody;
 	
+	public GCMMessage() {
+		this.messageMeta.addProperty("enabled", false);
+		this.messageBody = new JsonObject();
+	}
 	public GCMMessage(JsonObject messageBody) {
 		this.messageMeta.addProperty("enabled", true);
 		this.messageBody = messageBody;

@@ -74,9 +74,21 @@ public class KiiPushMessage {
 	public JsonObject toJson() {
 		JsonObject result = GsonUtils.clone(this.messageMeta);
 		result.add("data", GsonUtils.clone(this.messageBody));
+		if (this.apns == null) {
+			this.apns = new APNSMessage();
+		}
 		result.add("apns", this.apns.toJson());
+		if (this.gcm == null) {
+			this.gcm = new GCMMessage();
+		}
 		result.add("gcm", this.gcm.toJson());
+		if (this.jpush == null) {
+			this.jpush = new JPushMessage();
+		}
 		result.add("jpush", this.jpush.toJson());
+		if (this.mqtt == null) {
+			this.mqtt = new MqttMessage();
+		}
 		result.add("mqtt", this.mqtt.toJson());
 		return result;
 	}

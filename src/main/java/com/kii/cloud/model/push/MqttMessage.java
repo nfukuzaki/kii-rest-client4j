@@ -7,6 +7,10 @@ public class MqttMessage {
 	private final JsonObject messageMeta = new JsonObject();
 	private final JsonObject messageBody;
 	
+	public MqttMessage() {
+		this.messageMeta.addProperty("enabled", false);
+		this.messageBody = new JsonObject();
+	}
 	public MqttMessage(JsonObject messageBody) {
 		this.messageMeta.addProperty("enabled", true);
 		this.messageBody = messageBody;

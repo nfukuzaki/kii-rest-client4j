@@ -10,6 +10,10 @@ public class APNSMessage {
 	private final JsonObject alert = new JsonObject();
 	private final JsonObject messageBody;
 	
+	public APNSMessage() {
+		this.messageMeta.addProperty("enabled", false);
+		this.messageBody = new JsonObject();
+	}
 	public APNSMessage(JsonObject messageBody) {
 		this.messageMeta.addProperty("enabled", true);
 		this.messageBody = messageBody;

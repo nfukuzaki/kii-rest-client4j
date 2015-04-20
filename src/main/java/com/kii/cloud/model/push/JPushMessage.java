@@ -7,6 +7,10 @@ public class JPushMessage {
 	private final JsonObject messageMeta = new JsonObject();
 	private final JsonObject messageBody;
 	
+	public JPushMessage() {
+		this.messageMeta.addProperty("enabled", false);
+		this.messageBody = new JsonObject();
+	}
 	public JPushMessage(JsonObject messageBody) {
 		this.messageMeta.addProperty("enabled", true);
 		this.messageBody = messageBody;
