@@ -55,6 +55,6 @@ public class KiiTopicAclResource extends KiiAclResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/settings-topic-acl/
 	 */
 	public void revok(TopicAction action, Subject subject) throws KiiRestException {
-		super.grant(action, subject);
+		super.revok(action, subject);
 	}
 }

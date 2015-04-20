@@ -53,7 +53,7 @@ public class KiiObjectAclResource extends KiiAclResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/scoping/
 	 */
 	public void revok(ObjectAction action, Subject subject) throws KiiRestException {
-		super.grant(action, subject);
+		super.revok(action, subject);
 	}
 
 }
