@@ -27,6 +27,9 @@ public class KiiRest {
 	public KiiRest(String appID, String appKey, Site site) {
 		this(appID, appKey, site.endpoint, site.devlogEndpoint);
 	}
+	public KiiRest(String appID, String appKey, String endpoint) {
+		this(appID, appKey, endpoint, null);
+	}
 	public KiiRest(String appID, String appKey, String endpoint, String devlogEndpoint) {
 		this.appID = appID;
 		this.appKey = appKey;
