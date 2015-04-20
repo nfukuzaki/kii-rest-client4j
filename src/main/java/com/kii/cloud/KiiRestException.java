@@ -10,13 +10,13 @@ public class KiiRestException extends Exception {
 	public KiiRestException(String message, Exception cause) {
 		super(message, cause);
 		this.status = 0;
-		this.body = new JsonObject();
+		this.body = null;
 	}
 	public KiiRestException(int status, JsonObject body) {
 		this(null, status, body);
 	}
 	public KiiRestException(String message, int status, JsonObject body) {
-		super(message + "   -- status:" + status);
+		super(message);
 		this.status = status;
 		this.body = body;
 	}
@@ -25,5 +25,22 @@ public class KiiRestException extends Exception {
 	}
 	public JsonObject getBody() {
 		return body;
+	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getMessage() + System.lineSeparator());
+		if (this.status != 0) {
+			sb.append("Status:" + this.status);
+		}
+		if (this.body != null) {
+			sb.append("Body:" + this.body.toString() + System.lineSeparator());
+		} else {
+			sb.append("Body:" + System.lineSeparator());
+		}
+		if (this.getCause() != null) {
+			sb.append("Cause:" + this.getCause().getMessage() + System.lineSeparator());
+		}
+		return sb.toString();
 	}
 }
