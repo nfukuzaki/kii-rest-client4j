@@ -120,6 +120,10 @@ public class KiiAcl {
 			if (c != 0) {
 				return c;
 			}
+			c = this.identifier.length() - o.identifier.length();
+			if (c != 0) {
+				return c;
+			}
 			return this.identifier.compareTo(o.identifier);
 		}
 	}

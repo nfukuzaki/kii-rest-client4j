@@ -37,7 +37,7 @@ public abstract class KiiAclResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			Map<Action,List<Subject>> results = new HashMap<KiiAcl.Action, List<Subject>>();
+			Map<Action,List<Subject>> results = new HashMap<Action, List<Subject>>();
 			for (Entry<String, JsonElement> entry : responseBody.entrySet()) {
 				Action action = KiiAcl.parseAction(entry.getKey());
 				List<Subject> subjects = new ArrayList<Subject>();
