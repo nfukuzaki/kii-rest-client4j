@@ -54,7 +54,7 @@ public class KiiAcl {
 		SUBSCRIBE_TO_TOPIC,
 		SEND_MESSAGE_TO_TOPIC
 	}
-	public static class Subject {
+	public static class Subject implements Comparable<Subject> {
 		public static final String PREFIX_USER_ID = "UserID";
 		public static final String PREFIX_GROUP_ID = "GroupID";
 		public static final String PREFIX_THING_ID = "ThingID";
@@ -97,7 +97,7 @@ public class KiiAcl {
 					return ANY_AUTHENTICATED_USER;
 				}
 			}
-			return new Subject(entry.getKey(), entry.getValue().toString());
+			return new Subject(entry.getKey(), entry.getValue().getAsString());
 		}
 		public boolean isUser() {
 			return this.prefix.equals(PREFIX_USER_ID);
@@ -113,6 +113,14 @@ public class KiiAcl {
 		}
 		public String toString() {
 			return this.prefix + ":" + this.identifier;
+		}
+		@Override
+		public int compareTo(Subject o) {
+			int c = this.prefix.compareTo(o.prefix);
+			if (c != 0) {
+				return c;
+			}
+			return this.identifier.compareTo(o.identifier);
 		}
 	}
 }

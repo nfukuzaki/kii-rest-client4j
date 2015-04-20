@@ -2,6 +2,7 @@ package com.kii.cloud.resource.storage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public abstract class KiiAclResource extends KiiRestSubResource {
 				for (int i = 0; i < array.size(); i++) {
 					subjects.add(Subject.fromJson(array.get(i).getAsJsonObject()));
 				}
+				Collections.sort(subjects);
 				results.put(action, subjects);
 			}
 			return results;
@@ -61,6 +63,7 @@ public abstract class KiiAclResource extends KiiRestSubResource {
 			for (int i = 0; i < responseBody.size(); i++) {
 				subjects.add(Subject.fromJson(responseBody.get(i).getAsJsonObject()));
 			}
+			Collections.sort(subjects);
 			return subjects;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
