@@ -6,6 +6,8 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.push.KiiPushMessage;
+import com.kii.cloud.model.storage.KiiThing;
+import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiAppResource;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
@@ -95,13 +97,40 @@ public class KiiTopicResource extends KiiRestSubResource {
 		}
 	}
 	/**
+	 * @param user
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
+	 */
+	public void subscribe(KiiUser user) throws KiiRestException {
+		this.subscribeByUser(user.getUserID());
+	}
+	/**
 	 * @param userID
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
-	public void subscribe(String userID) throws KiiRestException {
+	public void subscribeByUser(String userID) throws KiiRestException {
+		this.subscribe("users", userID);
+	}
+	/**
+	 * @param thing
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
+	 */
+	public void subscribe(KiiThing thing) throws KiiRestException {
+		this.subscribeByThing(thing.getThingID());
+	}
+	/**
+	 * @param thingID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
+	 */
+	public void subscribeByThing(String thingID) throws KiiRestException {
+		this.subscribe("things", thingID);
+	}
+	private void subscribe(String subscriberType, String id) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("/push/subscriptions/users/" + userID), Method.PUT, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/push/subscriptions/%s/%s", subscriberType, id), Method.PUT, headers);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
@@ -110,19 +139,55 @@ public class KiiTopicResource extends KiiRestSubResource {
 		}
 	}
 	/**
+	 * @param user
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
+	 */
+	public void unsubscribe(KiiUser user) throws KiiRestException {
+		this.unsubscribeByUser(user.getUserID());
+	}
+	/**
 	 * @param userID
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
-	public void unsubscribe(String userID) throws KiiRestException {
+	public void unsubscribeByUser(String userID) throws KiiRestException {
+		this.unsubscribe("users", userID);
+	}
+	/**
+	 * @param thing
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
+	 */
+	public void unsubscribe(KiiThing thing) throws KiiRestException {
+		this.unsubscribeByThing(thing.getThingID());
+	}
+	/**
+	 * @param thingID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
+	 */
+	public void unsubscribeByThing(String thingID) throws KiiRestException {
+		this.unsubscribe("things", thingID);
+	}
+	private void unsubscribe(String unsubscriberType, String id) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("/push/subscriptions/users/" + userID), Method.DELETE, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/push/subscriptions/%s/%s", unsubscriberType, id), Method.DELETE, headers);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
+	}
+	/**
+	 * @param user
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
+	 */
+	public boolean isSubscribed(KiiUser user) throws KiiRestException {
+		return this.isSubscribedByUser(user.getUserID());
 	}
 	/**
 	 * @param userID
@@ -130,9 +195,30 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
 	 */
-	public boolean isSubscribed(String userID) throws KiiRestException {
+	public boolean isSubscribedByUser(String userID) throws KiiRestException {
+		return this.isSubscribed("users", userID);
+	}
+	/**
+	 * @param thing
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
+	 */
+	public boolean isSubscribed(KiiThing thing) throws KiiRestException {
+		return this.isSubscribedByThing(thing.getThingID());
+	}
+	/**
+	 * @param thingID
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
+	 */
+	public boolean isSubscribedByThing(String thingID) throws KiiRestException {
+		return this.isSubscribed("things", thingID);
+	}
+	private boolean isSubscribed(String subscriberType, String id) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("/push/subscriptions/users/" + userID), Method.GET, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/push/subscriptions/%s/%s", subscriberType, id), Method.GET, headers);
 		try {
 			Response response = this.execute(request);
 			return response.isSuccessful();

@@ -44,6 +44,8 @@ public class KiiObjectBodyResourceTest {
 		KiiObject object = new KiiObject().set("size", 1024);
 		rest.api().users(user).buckets(userBucketName).objects().save(object);
 		
+		Thread.sleep(1000);
+		
 		// uploading object body
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
 		rest.api().users(user).buckets(userBucketName).objects(object).body().upload("image/jpg", is);

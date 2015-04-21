@@ -9,6 +9,7 @@ import com.kii.cloud.model.storage.KiiThing;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.resource.push.KiiTopicResource;
 import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
@@ -43,6 +44,13 @@ public class KiiThingResource extends KiiRestSubResource {
 	public KiiThingOwnerResource owner() {
 		return new KiiThingOwnerResource(this);
 	}
+	public KiiBucketResource buckets(String name) {
+		return new KiiBucketResource(this, name);
+	}
+	public KiiTopicResource topics(String name) {
+		return new KiiTopicResource(this, name);
+	}
+	
 	/**
 	 * @return
 	 * @throws KiiRestException

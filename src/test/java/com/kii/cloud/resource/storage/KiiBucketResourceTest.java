@@ -22,6 +22,8 @@ import com.kii.cloud.model.storage.KiiObject;
 import com.kii.cloud.model.storage.KiiQuery;
 import com.kii.cloud.model.storage.KiiQueryClause;
 import com.kii.cloud.model.storage.KiiQueryResult;
+import com.kii.cloud.model.storage.KiiThing;
+import com.kii.cloud.model.storage.KiiThingOwner;
 import com.kii.cloud.resource.storage.KiiObjectsResource;
 
 @RunWith(SkipAcceptableTestRunner.class)
@@ -96,7 +98,7 @@ public class KiiBucketResourceTest {
 		rest.setCredentials(user);
 		
 		// creating bucket
-		String userBucketName = "app_bucket" + System.currentTimeMillis();
+		String userBucketName = "user_bucket" + System.currentTimeMillis();
 		rest.api().users(user).buckets(userBucketName).create();
 		
 		KiiBucket bucket = rest.api().users(user).buckets(userBucketName).get();
@@ -206,6 +208,82 @@ public class KiiBucketResourceTest {
 		
 		try {
 			rest.api().groups(group).buckets(groupBucketName).get();
+			fail("KiiRestException must be thrown.");
+		} catch (KiiRestException e) {
+			assertEquals(404, e.getStatus());
+		}
+	}
+	@Test
+	public void thingScopeTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		
+		String vendorThingID = "thing-" + System.currentTimeMillis();
+		String password = "pa$$word";
+		
+		// registering thing
+		KiiThing thing = new KiiThing()
+			.setVendorThingID(vendorThingID)
+			.setProductName("KiiCloud")
+			.setPassword(password);
+		thing = rest.api().things().register(thing);
+		String thingID = thing.getThingID();
+		rest.setCredentials(thing);
+		
+		rest.setCredentials(user);
+		
+		// adding owner
+		rest.api().things(thingID).owner().add(KiiThingOwner.user(user));
+		
+		// creating bucket
+		String thingBucketName = "thing_bucket" + System.currentTimeMillis();
+		rest.api().things(thingID).buckets(thingBucketName).create();
+		
+		KiiBucket bucket = rest.api().things(thingID).buckets(thingBucketName).get();
+		assertEquals("rw", bucket.getBucketType());
+		assertEquals(0, bucket.getSize());
+		
+		// creating objects
+		KiiObjectsResource objectsResource = rest.api().things(thingID).buckets(thingBucketName).objects();
+		for (int i = 0; i < 15; i++) {
+			KiiObject obj = new KiiObject().set("score", i);
+			objectsResource.save(obj);
+		}
+		
+		// counting object
+		int count  = rest.api().things(thingID).buckets(thingBucketName).count();
+		assertEquals(15, count);
+		
+		// querying object
+		KiiQuery query = new KiiQuery(KiiQueryClause.lt("score", 9));
+		query.setLimit(5);
+		KiiQueryResult queryResult = rest.api().things(thingID).buckets(thingBucketName).query(query);
+		List<KiiObject> results = queryResult.getResults();
+		assertEquals(5, results.size());
+		for (KiiObject obj : results) {
+			assertTrue(obj.getInt("score") < 9);
+		}
+		assertTrue(queryResult.hasNext());
+		queryResult = rest.api().things(thingID).buckets(thingBucketName).query(queryResult.getNextQuery());
+		results = queryResult.getResults();
+		assertEquals(4, results.size());
+		for (KiiObject obj : results) {
+			assertTrue(obj.getInt("score") < 9);
+		}
+		assertFalse(queryResult.hasNext());
+		
+		// counting object
+		count  = rest.api().things(thingID).buckets(thingBucketName).count(query);
+		assertEquals(9, count);
+		
+		// deleting bucket
+		rest.api().things(thingID).buckets(thingBucketName).delete();
+		
+		try {
+			rest.api().things(thingID).buckets(thingBucketName).get();
 			fail("KiiRestException must be thrown.");
 		} catch (KiiRestException e) {
 			assertEquals(404, e.getStatus());

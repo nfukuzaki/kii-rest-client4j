@@ -18,6 +18,7 @@ import com.kii.cloud.model.push.GCMMessage;
 import com.kii.cloud.model.push.KiiPushMessage;
 import com.kii.cloud.model.storage.KiiGroup;
 import com.kii.cloud.model.storage.KiiNormalUser;
+import com.kii.cloud.model.storage.KiiThing;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiTopicResourceTest {
@@ -41,9 +42,9 @@ public class KiiTopicResourceTest {
 		assertTrue(exists);
 		
 		// subscribing topic
-		rest.api().topics(appTopicName).subscribe(user.getUserID());
+		rest.api().topics(appTopicName).subscribe(user);
 		// checking subscription status
-		boolean isSubscribed = rest.api().topics(appTopicName).isSubscribed(user.getUserID());
+		boolean isSubscribed = rest.api().topics(appTopicName).isSubscribed(user);
 		assertTrue(isSubscribed);
 		
 		// Sending message
@@ -55,15 +56,14 @@ public class KiiTopicResourceTest {
 		assertNotNull(pushMessageID);
 		
 		// unsubscribing topic
-		rest.api().topics(appTopicName).unsubscribe(user.getUserID());
+		rest.api().topics(appTopicName).unsubscribe(user);
 		// checking subscription status
-		isSubscribed = rest.api().topics(appTopicName).isSubscribed(user.getUserID());
+		isSubscribed = rest.api().topics(appTopicName).isSubscribed(user);
 		assertFalse(isSubscribed);
 		
 		// deleting topic
 		rest.api().topics(appTopicName).delete();
 	}
-
 	@Test
 	public void userScopeTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
@@ -82,9 +82,9 @@ public class KiiTopicResourceTest {
 		assertTrue(exists);
 		
 		// subscribing topic
-		rest.api().users(user).topics(userTopicName).subscribe(user.getUserID());
+		rest.api().users(user).topics(userTopicName).subscribe(user);
 		// checking subscription status
-		boolean isSubscribed = rest.api().users(user).topics(userTopicName).isSubscribed(user.getUserID());
+		boolean isSubscribed = rest.api().users(user).topics(userTopicName).isSubscribed(user);
 		assertTrue(isSubscribed);
 		
 		// Sending message
@@ -96,9 +96,9 @@ public class KiiTopicResourceTest {
 		assertNotNull(pushMessageID);
 		
 		// unsubscribing topic
-		rest.api().users(user).topics(userTopicName).unsubscribe(user.getUserID());
+		rest.api().users(user).topics(userTopicName).unsubscribe(user);
 		// checking subscription status
-		isSubscribed = rest.api().users(user).topics(userTopicName).isSubscribed(user.getUserID());
+		isSubscribed = rest.api().users(user).topics(userTopicName).isSubscribed(user);
 		assertFalse(isSubscribed);
 		
 		// deleting topic
@@ -127,9 +127,9 @@ public class KiiTopicResourceTest {
 		assertTrue(exists);
 		
 		// subscribing topic
-		rest.api().groups(group).topics(groupTopicName).subscribe(user.getUserID());
+		rest.api().groups(group).topics(groupTopicName).subscribeByUser(user.getUserID());
 		// checking subscription status
-		boolean isSubscribed = rest.api().groups(group).topics(groupTopicName).isSubscribed(user.getUserID());
+		boolean isSubscribed = rest.api().groups(group).topics(groupTopicName).isSubscribedByUser(user.getUserID());
 		assertTrue(isSubscribed);
 		
 		// Sending message
@@ -141,12 +141,60 @@ public class KiiTopicResourceTest {
 		assertNotNull(pushMessageID);
 		
 		// unsubscribing topic
-		rest.api().groups(group).topics(groupTopicName).unsubscribe(user.getUserID());
+		rest.api().groups(group).topics(groupTopicName).unsubscribeByUser(user.getUserID());
 		// checking subscription status
-		isSubscribed = rest.api().groups(group).topics(groupTopicName).isSubscribed(user.getUserID());
+		isSubscribed = rest.api().groups(group).topics(groupTopicName).isSubscribedByUser(user.getUserID());
 		assertFalse(isSubscribed);
 		
 		// deleting topic
 		rest.api().groups(group).topics(groupTopicName).delete();
 	}
+	
+	@Test
+	public void thingScopeTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		String vendorThingID = "thing-" + System.currentTimeMillis();
+		String password = "pa$$word";
+		
+		// registering thing
+		KiiThing thing = new KiiThing()
+			.setVendorThingID(vendorThingID)
+			.setProductName("KiiCloud")
+			.setPassword(password);
+		thing = rest.api().things().register(thing);
+		String thingID = thing.getThingID();
+		rest.setCredentials(thing);
+		
+		String thingTopicName = "thing_topic" + System.currentTimeMillis();
+		
+		// creating topic
+		rest.api().things(thingID).topics(thingTopicName).create();
+		// checking topic
+		boolean exists = rest.api().things(thingID).topics(thingTopicName).exists();
+		assertTrue(exists);
+		
+		// subscribing topic
+		rest.api().things(thingID).topics(thingTopicName).subscribe(thing);
+		// checking subscription status
+		assertTrue(rest.api().things(thingID).topics(thingTopicName).isSubscribed(thing));
+		
+		// Sending message
+		JsonObject messageBody = new JsonObject();
+		messageBody.addProperty("msg", "test");
+		KiiPushMessage message = new KiiPushMessage(messageBody);
+		message.setGCM(new GCMMessage(new JsonObject()));
+		String pushMessageID = rest.api().things(thingID).topics(thingTopicName).send(message);
+		assertNotNull(pushMessageID);
+		
+		// unsubscribing topic
+		rest.api().things(thingID).topics(thingTopicName).unsubscribe(thing);
+		// checking subscription status
+		assertFalse(rest.api().things(thingID).topics(thingTopicName).isSubscribed(thing));
+		
+		// deleting topic
+		rest.api().things(thingID).topics(thingTopicName).delete();
+	}
+
 }
