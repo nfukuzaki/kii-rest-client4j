@@ -160,7 +160,7 @@ public class KiiBucketResourceTest {
 		KiiGroup group = new KiiGroup();
 		group.setName("MyGroup");
 		group.setOwner(user.getUserID());
-		rest.api().groups().save(group, null);
+		rest.api().groups().save(group);
 		
 		// creating bucket
 		String groupBucketName = "group_bucket" + System.currentTimeMillis();
@@ -289,4 +289,29 @@ public class KiiBucketResourceTest {
 			assertEquals(404, e.getStatus());
 		}
 	}
+	@Test
+	public void subscribeTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		// creating bucket
+		String appBucketName = "app_bucket" + System.currentTimeMillis();
+		rest.api().buckets(appBucketName).create();
+		
+		KiiBucket bucket = rest.api().buckets(appBucketName).get();
+		assertEquals("rw", bucket.getBucketType());
+		assertEquals(0, bucket.getSize());
+		
+		// subscribe/unsubscribe
+		assertFalse(rest.api().buckets(appBucketName).isSubscribed(user));
+		rest.api().buckets(appBucketName).subscribe(user);
+		assertTrue(rest.api().buckets(appBucketName).isSubscribed(user));
+		rest.api().buckets(appBucketName).unsubscribe(user);
+		assertFalse(rest.api().buckets(appBucketName).isSubscribed(user));
+	}
+
 }

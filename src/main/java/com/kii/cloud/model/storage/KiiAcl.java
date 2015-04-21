@@ -39,7 +39,8 @@ public class KiiAcl {
 	public interface Action {
 	}
 	public enum ScopeAction implements Action {
-		CREATE_NEW_BUCKET
+		CREATE_NEW_BUCKET,
+		CREATE_NEW_TOPIC
 	}
 	public enum BucketAction implements Action {
 		QUERY_OBJECTS_IN_BUCKET,
@@ -68,6 +69,9 @@ public class KiiAcl {
 			this.prefix = StringUtils.capitalize(prefix);
 			this.identifier = identifier;
 		}
+		public static Subject user(KiiUser user) {
+			return user(user.getUserID());
+		}
 		public static Subject user(String userID) {
 			if (ANONYMOUS_USER_ID.equals(userID)) {
 				return ANONYMOUS_USER;
@@ -76,6 +80,9 @@ public class KiiAcl {
 				return ANY_AUTHENTICATED_USER;
 			}
 			return new Subject(PREFIX_USER_ID, userID);
+		}
+		public static Subject group(KiiGroup group) {
+			return group(group.getGroupID());
 		}
 		public static Subject group(String groupID) {
 			return new Subject(PREFIX_GROUP_ID, groupID);
