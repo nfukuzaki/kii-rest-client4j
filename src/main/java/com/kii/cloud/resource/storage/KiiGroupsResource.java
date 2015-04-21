@@ -35,6 +35,15 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	}
 	/**
 	 * @param group
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/creating-a-group/
+	 */
+	public List<String> save(KiiGroup group) throws KiiRestException {
+		return this.save(group, null);
+	}
+	/**
+	 * @param group
 	 * @param members
 	 * @return
 	 * @throws KiiRestException

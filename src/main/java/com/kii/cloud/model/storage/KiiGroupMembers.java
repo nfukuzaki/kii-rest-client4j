@@ -40,6 +40,9 @@ public class KiiGroupMembers extends KiiJsonModel {
 		}
 		return members;
 	}
+	public KiiGroupMembers addMember(KiiUser user) {
+		return this.addMember(user.getUserID());
+	}
 	public KiiGroupMembers addMember(String userID) {
 		JsonArray members = null;
 		if (PROPERTY_MEMBERS.has(this.json)) {

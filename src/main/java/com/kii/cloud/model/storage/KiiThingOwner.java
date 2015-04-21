@@ -14,8 +14,14 @@ public class KiiThingOwner {
 	private final OwnerType ownerType;
 	private final String identifier;
 	
+	public static KiiThingOwner user(KiiUser user) {
+		return new KiiThingOwner(OwnerType.USER, user.getUserID());
+	}
 	public static KiiThingOwner user(String userID) {
 		return new KiiThingOwner(OwnerType.USER, userID);
+	}
+	public static KiiThingOwner group(KiiGroup group) {
+		return new KiiThingOwner(OwnerType.GROUP, group.getGroupID());
 	}
 	public static KiiThingOwner group(String groupID) {
 		return new KiiThingOwner(OwnerType.GROUP, groupID);

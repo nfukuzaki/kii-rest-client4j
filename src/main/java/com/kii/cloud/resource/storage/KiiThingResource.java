@@ -9,6 +9,7 @@ import com.kii.cloud.model.storage.KiiThing;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -38,6 +39,9 @@ public class KiiThingResource extends KiiRestSubResource {
 	}
 	public KiiScopeAclResource acl() {
 		return new KiiScopeAclResource(this);
+	}
+	public KiiThingOwnerResource owner() {
+		return new KiiThingOwnerResource(this);
 	}
 	/**
 	 * @return
@@ -87,6 +91,22 @@ public class KiiThingResource extends KiiRestSubResource {
 		}
 	}
 	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
+	 */
+	public boolean isDisabled() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/status"), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return GsonUtils.getBoolean(responseBody, "disabled");
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
 	 */
@@ -104,7 +124,7 @@ public class KiiThingResource extends KiiRestSubResource {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("disabled", disabled);
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MEDIA_TYPE_THING_STATUS_UPDATE_REQUEST, requestBody);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/status"), Method.PUT, headers, MEDIA_TYPE_THING_STATUS_UPDATE_REQUEST, requestBody);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);

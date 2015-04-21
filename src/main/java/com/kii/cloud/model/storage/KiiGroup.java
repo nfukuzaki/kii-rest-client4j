@@ -36,6 +36,9 @@ public class KiiGroup extends KiiJsonModel {
 	public String getOwner() {
 		return PROPERTY_OWNER.get(this.json);
 	}
+	public KiiGroup setOwner(KiiUser user) {
+		return this.setOwner(user.getUserID());
+	}
 	public KiiGroup setOwner(String userID) {
 		PROPERTY_OWNER.set(this.json, userID);
 		return this;
