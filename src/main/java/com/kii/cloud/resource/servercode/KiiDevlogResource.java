@@ -29,6 +29,14 @@ import com.squareup.okhttp.ws.WebSocketListener;
 
 public class KiiDevlogResource {
 	
+	public interface TailListener {
+		public void onTail(List<KiiDevlog> logs, TailContext context);
+		public void onFailure(Exception e);
+	}
+	public interface TailContext {
+		public void close();
+	}
+	
 	private final String appID;
 	private final String appKey;
 	private final String endpoint;
@@ -52,9 +60,20 @@ public class KiiDevlogResource {
 		}
 		super.finalize();
 	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
+	 */
 	public List<KiiDevlog> cat() throws KiiRestException {
 		return this.cat(new KiiDevlogFilter());
 	}
+	/**
+	 * @param filter
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
+	 */
 	public List<KiiDevlog> cat(KiiDevlogFilter filter) throws KiiRestException {
 		if (this.endpoint == null) {
 			throw new IllegalStateException("Devlog endpoint address not set.");
@@ -72,8 +91,6 @@ public class KiiDevlogResource {
 		final AtomicReference<JsonArray> logs = new AtomicReference<JsonArray>();
 		final AtomicReference<Exception> exception = new AtomicReference<Exception>();
 		
-		System.out.println(requestBody.toString());
-		
 		Request request = new Request.Builder()
 			.url(this.endpoint)
 			.get()
@@ -82,7 +99,6 @@ public class KiiDevlogResource {
 		this.call.enqueue(new WebSocketListener() {
 			@Override
 			public void onOpen(WebSocket webSocket, Request request, Response response) throws IOException {
-				System.out.println("##### onOpen");
 				Buffer buffer = new Buffer();
 				try {
 					buffer.writeUtf8(requestBody.toString());
@@ -129,7 +145,73 @@ public class KiiDevlogResource {
 		Collections.sort(results);
 		return results;
 	}
-	public void tail() throws Exception {
+	public void tail(TailListener listener) throws Exception {
+		this.tail(new KiiDevlogFilter(), listener);
+	}
+	public void tail(KiiDevlogFilter filter, final TailListener listener) throws Exception {
+		if (this.endpoint == null) {
+			throw new IllegalStateException("Devlog endpoint address not set.");
+		}
+		if (this.credentials == null || !this.credentials.isAdmin()) {
+			throw new IllegalStateException("Admin credentials not set.");
+		}
+		final JsonObject requestBody = filter.getJsonObject();
+		requestBody.addProperty("appID", this.appID);
+		requestBody.addProperty("appKey", this.appKey);
+		requestBody.addProperty("token", this.credentials.getAccessToken());
+		requestBody.addProperty("command", "tail");
 		
+		Request request = new Request.Builder()
+		.url(this.endpoint)
+		.get()
+		.build();
+	this.call = WebSocketCall.create(client, request);
+	this.call.enqueue(new WebSocketListener() {
+		@Override
+		public void onOpen(WebSocket webSocket, Request request, Response response) throws IOException {
+			Buffer buffer = new Buffer();
+			try {
+				buffer.writeUtf8(requestBody.toString());
+				webSocket.sendMessage(PayloadType.TEXT, buffer);
+			} finally {
+				buffer.close();
+			}
+		}
+		@Override
+		public void onClose(int code, String reason) {
+		}
+		@Override
+		public void onFailure(IOException e) {
+			listener.onFailure(e);
+		}
+		@Override
+		public void onMessage(BufferedSource payload, PayloadType type) throws IOException {
+			try {
+				System.out.println("##### onMessage");
+				JsonArray logs = (JsonArray)new JsonParser().parse(payload.readUtf8());
+				System.out.println(logs.toString());
+				payload.close();
+				List<KiiDevlog> results = new ArrayList<KiiDevlog>();
+				for (int i = 0; i < logs.size(); i++) {
+					results.add(new KiiDevlog(logs.get(i).getAsJsonObject()));
+				}
+				Collections.sort(results);
+				listener.onTail(results, new TailContext() {
+					@Override
+					public void close() {
+						try {
+							call.cancel();
+						} catch (Exception ignore) {
+						}
+					}
+				});
+			} catch (Exception e) {
+				listener.onFailure(e);
+			}
+		}
+		@Override
+		public void onPong(Buffer payload) {
+		}
+	});
 	}
 }
