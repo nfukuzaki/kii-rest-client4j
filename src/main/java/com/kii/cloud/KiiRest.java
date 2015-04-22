@@ -2,14 +2,15 @@ package com.kii.cloud;
 
 import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.resource.KiiAppResource;
+import com.kii.cloud.resource.servercode.KiiDevlogResource;
 
 public class KiiRest {
 	
 	public enum Site {
-		US("https://api.kii.com/api",     "wss://apilog.kii.com"),
-		JP("https://api-jp.kii.com/api",  "wss://apilog-jp.kii.com"),
-		CN("https://api-cn2.kii.com/api", "wss://apilog-cn2.kii.com"),
-		SG("https://api-sg.kii.com/api",  "wss://apilog-sg.kii.com");
+		US("https://api.kii.com/api",     "wss://apilog.kii.com:443/logs"),
+		JP("https://api-jp.kii.com/api",  "wss://apilog-jp.kii.com:443/logs"),
+		CN("https://api-cn2.kii.com/api", "wss://apilog-cn2.kii.com:443/logs"),
+		SG("https://api-sg.kii.com/api",  "wss://apilog-sg.kii.com:443/logs");
 		private final String endpoint;
 		private final String devlogEndpoint;
 		private Site(String endpoint, String devlogEndpoint) {
@@ -38,6 +39,9 @@ public class KiiRest {
 	}
 	public KiiAppResource api() {
 		return new KiiAppResource(this.appID, this.appKey, this.endpoint, this.credentials);
+	}
+	public KiiDevlogResource logs() {
+		return new KiiDevlogResource(this.appID, this.appKey, this.devlogEndpoint, this.credentials);
 	}
 	public void setCredentials(KiiCredentialsContainer credentials) {
 		this.credentials = credentials;

@@ -97,32 +97,32 @@ public abstract class KiiRestResource {
 		}
 	}
 	protected Response execute(KiiRestRequest restRequest) throws IOException {
-		Builder bulder = new Request.Builder();
-		bulder.url(restRequest.getUrl());
-		bulder.headers(Headers.of(restRequest.getHeaders()));
+		Builder builder = new Request.Builder();
+		builder.url(restRequest.getUrl());
+		builder.headers(Headers.of(restRequest.getHeaders()));
 		OkHttpClient httpClient = client;
 		switch (restRequest.getMethod()) {
 			case HEAD:
-				bulder.head();
+				builder.head();
 				break;
 			case GET:
-				bulder.get();
+				builder.get();
 				break;
 			case POST:
-				bulder.post(this.createRequestBody(restRequest.getContentType(), restRequest.getEntity()));
+				builder.post(this.createRequestBody(restRequest.getContentType(), restRequest.getEntity()));
 				httpClient = httpClient.clone();
 				httpClient.setRetryOnConnectionFailure(false);
 				break;
 			case PUT:
-				bulder.put(this.createRequestBody(restRequest.getContentType(), restRequest.getEntity()));
+				builder.put(this.createRequestBody(restRequest.getContentType(), restRequest.getEntity()));
 				httpClient = httpClient.clone();
 				httpClient.setRetryOnConnectionFailure(false);
 				break;
 			case DELETE:
-				bulder.delete();
+				builder.delete();
 				break;
 		}
-		Request request = bulder.build();
+		Request request = builder.build();
 		return httpClient.newCall(request).execute();
 	}
 	protected RequestBody createRequestBody(final MediaType contentType, final Object entity) {
