@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AdminAPI;
 import com.kii.cloud.model.HttpContentRange;
 import com.kii.cloud.model.storage.KiiChunkedDownloadContext;
 import com.kii.cloud.model.storage.KiiChunkedUploadContext;
@@ -35,6 +36,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	public static final MediaType MEDIA_TYPE_START_OBJECT_BODY_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.StartObjectBodyUploadRequest+json");
 	public static final MediaType MEDIA_TYPE_OBJECT_BODY_PUBLICATION_REQUEST = MediaType.parse("application/vnd.kii.ObjectBodyPublicationRequest+json");
 	public static final MediaType MEDIA_TYPE_START_OBJECT_BODY_UPLOAD_REQUEST = MediaType.parse("application/vnd.kii.StartObjectBodyUploadRequest+json");
+	public static final MediaType MEDIA_TYPE_OBJECT_BODY_MOVE_REQUEST = MediaType.parse("application/vnd.kii.ObjectBodyMoveRequest+json");
 	
 	public KiiObjectBodyResource(KiiObjectResource parent) {
 		super(parent);
@@ -42,6 +44,64 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	@Override
 	public String getPath() {
 		return BASE_PATH;
+	}
+	/**
+	 * @param bucketName
+	 * @param objectID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
+	 */
+	@AdminAPI
+	public void moveToAppScope(String bucketName, String objectID) throws KiiRestException {
+		JsonObject targetObjectScope = new JsonObject();
+		targetObjectScope.addProperty("appID", getRootResource().getAppID());
+		targetObjectScope.addProperty("type", "APP");
+		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+	}
+	/**
+	 * @param userID
+	 * @param bucketName
+	 * @param objectID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
+	 */
+	@AdminAPI
+	public void moveToUserScope(String userID, String bucketName, String objectID) throws KiiRestException {
+		JsonObject targetObjectScope = new JsonObject();
+		targetObjectScope.addProperty("appID", getRootResource().getAppID());
+		targetObjectScope.addProperty("userID", userID);
+		targetObjectScope.addProperty("type", "APP_AND_GROUP");
+		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+	}
+	/**
+	 * @param groupID
+	 * @param bucketName
+	 * @param objectID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
+	 */
+	@AdminAPI
+	public void moveToGroupScope(String groupID, String bucketName, String objectID) throws KiiRestException {
+		JsonObject targetObjectScope = new JsonObject();
+		targetObjectScope.addProperty("appID", getRootResource().getAppID());
+		targetObjectScope.addProperty("groupID", groupID);
+		targetObjectScope.addProperty("type", "APP_AND_USER");
+		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+	}
+	private void moveObjectBody(JsonObject targetObjectScope, String bucketName, String objectID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		JsonObject requestBody = new JsonObject();
+		requestBody.add("targetObjectScope", targetObjectScope);
+		requestBody.addProperty("targetBucketID", bucketName);
+		requestBody.addProperty("targetObjectID", objectID);
+		
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_OBJECT_BODY_MOVE_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
 	}
 	/**
 	 * 

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
+import com.kii.cloud.annotation.AdminAPI;
 import com.kii.cloud.annotation.AnonymousAPI;
 import com.kii.cloud.model.storage.KiiNormalUser;
 import com.kii.cloud.model.storage.KiiPseudoUser;
@@ -13,6 +14,7 @@ import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.resource.push.KiiTopicResource;
+import com.kii.cloud.util.GsonUtils;
 import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
@@ -28,6 +30,7 @@ public class KiiUserResource extends KiiRestSubResource {
 	public static final MediaType MEDIA_TYPE_USER_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.UserUpdateRequest+json");
 	public static final MediaType MEDIA_TYPE_RESET_PASSWORD_REQUEST = MediaType.parse("application/vnd.kii.ResetPasswordRequest+json");
 	public static final MediaType MEDIA_TYPE_CHANGE_PASSWORD_REQUEST = MediaType.parse("application/vnd.kii.ChangePasswordRequest+json");
+	public static final MediaType MEDIA_TYPE_ADDRESS_VERIFICATION_REQUEST = MediaType.parse("application/vnd.kii.AddressVerificationRequest+json");
 	
 	public enum NotificationMethod {
 		EMAIL,
@@ -160,6 +163,103 @@ public class KiiUserResource extends KiiRestSubResource {
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("notificationMethod", notificationMethod.name());
 		KiiRestRequest request = new KiiRestRequest(getUrl("/password/request-reset"), Method.POST, headers, MEDIA_TYPE_RESET_PASSWORD_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public String getEmailVerificationCode() throws KiiRestException {
+		return getVerificationCode("email-address");
+	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public String getPhoneVerificationCode() throws KiiRestException {
+		return getVerificationCode("phone-number");
+	}
+	public String getVerificationCode(String addressType) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/verification-code", addressType), Method.GET, headers);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return GsonUtils.getString(responseBody, "verificationCode");
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @throws KiiRestException
+	 */
+	@AdminAPI
+	public void resetEmailVerification() throws KiiRestException {
+		this.resetVerification("email-address");
+	}
+	/**
+	 * @throws KiiRestException
+	 */
+	@AdminAPI
+	public void resetPhoneVerification() throws KiiRestException {
+		this.resetVerification("phone-number");
+	}
+	private void resetVerification(String addressType) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/reset-verification-code", addressType), Method.POST, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @throws KiiRestException
+	 */
+	public void resendEmailVerification() throws KiiRestException {
+		this.resendVerification("email-address");
+	}
+	/**
+	 * @throws KiiRestException
+	 */
+	public void resendPhoneVerification() throws KiiRestException {
+		this.resendVerification("phone-number");
+	}
+	private void resendVerification(String addressType) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/resend-verification", addressType), Method.POST, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @param verificationCode
+	 * @throws KiiRestException
+	 */
+	public void verifyEmail(String verificationCode) throws KiiRestException {
+		this.verifyAddress("email-address", verificationCode);
+	}
+	/**
+	 * @param code
+	 * @throws KiiRestException
+	 */
+	public void verifyPhone(String verificationCode) throws KiiRestException {
+		this.verifyAddress("phone-number", verificationCode);
+	}
+	private void verifyAddress(String addressType, String verificationCode) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("verificationCode", verificationCode);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/verify", addressType), Method.POST, headers, MEDIA_TYPE_ADDRESS_VERIFICATION_REQUEST, requestBody);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);

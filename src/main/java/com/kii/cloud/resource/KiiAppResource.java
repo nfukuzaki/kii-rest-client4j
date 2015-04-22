@@ -54,6 +54,20 @@ public class KiiAppResource extends KiiRestResource {
 		this.endpoint = endpoint;
 		this.credentials = credentials;
 	}
+	
+	public String getAppID() {
+		return this.appID;
+	}
+	public String getAppKey() {
+		return this.appKey;
+	}
+	public String getEndpoint() {
+		return this.endpoint;
+	}
+	public KiiCredentialsContainer getCredentials() {
+		return this.credentials;
+	}
+
 	public KiiOAuthResource oauth() {
 		return new KiiOAuthResource(this);
 	}

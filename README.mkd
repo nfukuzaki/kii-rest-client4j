@@ -33,6 +33,81 @@ A REST client for [Kii Cloud](http://kii.com) for Android and Java applications.
 </dependencies>
 ```
 
+## Current Features
+- Managing Users
+  - Sing-Up
+  - Sign-In
+  - Social Network Integration (only Generating URL)
+  - Refreshing Token
+  - Changing Passwords
+  - Resetting Passwords
+  - Phone/Email Verification
+  - Retrieving/Updating/Deleting Users
+  - Pseudo Users
+- Managing Things
+  - Registering/Unregistering Thing
+  - Retrieving/Updating Thing
+  - Enable/Disable Thing
+  - Checking if a Thing is Registered
+  - Geting an Access Token
+  - Adding Owners with Simple Flow
+  - Adding Owners with PIN Code Validation Flow
+  - Checking the Ownership
+  - Getting a list of Owners
+  - Removing the Ownership
+- Managing Groups
+  - Creating/Updating/Deleting Groups
+  - Changing a Group Owner
+  - Listing Group
+  - Listing Group Members
+  - Adding/Removing Group Members
+- Managing Data
+  - Granting/Revoking an Permission to a Bucket
+  - Creating/Retrieving/Updating/Deleting Objects
+  - Querying for Objects
+  - Uploading Object Bodies
+  - Downloading Object Bodies
+  - Moving Object Bodies
+  - Publishing Object Bodies
+  - Deleting Object Bodies
+  - Creating/Deleting Buckets
+  - Granting/Revoking an Permission to a Objects
+  - Granting/Revoking an Permission to a Scope
+- Managing Analytics
+  - Uploading Event Data
+  - Fetching Analytics Results (Tabular/Grouped)
+  - Creating/Listing/Retrieving/Deleting ConversionRules
+  - Creating/Listing/Retrieving/Deleting AggregationRules
+- Managing Push Notification
+  - Creating/Deleting Topic
+  - Subscribe/Unsubscribe Topic
+  - Checking Subscription status
+  - Sending Message
+  - Install/Uninstall PushInstallation
+  - Retrieving/Listing PushInstallation
+- Admin Features
+  - Getting app admin token
+  - Getting/Setting app Configuration Parameters
+- Securing Data
+  - Setting ACL to Scope
+  - Setting ACL to Buckets
+  - Setting ACL to Topics
+  - Setting ACL to Objects
+- Server Extension
+  - Deploying Server Code
+  - Executing Server Code
+  - Listing the Available Versions
+  - Switch the Active Server Code
+  - Getting Server Source Code
+  - Deleting Server Code
+  - Deploying Server Hook Config File
+  - Getting Server Hook Config File
+  - Deleting Server Hook Config File
+  - Querying for Execution Result
+  - Getting Execution Result
+  - Getting Devlog
+  - Tailing Devlog
+
 ## Example usage
 ```java
 // initialize rest client
@@ -62,10 +137,6 @@ rest.api().buckets("app_bucket").objects(appObject).update(appObject);
 ```
 
 For more examples, please refer to the [test code](https://github.com/nfukuzaki/kii-rest-client4j/tree/master/src/test/java/com/kii/cloud).
-
-## TODO
-
-1. Supports all REST APIs.
 
 
 ## License
