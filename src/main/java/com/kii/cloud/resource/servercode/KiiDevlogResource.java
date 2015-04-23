@@ -187,9 +187,7 @@ public class KiiDevlogResource {
 		@Override
 		public void onMessage(BufferedSource payload, PayloadType type) throws IOException {
 			try {
-				System.out.println("##### onMessage");
 				JsonArray logs = (JsonArray)new JsonParser().parse(payload.readUtf8());
-				System.out.println(logs.toString());
 				payload.close();
 				List<KiiDevlog> results = new ArrayList<KiiDevlog>();
 				for (int i = 0; i < logs.size(); i++) {
