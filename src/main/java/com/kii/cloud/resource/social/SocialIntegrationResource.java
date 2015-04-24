@@ -4,6 +4,9 @@ import com.kii.cloud.model.social.SocialProvider;
 import com.kii.cloud.resource.KiiAppResource;
 import com.kii.cloud.resource.KiiRestSubResource;
 
+/**
+ * 
+ */
 public class SocialIntegrationResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/integration/webauth";

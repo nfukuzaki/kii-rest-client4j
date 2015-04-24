@@ -12,6 +12,9 @@ import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
+/**
+ * 
+ */
 public class KiiParametersConfigurationResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/parameters";

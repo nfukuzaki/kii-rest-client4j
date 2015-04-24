@@ -27,6 +27,13 @@ import com.squareup.okhttp.ws.WebSocket.PayloadType;
 import com.squareup.okhttp.ws.WebSocketCall;
 import com.squareup.okhttp.ws.WebSocketListener;
 
+/**
+ * Represents the devlog resource like following URI:
+ * 
+ * <ul>
+ * <li>wss:hostname:443/logs
+ * </ul>
+ */
 public class KiiDevlogResource {
 	
 	public interface TailListener {
@@ -145,9 +152,20 @@ public class KiiDevlogResource {
 		Collections.sort(results);
 		return results;
 	}
+	/**
+	 * @param listener
+	 * @throws Exception
+	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
+	 */
 	public void tail(TailListener listener) throws Exception {
 		this.tail(new KiiDevlogFilter(), listener);
 	}
+	/**
+	 * @param filter
+	 * @param listener
+	 * @throws Exception
+	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
+	 */
 	public void tail(KiiDevlogFilter filter, final TailListener listener) throws Exception {
 		if (this.endpoint == null) {
 			throw new IllegalStateException("Devlog endpoint address not set.");
@@ -162,54 +180,54 @@ public class KiiDevlogResource {
 		requestBody.addProperty("command", "tail");
 		
 		Request request = new Request.Builder()
-		.url(this.endpoint)
-		.get()
-		.build();
-	this.call = WebSocketCall.create(client, request);
-	this.call.enqueue(new WebSocketListener() {
-		@Override
-		public void onOpen(WebSocket webSocket, Request request, Response response) throws IOException {
-			Buffer buffer = new Buffer();
-			try {
-				buffer.writeUtf8(requestBody.toString());
-				webSocket.sendMessage(PayloadType.TEXT, buffer);
-			} finally {
-				buffer.close();
-			}
-		}
-		@Override
-		public void onClose(int code, String reason) {
-		}
-		@Override
-		public void onFailure(IOException e) {
-			listener.onFailure(e);
-		}
-		@Override
-		public void onMessage(BufferedSource payload, PayloadType type) throws IOException {
-			try {
-				JsonArray logs = (JsonArray)new JsonParser().parse(payload.readUtf8());
-				payload.close();
-				List<KiiDevlog> results = new ArrayList<KiiDevlog>();
-				for (int i = 0; i < logs.size(); i++) {
-					results.add(new KiiDevlog(logs.get(i).getAsJsonObject()));
+			.url(this.endpoint)
+			.get()
+			.build();
+		this.call = WebSocketCall.create(client, request);
+		this.call.enqueue(new WebSocketListener() {
+			@Override
+			public void onOpen(WebSocket webSocket, Request request, Response response) throws IOException {
+				Buffer buffer = new Buffer();
+				try {
+					buffer.writeUtf8(requestBody.toString());
+					webSocket.sendMessage(PayloadType.TEXT, buffer);
+				} finally {
+					buffer.close();
 				}
-				Collections.sort(results);
-				listener.onTail(results, new TailContext() {
-					@Override
-					public void close() {
-						try {
-							call.cancel();
-						} catch (Exception ignore) {
-						}
-					}
-				});
-			} catch (Exception e) {
+			}
+			@Override
+			public void onClose(int code, String reason) {
+			}
+			@Override
+			public void onFailure(IOException e) {
 				listener.onFailure(e);
 			}
-		}
-		@Override
-		public void onPong(Buffer payload) {
-		}
-	});
+			@Override
+			public void onMessage(BufferedSource payload, PayloadType type) throws IOException {
+				try {
+					JsonArray logs = (JsonArray)new JsonParser().parse(payload.readUtf8());
+					payload.close();
+					List<KiiDevlog> results = new ArrayList<KiiDevlog>();
+					for (int i = 0; i < logs.size(); i++) {
+						results.add(new KiiDevlog(logs.get(i).getAsJsonObject()));
+					}
+					Collections.sort(results);
+					listener.onTail(results, new TailContext() {
+						@Override
+						public void close() {
+							try {
+								call.cancel();
+							} catch (Exception ignore) {
+							}
+						}
+					});
+				} catch (Exception e) {
+					listener.onFailure(e);
+				}
+			}
+			@Override
+			public void onPong(Buffer payload) {
+			}
+		});
 	}
 }
