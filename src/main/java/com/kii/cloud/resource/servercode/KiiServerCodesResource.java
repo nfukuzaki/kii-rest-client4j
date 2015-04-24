@@ -1,5 +1,7 @@
 package com.kii.cloud.resource.servercode;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.util.GsonUtils;
+import com.kii.cloud.util.IOUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -32,6 +35,17 @@ public class KiiServerCodesResource extends KiiRestSubResource {
 	
 	public KiiServerCodesResource(KiiAppResource parent) {
 		super(parent);
+	}
+	
+	/**
+	 * @param file extension must be 'zip' or 'js' and file encoding must be UTF-8.
+	 * @return
+	 * @throws KiiRestException
+	 */
+	@AdminAPI
+	public String deploy(File file) throws KiiRestException, IOException {
+		String script = IOUtils.readAsString(new FileInputStream(file));
+		return this.deploy(script);
 	}
 	/**
 	 * @param javascript
