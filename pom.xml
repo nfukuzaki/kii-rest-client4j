@@ -40,4 +40,20 @@
 			<systemPath>/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/lib/tools.jar</systemPath>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>oss-sonatype-org</id>
+			<name>OSS Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
