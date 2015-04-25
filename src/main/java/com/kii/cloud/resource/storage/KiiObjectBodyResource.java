@@ -1,5 +1,7 @@
 package com.kii.cloud.resource.storage;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -168,6 +170,20 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 			}
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * @param contentType
+	 * @param file
+	 * @throws KiiRestException
+	 * @throws IOException
+	 */
+	public void upload(String contentType, File file) throws KiiRestException, IOException {
+		InputStream stream = new FileInputStream(file);
+		try {
+			this.upload(contentType, stream);
+		} finally {
+			stream.close();
 		}
 	}
 	/**
