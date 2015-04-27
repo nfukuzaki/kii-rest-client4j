@@ -64,6 +64,14 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 	}
 	/**
 	 * @param endpoint
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public JsonObject execute(String endpoint) throws KiiRestException {
+		return this.execute(endpoint, null);
+	}
+	/**
+	 * @param endpoint
 	 * @param args
 	 * @see http://documentation.kii.com/en/guides/serverextension/executing_servercode/manual_execution/
 	 */
