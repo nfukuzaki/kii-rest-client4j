@@ -87,6 +87,9 @@ public class KiiAcl {
 		public static Subject group(String groupID) {
 			return new Subject(PREFIX_GROUP_ID, groupID);
 		}
+		public static Subject thing(KiiThing thing) {
+			return thing(thing.getThingID());
+		}
 		public static Subject thing(String thingID) {
 			return new Subject(PREFIX_THING_ID, thingID);
 		}

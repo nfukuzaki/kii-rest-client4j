@@ -9,6 +9,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.push.KiiPushInstallation;
+import com.kii.cloud.model.storage.KiiThing;
+import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiAppResource;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
@@ -72,6 +74,14 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 		}
 	}
 	/**
+	 * @param user
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public List<KiiPushInstallation> list(KiiUser user) throws KiiRestException {
+		return this.listByUser(user.getUserID());
+	}
+	/**
 	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/push-notification/preparation/
@@ -91,6 +101,14 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
+	}
+	/**
+	 * @param thing
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public List<KiiPushInstallation> list(KiiThing thing) throws KiiRestException {
+		return this.listByThing(thing.getThingID());
 	}
 	/**
 	 * @return

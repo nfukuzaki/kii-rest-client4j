@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.storage.KiiGroup;
 import com.kii.cloud.model.storage.KiiGroupMembers;
+import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiAppResource;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
@@ -72,6 +73,14 @@ public class KiiGroupsResource extends KiiRestSubResource {
 		}
 	}
 	/**
+	 * @param user
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public List<KiiGroup> getOwnGroups(KiiUser user) throws KiiRestException {
+		return this.getOwnGroups(user.getUserID());
+	}
+	/**
 	 * 
 	 * NOTE:This feature has not documented yet.
 	 * @param userID
@@ -93,6 +102,14 @@ public class KiiGroupsResource extends KiiRestSubResource {
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
+	}
+	/**
+	 * @param user
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public List<KiiGroup> getBelongGroups(KiiUser user) throws KiiRestException {
+		return this.getBelongGroups(user.getUserID());
 	}
 	/**
 	 * @param userID

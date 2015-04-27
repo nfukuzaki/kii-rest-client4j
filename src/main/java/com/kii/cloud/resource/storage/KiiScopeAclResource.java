@@ -5,6 +5,9 @@ import java.util.List;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.storage.KiiAcl.ScopeAction;
 import com.kii.cloud.model.storage.KiiAcl.Subject;
+import com.kii.cloud.model.storage.KiiGroup;
+import com.kii.cloud.model.storage.KiiThing;
+import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiAppResource;
 
 /**
@@ -49,12 +52,60 @@ public class KiiScopeAclResource extends KiiAclResource {
 	}
 	/**
 	 * @param action
+	 * @param user
+	 * @throws KiiRestException
+	 */
+	public void grant(ScopeAction action, KiiUser user) throws KiiRestException {
+		this.grant(action, Subject.user(user));
+	}
+	/**
+	 * @param action
+	 * @param group
+	 * @throws KiiRestException
+	 */
+	public void grant(ScopeAction action, KiiGroup group) throws KiiRestException {
+		this.grant(action, Subject.group(group));
+	}
+	/**
+	 * @param action
+	 * @param thing
+	 * @throws KiiRestException
+	 */
+	public void grant(ScopeAction action, KiiThing thing) throws KiiRestException {
+		this.grant(action, Subject.thing(thing));
+	}
+	/**
+	 * @param action
 	 * @param subject
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/buckets/setting-acl/
 	 */
 	public void grant(ScopeAction action, Subject subject) throws KiiRestException {
 		super.grant(action, subject);
+	}
+	/**
+	 * @param action
+	 * @param user
+	 * @throws KiiRestException
+	 */
+	public void revok(ScopeAction action, KiiUser user) throws KiiRestException {
+		this.revok(action, Subject.user(user));
+	}
+	/**
+	 * @param action
+	 * @param group
+	 * @throws KiiRestException
+	 */
+	public void revok(ScopeAction action, KiiGroup group) throws KiiRestException {
+		this.revok(action, Subject.group(group));
+	}
+	/**
+	 * @param action
+	 * @param thing
+	 * @throws KiiRestException
+	 */
+	public void revok(ScopeAction action, KiiThing thing) throws KiiRestException {
+		this.revok(action, Subject.thing(thing));
 	}
 	/**
 	 * @param action

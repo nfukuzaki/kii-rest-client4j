@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.model.storage.KiiGroup;
+import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
@@ -34,6 +35,9 @@ public class KiiGroupResource extends KiiRestSubResource {
 	public KiiGroupMembersResource members() {
 		return new KiiGroupMembersResource(this);
 	}
+	public KiiGroupMemberResource members(KiiUser user) {
+		return this.members(user.getUserID());
+	}
 	public KiiGroupMemberResource members(String userID) {
 		return new KiiGroupMemberResource(members(), userID);
 	}
@@ -52,6 +56,13 @@ public class KiiGroupResource extends KiiRestSubResource {
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
+	}
+	/**
+	 * @param user
+	 * @throws KiiRestException
+	 */
+	public void changeOwner(KiiUser user) throws KiiRestException {
+		this.changeOwner(user.getUserID());
 	}
 	/**
 	 * @param userID

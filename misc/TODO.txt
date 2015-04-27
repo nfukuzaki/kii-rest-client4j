@@ -1,7 +1,5 @@
 Management server configuration
 ABTest
-Social
-Devlog
 Implementing test code
 Improving parameter validation
 Writing javadoc
