@@ -23,15 +23,22 @@ public class KiiServerHookConfiguration {
 					schedulerConfigurations.add(new SchedulerConfiguration(schedulerEntry.getKey(), (JsonObject)schedulerEntry.getValue()));
 				}
 			} else {
-				triggerConfigurations.add(new TriggerConfiguration(entry.getKey(), (JsonArray)entry.getValue()));
+				triggerConfigurations.add(new TriggerConfiguration(Path.parse(entry.getKey()), (JsonArray)entry.getValue()));
 			}
 		}
 	}
-	
+	public KiiServerHookConfiguration addTriggerConfiguration(TriggerConfiguration triggerConfiguration) {
+		this.triggerConfigurations.add(triggerConfiguration);
+		return this;
+	}
+	public KiiServerHookConfiguration addSchedulerConfiguration(SchedulerConfiguration schedulerConfiguration) {
+		this.schedulerConfigurations.add(schedulerConfiguration);
+		return this;
+	}
 	public JsonObject toJson() {
 		JsonObject json = new JsonObject();
 		for (TriggerConfiguration triggerConfiguration : this.triggerConfigurations) {
-			json.add(triggerConfiguration.path, triggerConfiguration.toJson());
+			json.add(triggerConfiguration.path.toString(), triggerConfiguration.toJson());
 		}
 		if (this.schedulerConfigurations.size() > 0) {
 			JsonObject scheduler = new JsonObject();
@@ -63,13 +70,75 @@ public class KiiServerHookConfiguration {
 		INSTALLATION_CREATED,
 		INSTALLATION_DELETED
 	}
+	public static class Path {
+		protected static final String PREFIX = "kiicloud://";
+		private final String scope;
+		private final String bucketName;
+		private Path(String scope) {
+			this.scope = scope;
+			this.bucketName = null;
+		}
+		private Path(String scope, String bucketName) {
+			this.scope = scope;
+			this.bucketName = bucketName;
+		}
+		@Override
+		public String toString() {
+			if (this.bucketName == null) {
+				return PREFIX + this.scope;
+			} else {
+				if (this.scope == null) {
+					return PREFIX + "buckets/" + this.bucketName;
+				} else {
+					return PREFIX + this.scope + "/*/buckets/" + this.bucketName;
+				}
+			}
+		}
+		public static Path Installation() {
+			return new Path("installations");
+		}
+		public static Path app(String bucketName) {
+			return new Path(null, bucketName);
+		}
+		public static Path group() {
+			return new Path("groups");
+		}
+		public static Path group(String bucketName) {
+			return new Path("groups", bucketName);
+		}
+		public static Path user() {
+			return new Path("users");
+		}
+		public static Path user(String bucketName) {
+			return new Path("users", bucketName);
+		}
+		public static Path thing() {
+			return new Path("things");
+		}
+		public static Path thing(String bucketName) {
+			return new Path("things", bucketName);
+		}
+		public static Path parse(String path) {
+			String p = path.replace(PREFIX, "");
+			String[] pp = p.split("/");
+			if (pp.length == 1) {
+				return new Path(pp[0]);
+			} else {
+				if ("buckets".equals(pp[0])) {
+					return new Path(null, pp[pp.length - 1]);
+				} else {
+					return new Path(pp[0], pp[pp.length - 1]);
+				}
+			}
+		}
+	}
 	public static class TriggerConfiguration {
-		private final String path;
+		private final Path path;
 		private final List<TriggerAction> triggerActions = new ArrayList<TriggerAction>();
-		public TriggerConfiguration(String path) {
+		public TriggerConfiguration(Path path) {
 			this.path = path;
 		}
-		public TriggerConfiguration(String path, JsonArray array) {
+		public TriggerConfiguration(Path path, JsonArray array) {
 			this.path = path;
 			for (int i = 0; i < array.size(); i++) {
 				this.triggerActions.add(new TriggerAction(array.get(i).getAsJsonObject()));

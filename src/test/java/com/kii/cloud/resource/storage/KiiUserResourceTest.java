@@ -1,9 +1,11 @@
 package com.kii.cloud.resource.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -176,6 +178,94 @@ public class KiiUserResourceTest {
 		
 		// verify phone
 		rest.api().users(registeredUser).verifyPhone(verificationCode);
+		
+		// check the phoneNumberVerified
+		user = (KiiNormalUser)rest.api().users(registeredUser).get();
+		assertTrue(user.isPhoneNumberVerified());
+	}
+	@Test
+	public void emailVerificationForAdminTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials().enableEmailVerification());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		String currentTime = String.valueOf(System.currentTimeMillis());
+		String username = "test-" + currentTime;
+		String email = username + "@example.com";
+		String password = "pa$$word";
+		
+		KiiNormalUser user = new KiiNormalUser()
+			.setUsername(username)
+			.setEmail(email);
+		
+		// register new user
+		KiiUser registeredUser = rest.api().users().register(user, password);
+		rest.setCredentials(registeredUser);
+		
+		// check the emailAddressVerified
+		user = (KiiNormalUser)rest.api().users(registeredUser).get();
+		assertFalse(user.isEmailAddressVerified());
+		
+		// switch admin context
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		String verificationCode1 = rest.api().users(registeredUser).getEmailVerificationCode();
+		assertNotNull(verificationCode1);
+		
+		// re-sending email verification
+		rest.api().users(registeredUser).resendEmailVerification();
+		String verificationCode2 = rest.api().users(registeredUser).getEmailVerificationCode();
+		assertEquals(verificationCode1, verificationCode2);
+	}
+	@Test
+	public void phoneVerificationForAdminTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials().enablePhoneVerification());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		String currentTime = String.valueOf(System.currentTimeMillis());
+		String username = "test-" + currentTime;
+		String phone = TestUtils.getRandomGlobalJpPhoneNumber();
+		String password = "pa$$word";
+		
+		KiiNormalUser user = new KiiNormalUser()
+			.setUsername(username)
+			.setPhone(phone);
+		
+		// register new user
+		KiiUser registeredUser = rest.api().users().register(user, password);
+		rest.setCredentials(registeredUser);
+		
+		// check the phoneNumberVerified
+		user = (KiiNormalUser)rest.api().users(registeredUser).get();
+		assertFalse(user.isPhoneNumberVerified());
+		
+		// switch admin context
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		String verificationCode1 = rest.api().users(registeredUser).getPhoneVerificationCode();
+		assertNotNull(verificationCode1);
+		
+		// re-sending phone verification
+		rest.api().users(registeredUser).resendPhoneVerification();
+		String verificationCode2 = rest.api().users(registeredUser).getPhoneVerificationCode();
+		assertEquals(verificationCode1, verificationCode2);
+		
+		// reseting phone verification
+		rest.api().users(registeredUser).resetPhoneVerification();
+		String verificationCode3 = rest.api().users(registeredUser).getPhoneVerificationCode();
+		assertNotEquals(verificationCode2, verificationCode3);
+		
+		
+		// switch user context
+		rest.setCredentials(registeredUser);
+		
+		// verify phone by old verificationCode
+		try {
+			rest.api().users(registeredUser).verifyPhone(verificationCode2);
+			fail("KiiRestException should be thrown");
+		} catch (KiiRestException e) {
+		}
+		// verify phone by new verificationCode
+		rest.api().users(registeredUser).verifyPhone(verificationCode3);
 		
 		// check the phoneNumberVerified
 		user = (KiiNormalUser)rest.api().users(registeredUser).get();

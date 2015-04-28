@@ -202,22 +202,16 @@ public class KiiUserResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	@AdminAPI
-	public void resetEmailVerification() throws KiiRestException {
-		this.resetVerification("email-address");
+	public String resetPhoneVerification() throws KiiRestException {
+		return this.resetVerification("phone-number");
 	}
-	/**
-	 * @throws KiiRestException
-	 */
-	@AdminAPI
-	public void resetPhoneVerification() throws KiiRestException {
-		this.resetVerification("phone-number");
-	}
-	private void resetVerification(String addressType) throws KiiRestException {
+	private String resetVerification(String addressType) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/reset-verification-code", addressType), Method.POST, headers);
 		try {
 			Response response = this.execute(request);
-			this.parseResponse(request, response);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			return GsonUtils.getString(responseBody, "verificationCode");
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

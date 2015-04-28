@@ -2,19 +2,23 @@ package com.kii.cloud.resource.servercode;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
+import java.io.File;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRest;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
 import com.kii.cloud.TestAppFilter;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.model.KiiAdminCredentials;
-import com.kii.cloud.util.GsonUtils;
+import com.kii.cloud.model.servercode.KiiServerHookConfiguration;
+import com.kii.cloud.model.servercode.KiiServerHookConfiguration.Path;
+import com.kii.cloud.model.servercode.KiiServerHookConfiguration.SchedulerConfiguration;
+import com.kii.cloud.model.servercode.KiiServerHookConfiguration.TriggerAction;
+import com.kii.cloud.model.servercode.KiiServerHookConfiguration.TriggerConfiguration;
+import com.kii.cloud.model.servercode.KiiServerHookConfiguration.When;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiServerCodeHookResourceTest {
@@ -26,17 +30,17 @@ public class KiiServerCodeHookResourceTest {
 		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
-		StringBuilder javascript = new StringBuilder();
-		javascript.append("function returnNumber(params, context){" + "\n");
-		javascript.append("    console.log(\"returnNumber\");" + "\n");
-		javascript.append("    return 3.14;" + "\n");
-		javascript.append("}" + "\n");
-		String versionID = rest.api().servercode().deploy(javascript.toString());
+		String versionID = rest.api().servercode().deploy(new File(getClass().getResource("get_server_time.js").getPath()));
 		rest.api().servercode().setCurrentVersion(versionID);
 		
-		rest.setCredentials(null);
-		JsonObject result = rest.api().servercode("current").execute("returnNumber", null);
-		assertEquals(new BigDecimal("3.14"), GsonUtils.getBigDecimal(result, "returnedValue"));
-		assertEquals(2, (int)GsonUtils.getInt(result, "x_step_count"));
+		KiiServerHookConfiguration hookConfig = new KiiServerHookConfiguration();
+		hookConfig.addTriggerConfiguration(
+				new TriggerConfiguration(Path.user())
+				.addTriggerAction(
+						new TriggerAction(When.USER_CREATED, "user_created")
+				)
+		);
+		hookConfig.addSchedulerConfiguration(new SchedulerConfiguration("1DayBatch", "1 0 * * *", "daily_batch", null));
+		rest.api().hooks(versionID).deploy(hookConfig);
 	}
 }
