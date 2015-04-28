@@ -174,6 +174,7 @@ public class KiiUserResource extends KiiRestSubResource {
 	 * @return
 	 * @throws KiiRestException
 	 */
+	@AdminAPI
 	public String getEmailVerificationCode() throws KiiRestException {
 		return getVerificationCode("email-address");
 	}
@@ -181,9 +182,11 @@ public class KiiUserResource extends KiiRestSubResource {
 	 * @return
 	 * @throws KiiRestException
 	 */
+	@AdminAPI
 	public String getPhoneVerificationCode() throws KiiRestException {
 		return getVerificationCode("phone-number");
 	}
+	@AdminAPI
 	public String getVerificationCode(String addressType) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/verification-code", addressType), Method.GET, headers);

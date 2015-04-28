@@ -13,6 +13,8 @@ import com.kii.cloud.annotation.AdminAPI;
 import com.kii.cloud.model.HttpContentRange;
 import com.kii.cloud.model.storage.KiiChunkedDownloadContext;
 import com.kii.cloud.model.storage.KiiChunkedUploadContext;
+import com.kii.cloud.model.storage.KiiGroup;
+import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
@@ -61,6 +63,15 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		this.moveObjectBody(targetObjectScope, bucketName, objectID);
 	}
 	/**
+	 * @param user
+	 * @param bucketName
+	 * @param objectID
+	 * @throws KiiRestException
+	 */
+	public void moveToUserScope(KiiUser user, String bucketName, String objectID) throws KiiRestException {
+		this.moveToUserScope(user.getUserID(), bucketName, objectID);
+	}
+	/**
 	 * @param userID
 	 * @param bucketName
 	 * @param objectID
@@ -72,8 +83,18 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		JsonObject targetObjectScope = new JsonObject();
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("userID", userID);
-		targetObjectScope.addProperty("type", "APP_AND_GROUP");
+		targetObjectScope.addProperty("type", "APP_AND_USER");
 		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+	}
+	/**
+	 * @param group
+	 * @param bucketName
+	 * @param objectID
+	 * @throws KiiRestException
+	 */
+	@AdminAPI
+	public void moveToGroupScope(KiiGroup group, String bucketName, String objectID) throws KiiRestException {
+		this.moveToGroupScope(group.getGroupID(), bucketName, objectID);
 	}
 	/**
 	 * @param groupID
@@ -87,7 +108,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		JsonObject targetObjectScope = new JsonObject();
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("groupID", groupID);
-		targetObjectScope.addProperty("type", "APP_AND_USER");
+		targetObjectScope.addProperty("type", "APP_AND_GROUP");
 		this.moveObjectBody(targetObjectScope, bucketName, objectID);
 	}
 	private void moveObjectBody(JsonObject targetObjectScope, String bucketName, String objectID) throws KiiRestException {
@@ -97,7 +118,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		requestBody.addProperty("targetBucketID", bucketName);
 		requestBody.addProperty("targetObjectID", objectID);
 		
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_OBJECT_BODY_MOVE_REQUEST, requestBody);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/move"), Method.POST, headers, MEDIA_TYPE_OBJECT_BODY_MOVE_REQUEST, requestBody);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);

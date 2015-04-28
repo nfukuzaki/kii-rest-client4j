@@ -122,5 +122,36 @@
             {"Sina"     : false},
             {"QQ"       : false}
         ]
+    },
+    {
+        "AppID"            : "262ddd7e",
+        "AppKey"           : "1c54e4a0f8c204d228c131cfd5615e1f",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "JP",
+        "Endpoint"         : null,
+        "RefreshToken"     : false,
+        "EmailVerification": true,
+        "PhoneVerification": true,
+        "Privacy"          : true,
+        "EncryptEnabled"   : false,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"   : false},
+            {"Yahoo"    : false},
+            {"Twitter"  : false},
+            {"Facebook" : false},
+            {"Live"     : false},
+            {"LinkedIn" : false},
+            {"DropBox"  : false},
+            {"Box"      : false},
+            {"RenRen"   : false},
+            {"Sina"     : false},
+            {"QQ"       : false}
+        ]
     }
 ]

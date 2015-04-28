@@ -1,7 +1,6 @@
 package com.kii.cloud.resource;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -145,24 +144,12 @@ public abstract class KiiRestResource {
 		if (entity instanceof JsonArray) {
 			return RequestBody.create(contentType, ((JsonArray)entity).toString());
 		}
-		if (entity instanceof FileInputStream) {
+		if (entity instanceof InputStream) {
 			return new RequestBody() {
 				@Override
 				public long contentLength() throws IOException {
-					return ((FileInputStream) entity).available();
+					return ((InputStream)entity).available();
 				}
-				@Override
-				public MediaType contentType() {
-					return contentType;
-				}
-				@Override
-				public void writeTo(BufferedSink sink) throws IOException {
-					OutputStream os = sink.outputStream();
-					IOUtils.copy((InputStream)entity, os);
-				}
-			};
-		} else if (entity instanceof InputStream) {
-			return new RequestBody() {
 				@Override
 				public MediaType contentType() {
 					return contentType;

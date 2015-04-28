@@ -1,5 +1,6 @@
 package com.kii.cloud.resource.servercode;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -116,5 +117,18 @@ public class KiiServerCodeResourceTest {
 		} catch (KiiRestException e) {
 			assertEquals(404, e.getStatus());
 		}
+	}
+	@Test
+	public void deployFromFileTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		
+		String versionID = rest.api().servercode().deploy(new File(getClass().getResource("get_server_time.js").getPath()));
+		rest.api().servercode().setCurrentVersion(versionID);
+		String currentVersionID = rest.api().servercode().getCurrentVersion();
+		assertEquals(versionID, currentVersionID);
 	}
 }

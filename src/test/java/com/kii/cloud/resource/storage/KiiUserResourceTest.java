@@ -1,6 +1,9 @@
 package com.kii.cloud.resource.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,8 +13,10 @@ import com.kii.cloud.KiiRest;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.SkipAcceptableTestRunner;
 import com.kii.cloud.TestApp;
+import com.kii.cloud.TestAppFilter;
 import com.kii.cloud.TestEnvironments;
 import com.kii.cloud.TestUtils;
+import com.kii.cloud.model.KiiAdminCredentials;
 import com.kii.cloud.model.KiiUserCredentials;
 import com.kii.cloud.model.storage.KiiNormalUser;
 import com.kii.cloud.model.storage.KiiPseudoUser;
@@ -20,7 +25,6 @@ import com.kii.cloud.resource.storage.KiiUserResource.NotificationMethod;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiUserResourceTest {
-	
 	@Test
 	public void normalUserTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
@@ -100,5 +104,81 @@ public class KiiUserResourceTest {
 		// getting normal user
 		KiiUser user3 = rest.api().users(user2.getUserID()).get();
 		Assert.assertFalse(user3.isPseudo());
+	}
+	@Test
+	public void emailVerificationTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials().enableEmailVerification());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		String currentTime = String.valueOf(System.currentTimeMillis());
+		String username = "test-" + currentTime;
+		String email = username + "@example.com";
+		String password = "pa$$word";
+		
+		KiiNormalUser user = new KiiNormalUser()
+			.setUsername(username)
+			.setEmail(email);
+		
+		// register new user
+		KiiUser registeredUser = rest.api().users().register(user, password);
+		rest.setCredentials(registeredUser);
+		
+		// check the emailAddressVerified
+		user = (KiiNormalUser)rest.api().users(registeredUser).get();
+		assertFalse(user.isEmailAddressVerified());
+		
+		// switch admin context
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		String verificationCode = rest.api().users(registeredUser).getEmailVerificationCode();
+		assertNotNull(verificationCode);
+		
+		// switch user context
+		rest.setCredentials(registeredUser);
+		
+		// verify email
+		rest.api().users(registeredUser).verifyEmail(verificationCode);
+		
+		// check the emailAddressVerified
+		user = (KiiNormalUser)rest.api().users(registeredUser).get();
+		assertTrue(user.isEmailAddressVerified());
+	}
+	@Test
+	public void phoneVerificationTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials().enablePhoneVerification());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		String currentTime = String.valueOf(System.currentTimeMillis());
+		String username = "test-" + currentTime;
+		String phone = TestUtils.getRandomGlobalJpPhoneNumber();
+		String password = "pa$$word";
+		
+		KiiNormalUser user = new KiiNormalUser()
+			.setUsername(username)
+			.setPhone(phone);
+		
+		// register new user
+		KiiUser registeredUser = rest.api().users().register(user, password);
+		rest.setCredentials(registeredUser);
+		
+		// check the phoneNumberVerified
+		user = (KiiNormalUser)rest.api().users(registeredUser).get();
+		assertFalse(user.isPhoneNumberVerified());
+		
+		// switch admin context
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		String verificationCode = rest.api().users(registeredUser).getPhoneVerificationCode();
+		assertNotNull(verificationCode);
+		
+		// switch user context
+		rest.setCredentials(registeredUser);
+		
+		// verify phone
+		rest.api().users(registeredUser).verifyPhone(verificationCode);
+		
+		// check the phoneNumberVerified
+		user = (KiiNormalUser)rest.api().users(registeredUser).get();
+		assertTrue(user.isPhoneNumberVerified());
 	}
 }

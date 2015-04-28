@@ -57,6 +57,12 @@ public class KiiNormalUser extends KiiUser {
 		}
 		return null;
 	}
+	public boolean isEmailAddressVerified() {
+		return PROPERTY_EMAIL_ADDRESS_VERIFIED.get(this.json);
+	}
+	public boolean isPhoneNumberVerified() {
+		return PROPERTY_PHONE_NUMBER_VERIFIED.get(this.json);
+	}
 	
 	@Override
 	public boolean isPseudo() {
