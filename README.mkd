@@ -108,6 +108,11 @@ A REST client for [Kii Cloud](http://kii.com) for Android and Java applications.
   - Getting Devlog
   - Tailing Devlog
 
+## Design
+API design is very simple. There are two kinds of classes.  
+The first is [resource](https://github.com/nfukuzaki/kii-rest-client4j/tree/master/src/main/java/com/kii/cloud/resource) classes that represents the REST API.  
+The second is [model](https://github.com/nfukuzaki/kii-rest-client4j/tree/master/src/main/java/com/kii/cloud/model) classes that represents the REST request and response.
+
 ## Example usage
 ```java
 // initialize rest client
