@@ -1,7 +1,5 @@
 package com.kii.cloud.resource.servercode;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 
 import org.junit.Test;
