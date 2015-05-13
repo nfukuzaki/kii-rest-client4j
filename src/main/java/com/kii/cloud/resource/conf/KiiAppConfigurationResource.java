@@ -19,6 +19,9 @@ public class KiiAppConfigurationResource extends KiiRestSubResource {
 	public KiiThingTypesConfigurationResource thingTypes() {
 		return new KiiThingTypesConfigurationResource(this);
 	}
+	public KiiThingTypeConfigurationResource thingTypes(String thingType) {
+		return new KiiThingTypeConfigurationResource(this.thingTypes(), thingType);
+	}
 	
 	@Override
 	public String getPath() {

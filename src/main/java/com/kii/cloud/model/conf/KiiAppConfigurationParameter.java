@@ -47,7 +47,9 @@ public class KiiAppConfigurationParameter extends KiiJsonModel {
 		return GsonUtils.getString(this.json, provider.getSocialAuthPrefix() + PROPERTY_NAME_CONSUMER_SECRET);
 	}
 	
-	
+	public boolean has(KiiJsonProperty<?> property) {
+		return this.json.has(property.getName());
+	}
 	public Boolean isMasterApp() {
 		return PROPERTY_IS_MASTER_APP.get(this.json);
 	}

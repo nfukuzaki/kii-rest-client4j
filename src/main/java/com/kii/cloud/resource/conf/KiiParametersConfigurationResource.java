@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.KiiRestException;
 import com.kii.cloud.annotation.AdminAPI;
+import com.kii.cloud.model.KiiJsonProperty;
 import com.kii.cloud.model.conf.KiiAppConfigurationParameter;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
@@ -34,6 +35,10 @@ public class KiiParametersConfigurationResource extends KiiRestSubResource {
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
+	}
+	@AdminAPI
+	public void set(KiiJsonProperty<?> property, Object value) throws KiiRestException {
+		this.set(property.getName(), value);
 	}
 	@AdminAPI
 	public void set(String name, Object value) throws KiiRestException {
