@@ -24,6 +24,7 @@ import com.kii.cloud.model.storage.KiiChunkedUploadContext;
 import com.kii.cloud.model.storage.KiiGroup;
 import com.kii.cloud.model.storage.KiiNormalUser;
 import com.kii.cloud.model.storage.KiiObject;
+import com.kii.cloud.model.storage.KiiThing;
 import com.kii.cloud.resource.storage.KiiObjectBodyResource;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -226,6 +227,56 @@ public class KiiObjectBodyResourceTest {
 		
 		assertArrayEquals(body, os.toByteArray());
 		assertFalse(rest.api().users(user1).buckets(userBucketName).objects(userObject1).body().exists());
+	}
+	@Test
+	public void moveToThingScopeTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		
+		// registering thing
+		String vendorThingID1 = "thing-" + System.currentTimeMillis();
+		KiiThing thing1 = new KiiThing()
+			.setVendorThingID(vendorThingID1)
+			.setProductName("KiiCloud")
+			.setPassword("pa$$word");
+		thing1 = rest.api().things().register(thing1);
+		String vendorThingID2 = "thing-" + System.currentTimeMillis();
+		KiiThing thing2 = new KiiThing()
+			.setVendorThingID(vendorThingID2)
+			.setProductName("KiiCloud")
+			.setPassword("pa$$word");
+		thing2 = rest.api().things().register(thing2);
+
+		rest.setCredentials(thing1);
+		
+		byte[] body = this.createObjectBody(1024);
+		
+		String thingBucketName = "thing_bucket" + System.currentTimeMillis();
+		
+		// creating object (source)
+		KiiObject thingObject1 = new KiiObject().set("size", 1024);
+		rest.api().things(thing1).buckets(thingBucketName).objects().save(thingObject1);
+		
+		Thread.sleep(1000);
+		
+		// uploading object body
+		ByteArrayInputStream is = new ByteArrayInputStream(body);
+		rest.api().things(thing1).buckets(thingBucketName).objects(thingObject1).body().upload("image/jpg", is);
+		
+		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		rest.setCredentials(cred);
+		
+		// creating object (dest)
+		KiiObject thingObject2 = new KiiObject().set("size", 1024);
+		rest.api().things(thing2).buckets(thingBucketName).objects().save(thingObject2);
+		rest.api().things(thing1).buckets(thingBucketName).objects(thingObject1).body().moveToThingScope(thing2, thingBucketName, thingObject2.getObjectID());
+		
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		rest.api().things(thing2).buckets(thingBucketName).objects(thingObject2).body().download(os);
+		
+		assertArrayEquals(body, os.toByteArray());
+		assertFalse(rest.api().things(thing1).buckets(thingBucketName).objects(thingObject1).body().exists());
 	}
 	private byte[] createObjectBody(int length) {
 		byte[] body = new byte[length];

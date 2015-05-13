@@ -14,6 +14,7 @@ import com.kii.cloud.model.HttpContentRange;
 import com.kii.cloud.model.storage.KiiChunkedDownloadContext;
 import com.kii.cloud.model.storage.KiiChunkedUploadContext;
 import com.kii.cloud.model.storage.KiiGroup;
+import com.kii.cloud.model.storage.KiiThing;
 import com.kii.cloud.model.storage.KiiUser;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
@@ -109,6 +110,30 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("groupID", groupID);
 		targetObjectScope.addProperty("type", "APP_AND_GROUP");
+		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+	}
+	/**
+	 * @param thing
+	 * @param bucketName
+	 * @param objectID
+	 * @throws KiiRestException
+	 */
+	public void moveToThingScope(KiiThing thing, String bucketName, String objectID) throws KiiRestException {
+		this.moveToThingScope(thing.getThingID(), bucketName, objectID);
+	}
+	/**
+	 * @param thingID
+	 * @param bucketName
+	 * @param objectID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
+	 */
+	@AdminAPI
+	public void moveToThingScope(String thingID, String bucketName, String objectID) throws KiiRestException {
+		JsonObject targetObjectScope = new JsonObject();
+		targetObjectScope.addProperty("appID", getRootResource().getAppID());
+		targetObjectScope.addProperty("thingID", thingID);
+		targetObjectScope.addProperty("type", "APP_AND_THING");
 		this.moveObjectBody(targetObjectScope, bucketName, objectID);
 	}
 	private void moveObjectBody(JsonObject targetObjectScope, String bucketName, String objectID) throws KiiRestException {
