@@ -113,6 +113,22 @@ API design is very simple. There are two kinds of classes.
 The first is [resource](https://github.com/nfukuzaki/kii-rest-client4j/tree/master/src/main/java/com/kii/cloud/resource) classes that represents the REST API.  
 The second is [model](https://github.com/nfukuzaki/kii-rest-client4j/tree/master/src/main/java/com/kii/cloud/model) classes that represents the REST request and response.
 
+## How to build
+1. open the pom.xml and edit a path of tools.jar.
+2. edit the `src/test/resources/test_config.json` if you want to execute all unit tests.
+3. build project using maven.
+4. `target/kii-rest-client4j.jar` will be created when build is successful.
+
+```sh
+mvn package
+```
+
+If you want to skip unit tests, try following command.
+
+```sh
+mvn package -DskipTests
+```
+
 ## Example usage
 ```java
 // initialize rest client
@@ -157,5 +173,3 @@ For more examples, please refer to the [test code](https://github.com/nfukuzaki/
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
