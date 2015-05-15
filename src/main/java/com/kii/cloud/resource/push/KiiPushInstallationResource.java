@@ -11,6 +11,7 @@ import com.kii.cloud.model.push.KiiPushInstallation.InstallationType;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.Response;
 
 /**
@@ -28,12 +29,21 @@ public class KiiPushInstallationResource extends KiiRestSubResource {
 	
 	public KiiPushInstallationResource(KiiPushInstallationsResource parent, InstallationType installationType, String installationRegistrationID) {
 		super(parent);
+		if (installationType == null) {
+			throw new IllegalArgumentException("installationType is null");
+		}
+		if (StringUtils.isEmpty(installationRegistrationID)) {
+			throw new IllegalArgumentException("installationRegistrationID is null or empty");
+		}
 		this.installationType = installationType;
 		this.installationRegistrationID = installationRegistrationID;
 		this.installationID = null;
 	}
 	public KiiPushInstallationResource(KiiPushInstallationsResource parent, String installationID) {
 		super(parent);
+		if (StringUtils.isEmpty(installationID)) {
+			throw new IllegalArgumentException("installationID is null or empty");
+		}
 		this.installationType = null;
 		this.installationRegistrationID = null;
 		this.installationID = installationID;

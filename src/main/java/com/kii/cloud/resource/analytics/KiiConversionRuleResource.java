@@ -10,6 +10,7 @@ import com.kii.cloud.model.analytics.KiiConversionRule;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.Response;
 
 /**
@@ -24,6 +25,9 @@ public class KiiConversionRuleResource extends KiiRestSubResource {
 	
 	public KiiConversionRuleResource(KiiConversionRulesResource parent, String conversionRuleID) {
 		super(parent);
+		if (StringUtils.isEmpty(conversionRuleID)) {
+			throw new IllegalArgumentException("conversionRuleID is null or empty");
+		}
 		this.conversionRuleID = conversionRuleID;
 	}
 	

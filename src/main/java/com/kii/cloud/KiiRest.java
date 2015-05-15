@@ -43,7 +43,13 @@ public class KiiRest {
 	public KiiDevlogResource logs() {
 		return new KiiDevlogResource(this.appID, this.appKey, this.devlogEndpoint, this.credentials);
 	}
+	/**
+	 * @param credentials Try anonymous access if specify null.
+	 */
 	public void setCredentials(KiiCredentialsContainer credentials) {
+		if (credentials != null && !credentials.hasCredentials()) {
+			throw new IllegalArgumentException("credentials does not have an access token");
+		}
 		this.credentials = credentials;
 	}
 	public KiiCredentialsContainer getCredentials() {

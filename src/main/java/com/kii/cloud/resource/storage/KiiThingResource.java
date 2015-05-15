@@ -11,6 +11,7 @@ import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.resource.push.KiiTopicResource;
 import com.kii.cloud.util.GsonUtils;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -30,6 +31,9 @@ public class KiiThingResource extends KiiRestSubResource {
 	
 	public KiiThingResource(KiiThingsResource parent, String identifier) {
 		super(parent);
+		if (StringUtils.isEmpty(identifier)) {
+			throw new IllegalArgumentException("identifier is null or empty");
+		}
 		if (KiiThing.THING_ID_PATTERN.matcher(identifier).matches()) {
 			this.thingID = identifier;
 			this.vendorThingID = null;

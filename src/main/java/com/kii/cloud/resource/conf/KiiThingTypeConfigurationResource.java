@@ -10,6 +10,7 @@ import com.kii.cloud.model.conf.KiiThingTypeConfiguration;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -23,6 +24,9 @@ public class KiiThingTypeConfigurationResource extends KiiRestSubResource {
 	private final String thingType;
 	public KiiThingTypeConfigurationResource(KiiThingTypesConfigurationResource parent, String thingType) {
 		super(parent);
+		if (StringUtils.isEmpty(thingType)) {
+			throw new IllegalArgumentException("thingType is null or empty");
+		}
 		this.thingType = thingType;
 	}
 	

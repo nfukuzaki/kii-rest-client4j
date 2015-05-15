@@ -10,6 +10,7 @@ import com.kii.cloud.model.analytics.KiiAggregationRule;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.resource.KiiRestSubResource;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.Response;
 
 /**
@@ -24,6 +25,9 @@ public class KiiAggregationRuleResource extends KiiRestSubResource {
 	
 	public KiiAggregationRuleResource(KiiAggregationRulesResource parent, String aggregationRuleID) {
 		super(parent);
+		if (StringUtils.isEmpty(aggregationRuleID)) {
+			throw new IllegalArgumentException("aggregationRuleID is null or empty");
+		}
 		this.aggregationRuleID = aggregationRuleID;
 	}
 	

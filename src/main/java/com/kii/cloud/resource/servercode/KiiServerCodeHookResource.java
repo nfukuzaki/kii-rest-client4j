@@ -10,6 +10,7 @@ import com.kii.cloud.model.servercode.KiiServerHookConfiguration;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -32,6 +33,9 @@ public class KiiServerCodeHookResource extends KiiRestSubResource {
 	}
 	public KiiServerCodeHookResource(KiiServerCodeHooksResource parent, String version) {
 		super(parent);
+		if (StringUtils.isEmpty(version)) {
+			throw new IllegalArgumentException("version is null or empty");
+		}
 		this.version = version;
 	}
 	/**

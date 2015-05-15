@@ -11,6 +11,7 @@ import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
 import com.kii.cloud.resource.push.KiiTopicResource;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -27,6 +28,9 @@ public class KiiGroupResource extends KiiRestSubResource {
 	private final String groupID;
 	public KiiGroupResource(KiiGroupsResource parent, String groupID) {
 		super(parent);
+		if (StringUtils.isEmpty(groupID)) {
+			throw new IllegalArgumentException("groupID is null or empty");
+		}
 		this.groupID = groupID;
 	}
 	public KiiScopeAclResource acl() {

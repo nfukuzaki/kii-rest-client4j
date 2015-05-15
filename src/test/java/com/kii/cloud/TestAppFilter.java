@@ -39,20 +39,40 @@ public class TestAppFilter {
 		this.enableRefreshToken = true;
 		return this;
 	}
+	public TestAppFilter disableRefreshToken() {
+		this.enableRefreshToken = false;
+		return this;
+	}
 	public TestAppFilter enableEmailVerification() {
 		this.enableEmailVerification = true;
+		return this;
+	}
+	public TestAppFilter disableEmailVerification() {
+		this.enableEmailVerification = false;
 		return this;
 	}
 	public TestAppFilter enablePhoneVerification() {
 		this.enablePhoneVerification = true;
 		return this;
 	}
+	public TestAppFilter disablePhoneVerification() {
+		this.enablePhoneVerification = false;
+		return this;
+	}
 	public TestAppFilter enableExposeFullUserData() {
 		this.enableExposeFullUserData = true;
 		return this;
 	}
+	public TestAppFilter disableExposeFullUserData() {
+		this.enableExposeFullUserData = false;
+		return this;
+	}
 	public TestAppFilter enableBucketEncryption() {
 		this.enableBucketEncryption = true;
+		return this;
+	}
+	public TestAppFilter disableBucketEncryption() {
+		this.enableBucketEncryption = false;
 		return this;
 	}
 	public TestAppFilter enableGCM() {
@@ -124,13 +144,25 @@ public class TestAppFilter {
 		if (this.enableEmailVerification && !app.getFlag("EmailVerification")) {
 			return false;
 		}
+		if (!this.enableEmailVerification && app.getFlag("EmailVerification")) {
+			
+		}
 		if (this.enablePhoneVerification && !app.getFlag("PhoneVerification")) {
+			return false;
+		}
+		if (!this.enablePhoneVerification && app.getFlag("PhoneVerification")) {
 			return false;
 		}
 		if (this.enableExposeFullUserData && !app.getFlag("Privacy")) {
 			return false;
 		}
+		if (!this.enableExposeFullUserData && app.getFlag("Privacy")) {
+			return false;
+		}
 		if (this.enableBucketEncryption && !app.getFlag("EncryptEnabled")) {
+			return false;
+		}
+		if (!this.enableBucketEncryption && app.getFlag("EncryptEnabled")) {
 			return false;
 		}
 		if (this.enableGCM && !app.isEnabledPush("GCM")) {

@@ -29,7 +29,7 @@ import com.kii.cloud.resource.storage.KiiUserResource.NotificationMethod;
 public class KiiUserResourceTest {
 	@Test
 	public void normalUserTest() throws Exception {
-		TestApp testApp = TestEnvironments.random();
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().disableEmailVerification());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		String currentTime = String.valueOf(System.currentTimeMillis());

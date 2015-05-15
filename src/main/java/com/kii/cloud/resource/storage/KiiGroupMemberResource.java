@@ -7,6 +7,7 @@ import com.kii.cloud.KiiRestException;
 import com.kii.cloud.resource.KiiRestRequest;
 import com.kii.cloud.resource.KiiRestSubResource;
 import com.kii.cloud.resource.KiiRestRequest.Method;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.Response;
 
 /**
@@ -21,6 +22,9 @@ public class KiiGroupMemberResource extends KiiRestSubResource {
 	
 	public KiiGroupMemberResource(KiiGroupMembersResource parent, String userID) {
 		super(parent);
+		if (StringUtils.isEmpty(userID)) {
+			throw new IllegalArgumentException("userID is null or empty");
+		}
 		this.userID = userID;
 	}
 	@Override

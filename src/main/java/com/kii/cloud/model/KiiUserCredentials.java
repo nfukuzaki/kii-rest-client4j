@@ -1,35 +1,39 @@
 package com.kii.cloud.model;
 
 import com.google.gson.JsonObject;
-import com.kii.cloud.util.GsonUtils;
+import com.kii.cloud.util.StringUtils;
 
 public class KiiUserCredentials extends KiiJsonModel implements KiiCredentialsContainer {
 	
-	public static final String PROPERTY_ID = "id";
-	public static final String PROPERTY_ACCESS_TOKEN = "access_token";
-	public static final String PROPERTY_EXPIRES_IN = "expires_in";
-	public static final String PROPERTY_REFRESH_TOKEN = "refresh_token";
+	public static final KiiJsonProperty<String> PROPERTY_ID = new KiiJsonProperty<String>(String.class, "id");
+	public static final KiiJsonProperty<String> PROPERTY_ACCESS_TOKEN = new KiiJsonProperty<String>(String.class, "access_token");
+	public static final KiiJsonProperty<Long> PROPERTY_EXPIRES_IN = new KiiJsonProperty<Long>(Long.class, "expires_in");
+	public static final KiiJsonProperty<String> PROPERTY_REFRESH_TOKEN = new KiiJsonProperty<String>(String.class, "refresh_token");
 	
 	public KiiUserCredentials(JsonObject json) {
 		super(json);
 	}
 	@Override
 	public String getID() {
-		return GsonUtils.getString(this.json, PROPERTY_ID);
+		return PROPERTY_ID.get(this.json);
+	}
+	@Override
+	public boolean hasCredentials() {
+		return !StringUtils.isEmpty(this.getAccessToken());
 	}
 	@Override
 	public String getAccessToken() {
-		return GsonUtils.getString(this.json, PROPERTY_ACCESS_TOKEN);
+		return PROPERTY_ACCESS_TOKEN.get(this.json);
 	}
 	@Override
 	public String getRefreshToken() {
-		return GsonUtils.getString(this.json, PROPERTY_REFRESH_TOKEN);
+		return PROPERTY_REFRESH_TOKEN.get(this.json);
 	}
 	@Override
 	public boolean isAdmin() {
 		return false;
 	}
 	public Long getExpiresIn() {
-		return GsonUtils.getLong(this.json, PROPERTY_EXPIRES_IN);
+		return PROPERTY_EXPIRES_IN.get(this.json);
 	}
 }

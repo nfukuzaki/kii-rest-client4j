@@ -40,6 +40,9 @@ public class KiiUserResource extends KiiRestSubResource {
 	private final String identifier;
 	public KiiUserResource(KiiUsersResource parent, String identifier) {
 		super(parent);
+		if (StringUtils.isEmpty(identifier)) {
+			throw new IllegalArgumentException("identifier is null or empty");
+		}
 		this.identifier = identifier;
 	}
 	

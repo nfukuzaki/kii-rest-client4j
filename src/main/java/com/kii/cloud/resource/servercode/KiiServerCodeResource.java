@@ -30,6 +30,9 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 	}
 	public KiiServerCodeResource(KiiServerCodesResource parent, String version) {
 		super(parent);
+		if (StringUtils.isEmpty(version)) {
+			throw new IllegalArgumentException("version is null or empty");
+		}
 		this.version = version;
 	}
 	

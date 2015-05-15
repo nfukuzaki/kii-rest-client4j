@@ -16,6 +16,7 @@ import com.kii.cloud.resource.storage.KiiGroupResource;
 import com.kii.cloud.resource.storage.KiiThingResource;
 import com.kii.cloud.resource.storage.KiiUserResource;
 import com.kii.cloud.util.GsonUtils;
+import com.kii.cloud.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -38,18 +39,30 @@ public class KiiTopicResource extends KiiRestSubResource {
 	private final String name;
 	public KiiTopicResource(KiiAppResource parent, String name) {
 		super(parent);
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("name is null or empty");
+		}
 		this.name = name;
 	}
 	public KiiTopicResource(KiiUserResource parent, String name) {
 		super(parent);
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("name is null or empty");
+		}
 		this.name = name;
 	}
 	public KiiTopicResource(KiiGroupResource parent, String name) {
 		super(parent);
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("name is null or empty");
+		}
 		this.name = name;
 	}
 	public KiiTopicResource(KiiThingResource parent, String name) {
 		super(parent);
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("name is null or empty");
+		}
 		this.name = name;
 	}
 	

@@ -7,6 +7,7 @@ import com.kii.cloud.model.KiiCredentialsContainer;
 import com.kii.cloud.model.KiiCustomableJsonModel;
 import com.kii.cloud.model.KiiJsonProperty;
 import com.kii.cloud.model.validation.RegularExpressionValidator;
+import com.kii.cloud.util.StringUtils;
 
 public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCredentialsContainer {
 	
@@ -49,6 +50,10 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 	@Override
 	public String getID() {
 		return this.getThingID();
+	}
+	@Override
+	public boolean hasCredentials() {
+		return !StringUtils.isEmpty(this.getAccessToken());
 	}
 	@Override
 	public String getAccessToken() {
