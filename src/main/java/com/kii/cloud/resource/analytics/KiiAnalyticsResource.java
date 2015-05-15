@@ -36,6 +36,9 @@ public class KiiAnalyticsResource extends KiiRestSubResource {
 	}
 	@AnonymousAPI
 	public KiiAnalyticsResult getResult(KiiAnalyticsQuery query) throws KiiRestException {
+		if (query == null) {
+			throw new IllegalArgumentException("query is null");
+		}
 		Map<String, String> headers = this.newAppHeaders();
 		headers.put("Accept", query.getResultType().getContentType());
 		KiiRestRequest request = new KiiRestRequest(getUrl("/data"), Method.GET, headers);

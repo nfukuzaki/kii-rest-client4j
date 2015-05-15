@@ -39,6 +39,9 @@ public class KiiPushMessageResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public String send(KiiPushMessage message) throws KiiRestException {
+		if (message == null) {
+			throw new IllegalArgumentException("message is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_SEND_PUSH_MESSAGE_REQUEST, message.toJson());
 		try {

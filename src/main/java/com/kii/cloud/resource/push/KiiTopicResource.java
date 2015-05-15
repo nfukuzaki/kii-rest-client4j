@@ -102,6 +102,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void subscribe(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		this.subscribeByUser(user.getUserID());
 	}
 	/**
@@ -110,6 +113,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void subscribeByUser(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		this.subscribe("users", userID);
 	}
 	/**
@@ -118,6 +124,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void subscribe(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		this.subscribeByThing(thing.getThingID());
 	}
 	/**
@@ -126,6 +135,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void subscribeByThing(String thingID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		this.subscribe("things", thingID);
 	}
 	private void subscribe(String subscriberType, String id) throws KiiRestException {
@@ -144,6 +156,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void unsubscribe(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		this.unsubscribeByUser(user.getUserID());
 	}
 	/**
@@ -152,6 +167,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void unsubscribeByUser(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		this.unsubscribe("users", userID);
 	}
 	/**
@@ -160,6 +178,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void unsubscribe(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		this.unsubscribeByThing(thing.getThingID());
 	}
 	/**
@@ -168,6 +189,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/subscribing-topic/
 	 */
 	public void unsubscribeByThing(String thingID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		this.unsubscribe("things", thingID);
 	}
 	private void unsubscribe(String unsubscriberType, String id) throws KiiRestException {
@@ -187,6 +211,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
 	 */
 	public boolean isSubscribed(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		return this.isSubscribedByUser(user.getUserID());
 	}
 	/**
@@ -196,6 +223,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
 	 */
 	public boolean isSubscribedByUser(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		return this.isSubscribed("users", userID);
 	}
 	/**
@@ -205,6 +235,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
 	 */
 	public boolean isSubscribed(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		return this.isSubscribedByThing(thing.getThingID());
 	}
 	/**
@@ -214,6 +247,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/checking-subscription/
 	 */
 	public boolean isSubscribedByThing(String thingID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		return this.isSubscribed("things", thingID);
 	}
 	private boolean isSubscribed(String subscriberType, String id) throws KiiRestException {
@@ -233,6 +269,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/sending-messages/
 	 */
 	public String send(KiiPushMessage message) throws KiiRestException {
+		if (message == null) {
+			throw new IllegalArgumentException("message is null");
+		}
 		return this.send(message.toJson());
 	}
 	/**
@@ -242,6 +281,9 @@ public class KiiTopicResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/sending-messages/
 	 */
 	public String send(JsonObject message) throws KiiRestException {
+		if (message == null) {
+			throw new IllegalArgumentException("message is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/push/messages"), Method.POST, headers, MEDIA_SEND_PUSH_MESSAGE_REQUEST, message);
 		try {

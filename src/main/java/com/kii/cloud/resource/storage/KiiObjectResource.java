@@ -86,6 +86,9 @@ public class KiiObjectResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
 	 */
 	public void update(KiiObject object) throws KiiRestException {
+		if (object == null) {
+			throw new IllegalArgumentException("object is null");
+		}
 		// TODO:ContentType?
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, null, object.getJsonObject());
@@ -105,6 +108,9 @@ public class KiiObjectResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
 	 */
 	public void updateWithOptimisticLock(KiiObject object) throws KiiRestException {
+		if (object == null) {
+			throw new IllegalArgumentException("object is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("If-Match", object.getVersion());
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, null, object.getJsonObject());
@@ -124,6 +130,9 @@ public class KiiObjectResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
 	 */
 	public void partialUpdate(KiiObject object) throws KiiRestException {
+		if (object == null) {
+			throw new IllegalArgumentException("object is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("X-HTTP-Method-Override", "PATCH");
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, null, object.getJsonObject());
@@ -141,6 +150,9 @@ public class KiiObjectResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/updating/
 	 */
 	public void partialUpdateWithOptimisticLock(KiiObject object) throws KiiRestException {
+		if (object == null) {
+			throw new IllegalArgumentException("object is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("X-HTTP-Method-Override", "PATCH");
 		headers.put("If-Match", object.getVersion());

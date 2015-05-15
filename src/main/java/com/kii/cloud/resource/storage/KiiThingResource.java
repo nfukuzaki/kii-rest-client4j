@@ -88,6 +88,9 @@ public class KiiThingResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/management/
 	 */
 	public void update(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("X-HTTP-Method-Override", "PATCH");
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_THING_UPDATE_REQUEST, thing.getJsonObject());

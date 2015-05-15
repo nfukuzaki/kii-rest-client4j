@@ -41,6 +41,12 @@ public class KiiUsersResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public KiiNormalUser register(KiiNormalUser user, String password) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
+		if (password == null) {
+			throw new IllegalArgumentException("password is null");
+		}
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = (JsonObject)new JsonParser().parse(user.toJsonString());
 		requestBody.addProperty("password", password);
@@ -69,6 +75,9 @@ public class KiiUsersResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public KiiPseudoUser register(KiiPseudoUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		Map<String, String> headers = this.newAppHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_REGISTRATION_REQUEST, user.toJsonString());
 		try {

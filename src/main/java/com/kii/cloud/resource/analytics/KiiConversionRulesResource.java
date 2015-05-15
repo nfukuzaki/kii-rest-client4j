@@ -39,6 +39,9 @@ public class KiiConversionRulesResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public String create(KiiConversionRule conversionRule) throws KiiRestException {
+		if (conversionRule == null) {
+			throw new IllegalArgumentException("conversionRule is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APP_DATA_CONVERSION_RULE, conversionRule.getJsonObject());
 		try {

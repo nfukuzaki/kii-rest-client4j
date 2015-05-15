@@ -38,6 +38,9 @@ public class KiiEventsResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public void upload(KiiEvent event) throws KiiRestException {
+		if (event == null) {
+			throw new IllegalArgumentException("event is null");
+		}
 		Map<String, String> headers = this.newAppHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_EVENT_RECORD, event.getJsonObject());
 		try {
@@ -54,6 +57,9 @@ public class KiiEventsResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public void upload(List<KiiEvent> events) throws KiiRestException {
+		if (events == null) {
+			throw new IllegalArgumentException("events is null");
+		}
 		Map<String, String> headers = this.newAppHeaders();
 		JsonArray requestBody = new JsonArray();
 		for (KiiEvent event : events) {

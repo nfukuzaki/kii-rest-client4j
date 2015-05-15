@@ -77,6 +77,9 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public JsonObject execute(String endpoint, JsonObject args) throws KiiRestException {
+		if (endpoint == null) {
+			throw new IllegalArgumentException("endpoint is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		if (args == null) {
 			args = new JsonObject();

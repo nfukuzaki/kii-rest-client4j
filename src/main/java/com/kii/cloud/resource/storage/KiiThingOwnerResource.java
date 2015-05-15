@@ -37,6 +37,9 @@ public class KiiThingOwnerResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/ownership/
 	 */
 	public void add(KiiThingOwner owner) throws KiiRestException {
+		if (owner == null) {
+			throw new IllegalArgumentException("owner is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(owner.toString()), Method.PUT, headers);
 		try {
@@ -53,6 +56,9 @@ public class KiiThingOwnerResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/ownership/
 	 */
 	public String getPinCode(KiiThingOwner owner) throws KiiRestException {
+		if (owner == null) {
+			throw new IllegalArgumentException("owner is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/request/" + owner.toString()), Method.POST, headers);
 		try {
@@ -69,6 +75,9 @@ public class KiiThingOwnerResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/ownership/
 	 */
 	public void confirmPinCode(String pinCode) throws KiiRestException {
+		if (pinCode == null) {
+			throw new IllegalArgumentException("pinCode is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("code", pinCode);
@@ -87,6 +96,9 @@ public class KiiThingOwnerResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/ownership/
 	 */
 	public boolean exists(KiiThingOwner owner) throws KiiRestException {
+		if (owner == null) {
+			throw new IllegalArgumentException("owner is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(owner.toString()), Method.HEAD, headers);
 		try {
@@ -127,6 +139,9 @@ public class KiiThingOwnerResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/ownership/
 	 */
 	public void delete(KiiThingOwner owner) throws KiiRestException {
+		if (owner == null) {
+			throw new IllegalArgumentException("owner is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(owner.toString()), Method.DELETE, headers);
 		try {

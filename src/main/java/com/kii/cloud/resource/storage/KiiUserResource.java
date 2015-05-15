@@ -73,6 +73,9 @@ public class KiiUserResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/user-attributes/
 	 */
 	public void update(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_USER_UPDATE_REQUEST, user.toJsonString());
 		try {
@@ -92,12 +95,14 @@ public class KiiUserResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/pseudo-users/
 	 */
 	public void updateToNormal(KiiPseudoUser user, String username, String email, String phone, String password) throws KiiRestException {
-		// FIXME:インターフェースがちょっと微妙
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		if (StringUtils.isEmpty(username) && StringUtils.isEmpty(email) && StringUtils.isEmpty(phone)) {
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("need to specify at least username or email or phone");
 		}
 		if (StringUtils.isEmpty(password)) {
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("password is null or empty");
 		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
@@ -140,6 +145,12 @@ public class KiiUserResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/passwords/
 	 */
 	public void changePassword(String oldPassword, String newPassword) throws KiiRestException {
+		if (oldPassword == null) {
+			throw new IllegalArgumentException("oldPassword is null");
+		}
+		if (newPassword == null) {
+			throw new IllegalArgumentException("newPassword is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("oldPassword", oldPassword);
@@ -159,6 +170,9 @@ public class KiiUserResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public void resetPassword(NotificationMethod notificationMethod) throws KiiRestException {
+		if (notificationMethod == null) {
+			throw new IllegalArgumentException("notificationMethod is null");
+		}
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("notificationMethod", notificationMethod.name());
@@ -186,8 +200,7 @@ public class KiiUserResource extends KiiRestSubResource {
 	public String getPhoneVerificationCode() throws KiiRestException {
 		return getVerificationCode("phone-number");
 	}
-	@AdminAPI
-	public String getVerificationCode(String addressType) throws KiiRestException {
+	private String getVerificationCode(String addressType) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/verification-code", addressType), Method.GET, headers);
 		try {

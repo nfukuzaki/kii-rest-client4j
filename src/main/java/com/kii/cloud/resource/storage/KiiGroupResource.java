@@ -62,6 +62,9 @@ public class KiiGroupResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public void changeOwner(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		this.changeOwner(user.getUserID());
 	}
 	/**
@@ -70,6 +73,9 @@ public class KiiGroupResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/changing-a-group-owner/
 	 */
 	public void changeOwner(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("owner", userID);
@@ -87,6 +93,9 @@ public class KiiGroupResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/changing-a-group-name/
 	 */
 	public void changeName(String name) throws KiiRestException {
+		if (name == null) {
+			throw new IllegalArgumentException("name is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/name"), Method.PUT, headers, MEDIA_TYPE_TEXT_PLAIN, name);
 		try {

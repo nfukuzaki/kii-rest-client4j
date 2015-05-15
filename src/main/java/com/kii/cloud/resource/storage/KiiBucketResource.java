@@ -117,6 +117,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/querying/
 	 */
 	public int count(KiiQuery query) throws KiiRestException {
+		if (query == null) {
+			throw new IllegalArgumentException("query is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiCountingQuery countingQuery = new KiiCountingQuery(query);
 		KiiRestRequest request = new KiiRestRequest(getUrl("/query"), Method.POST, headers, MEDIA_TYPE_QUERY_REQUEST, countingQuery.toJson());
@@ -135,6 +138,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/querying/
 	 */
 	public KiiQueryResult query(KiiQuery query) throws KiiRestException {
+		if (query == null) {
+			throw new IllegalArgumentException("query is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/query"), Method.POST, headers, MEDIA_TYPE_QUERY_REQUEST, query.toJson());
 		try {
@@ -160,13 +166,15 @@ public class KiiBucketResource extends KiiRestSubResource {
 		}
 	}
 	
-	
 	/**
 	 * @param user
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void subscribe(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		this.subscribeByUser(user.getUserID());
 	}
 	/**
@@ -175,6 +183,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void subscribeByUser(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		this.subscribe("users", userID);
 	}
 	/**
@@ -183,6 +194,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void subscribe(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		this.subscribeByThing(thing.getThingID());
 	}
 	/**
@@ -191,6 +205,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void subscribeByThing(String thingID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		this.subscribe("things", thingID);
 	}
 	private void subscribe(String subscriberType, String id) throws KiiRestException {
@@ -209,6 +226,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void unsubscribe(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		this.unsubscribeByUser(user.getUserID());
 	}
 	/**
@@ -217,6 +237,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void unsubscribeByUser(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		this.unsubscribe("users", userID);
 	}
 	/**
@@ -225,6 +248,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void unsubscribe(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		this.unsubscribeByThing(thing.getThingID());
 	}
 	/**
@@ -233,6 +259,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public void unsubscribeByThing(String thingID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		this.unsubscribe("things", thingID);
 	}
 	private void unsubscribe(String unsubscriberType, String id) throws KiiRestException {
@@ -252,6 +281,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public boolean isSubscribed(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		return this.isSubscribedByUser(user.getUserID());
 	}
 	/**
@@ -261,6 +293,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public boolean isSubscribedByUser(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		return this.isSubscribed("users", userID);
 	}
 	/**
@@ -270,6 +305,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public boolean isSubscribed(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		return this.isSubscribedByThing(thing.getThingID());
 	}
 	/**
@@ -279,6 +317,9 @@ public class KiiBucketResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/push/
 	 */
 	public boolean isSubscribedByThing(String thingID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		return this.isSubscribed("things", thingID);
 	}
 	private boolean isSubscribed(String subscriberType, String id) throws KiiRestException {

@@ -42,6 +42,9 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/push-notification/preparation/
 	 */
 	public KiiPushInstallation register(KiiPushInstallation installation) throws KiiRestException {
+		if (installation == null) {
+			throw new IllegalArgumentException("installation is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_INSTALLATION_CREATION_REQUEST, installation.getJsonObject());
 		try {
@@ -79,6 +82,9 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public List<KiiPushInstallation> list(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		return this.listByUser(user.getUserID());
 	}
 	/**
@@ -87,6 +93,9 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/push-notification/preparation/
 	 */
 	public List<KiiPushInstallation> listByUser(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("?userID=" + userID), Method.GET, headers);
 		try {
@@ -108,6 +117,9 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public List<KiiPushInstallation> list(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		return this.listByThing(thing.getThingID());
 	}
 	/**
@@ -116,6 +128,9 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/push-notification/preparation/
 	 */
 	public List<KiiPushInstallation> listByThing(String thingID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("?thingID=" + thingID), Method.GET, headers);
 		try {

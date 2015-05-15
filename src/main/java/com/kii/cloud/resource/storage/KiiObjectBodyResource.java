@@ -70,6 +70,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public void moveToUserScope(KiiUser user, String bucketName, String objectID) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		this.moveToUserScope(user.getUserID(), bucketName, objectID);
 	}
 	/**
@@ -81,6 +84,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public void moveToUserScope(String userID, String bucketName, String objectID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		JsonObject targetObjectScope = new JsonObject();
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("userID", userID);
@@ -95,6 +101,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public void moveToGroupScope(KiiGroup group, String bucketName, String objectID) throws KiiRestException {
+		if (group == null) {
+			throw new IllegalArgumentException("group is null");
+		}
 		this.moveToGroupScope(group.getGroupID(), bucketName, objectID);
 	}
 	/**
@@ -106,6 +115,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public void moveToGroupScope(String groupID, String bucketName, String objectID) throws KiiRestException {
+		if (groupID == null) {
+			throw new IllegalArgumentException("groupID is null");
+		}
 		JsonObject targetObjectScope = new JsonObject();
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("groupID", groupID);
@@ -119,6 +131,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public void moveToThingScope(KiiThing thing, String bucketName, String objectID) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		this.moveToThingScope(thing.getThingID(), bucketName, objectID);
 	}
 	/**
@@ -130,6 +145,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public void moveToThingScope(String thingID, String bucketName, String objectID) throws KiiRestException {
+		if (thingID == null) {
+			throw new IllegalArgumentException("thingID is null");
+		}
 		JsonObject targetObjectScope = new JsonObject();
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("thingID", thingID);
@@ -137,6 +155,12 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 		this.moveObjectBody(targetObjectScope, bucketName, objectID);
 	}
 	private void moveObjectBody(JsonObject targetObjectScope, String bucketName, String objectID) throws KiiRestException {
+		if (bucketName == null) {
+			throw new IllegalArgumentException("bucketName is null");
+		}
+		if (objectID == null) {
+			throw new IllegalArgumentException("objectID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.add("targetObjectScope", targetObjectScope);
@@ -173,6 +197,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/downloading/
 	 */
 	public void download(OutputStream stream) throws KiiRestException {
+		if (stream == null) {
+			throw new IllegalArgumentException("stream is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
 		try {
@@ -195,6 +222,12 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/downloading/
 	 */
 	public KiiChunkedDownloadContext downloadByChunk(KiiChunkedDownloadContext context, OutputStream stream) throws KiiRestException {
+		if (context == null) {
+			throw new IllegalArgumentException("context is null");
+		}
+		if (stream == null) {
+			throw new IllegalArgumentException("stream is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		if (context.getETag() != null) {
 			headers.put("If-Match", context.getETag());
@@ -225,6 +258,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @throws IOException
 	 */
 	public void upload(String contentType, File file) throws KiiRestException, IOException {
+		if (file == null) {
+			throw new IllegalArgumentException("file is null");
+		}
 		InputStream stream = new FileInputStream(file);
 		try {
 			this.upload(contentType, stream);
@@ -239,6 +275,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/uploading/
 	 */
 	public void upload(String contentType, InputStream stream) throws KiiRestException {
+		if (stream == null) {
+			throw new IllegalArgumentException("stream is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MediaType.parse(contentType), stream);
 		try {
@@ -273,6 +312,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public KiiChunkedUploadContext uploadByChunk(KiiChunkedUploadContext context, byte[] chunk) throws KiiRestException {
+		if (chunk == null) {
+			throw new IllegalArgumentException("chunk is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		headers.put("Content-Range", "bytes=" + context.getUploadedSize() +
 				"-" + (context.getUploadedSize() + chunk.length - 1) +
@@ -293,6 +335,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/uploading/
 	 */
 	public void commitChunkedUpload(KiiChunkedUploadContext context) throws KiiRestException {
+		if (context == null) {
+			throw new IllegalArgumentException("context is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/%s/status/committed", context.getUploadID()), Method.POST, headers);
 		try {
@@ -308,6 +353,9 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/uploading/
 	 */
 	public void cancelChunkedUpload(KiiChunkedUploadContext context) throws KiiRestException {
+		if (context == null) {
+			throw new IllegalArgumentException("context is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/uploads/%s/status/cancelled", context.getUploadID()), Method.POST, headers);
 		try {

@@ -37,6 +37,9 @@ public class KiiThingsResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public KiiThing register(KiiThing thing) throws KiiRestException {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null");
+		}
 		Map<String, String> headers = this.newAppHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_REGISTRATION_REQUEST, thing.getJsonObject());
 		try {

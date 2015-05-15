@@ -44,6 +44,9 @@ public class KiiServerCodesResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public String deploy(File file) throws KiiRestException, IOException {
+		if (file == null) {
+			throw new IllegalArgumentException("file is null");
+		}
 		String script = IOUtils.readAsString(new FileInputStream(file));
 		return this.deploy(script);
 	}
@@ -54,6 +57,9 @@ public class KiiServerCodesResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public String deploy(String javascript) throws KiiRestException {
+		if (javascript == null) {
+			throw new IllegalArgumentException("javascript is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APPLICATION_JAVASCRIPT, javascript);
 		try {
@@ -85,6 +91,9 @@ public class KiiServerCodesResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public void setCurrentVersion(String versionID) throws KiiRestException {
+		if (versionID == null) {
+			throw new IllegalArgumentException("versionID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/versions/current"), Method.PUT, headers, MEDIA_TYPE_TEXT_PLAIN, versionID);
 		try {

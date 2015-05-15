@@ -40,6 +40,9 @@ public class KiiServerCodeHookResource extends KiiRestSubResource {
 	 */
 	@AdminAPI
 	public void deploy(KiiServerHookConfiguration config) throws KiiRestException {
+		if (config == null) {
+			throw new IllegalArgumentException("config is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MEDIA_TYPE_HOOKS_DEPLOYMENT_REQUEST, config.toJson());
 		try {

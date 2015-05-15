@@ -73,7 +73,7 @@ public class KiiDevlogResource {
 	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
 	 */
 	public List<KiiDevlog> cat() throws KiiRestException {
-		return this.cat(new KiiDevlogFilter());
+		return this.cat(null);
 	}
 	/**
 	 * @param filter
@@ -82,6 +82,9 @@ public class KiiDevlogResource {
 	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
 	 */
 	public List<KiiDevlog> cat(KiiDevlogFilter filter) throws KiiRestException {
+		if (filter == null) {
+			filter = new KiiDevlogFilter();
+		}
 		if (this.endpoint == null) {
 			throw new IllegalStateException("Devlog endpoint address not set.");
 		}
@@ -158,7 +161,7 @@ public class KiiDevlogResource {
 	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
 	 */
 	public void tail(TailListener listener) throws Exception {
-		this.tail(new KiiDevlogFilter(), listener);
+		this.tail(null, listener);
 	}
 	/**
 	 * @param filter
@@ -167,6 +170,12 @@ public class KiiDevlogResource {
 	 * @see http://documentation.kii.com/en/guides/commandlinetools/devlog/
 	 */
 	public void tail(KiiDevlogFilter filter, final TailListener listener) throws Exception {
+		if (filter == null) {
+			filter = new KiiDevlogFilter();
+		}
+		if (listener == null) {
+			throw new IllegalArgumentException("listener is null");
+		}
 		if (this.endpoint == null) {
 			throw new IllegalStateException("Devlog endpoint address not set.");
 		}

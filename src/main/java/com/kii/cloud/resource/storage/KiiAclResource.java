@@ -54,6 +54,9 @@ public abstract class KiiAclResource extends KiiRestSubResource {
 		}
 	}
 	protected List<Subject> list(Action action) throws KiiRestException {
+		if (action == null) {
+			throw new IllegalArgumentException("action is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/" + action), Method.GET, headers);
 		try {
@@ -70,6 +73,12 @@ public abstract class KiiAclResource extends KiiRestSubResource {
 		}
 	}
 	protected Subject get(Action action, Subject subject) throws KiiRestException {
+		if (action == null) {
+			throw new IllegalArgumentException("action is null");
+		}
+		if (subject == null) {
+			throw new IllegalArgumentException("subject is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/%s", action, subject), Method.GET, headers);
 		try {
@@ -81,6 +90,12 @@ public abstract class KiiAclResource extends KiiRestSubResource {
 		}
 	}
 	protected void grant(Action action, Subject subject) throws KiiRestException {
+		if (action == null) {
+			throw new IllegalArgumentException("action is null");
+		}
+		if (subject == null) {
+			throw new IllegalArgumentException("subject is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/%s", action, subject), Method.PUT, headers);
 		try {
@@ -91,6 +106,12 @@ public abstract class KiiAclResource extends KiiRestSubResource {
 		}
 	}
 	protected void revok(Action action, Subject subject) throws KiiRestException {
+		if (action == null) {
+			throw new IllegalArgumentException("action is null");
+		}
+		if (subject == null) {
+			throw new IllegalArgumentException("subject is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/%s/%s", action, subject), Method.DELETE, headers);
 		try {

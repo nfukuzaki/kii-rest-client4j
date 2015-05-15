@@ -51,6 +51,9 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-groups/creating-a-group/
 	 */
 	public List<String> save(KiiGroup group, KiiGroupMembers members) throws KiiRestException {
+		if (group == null) {
+			throw new IllegalArgumentException("group is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = GsonUtils.clone(group.getJsonObject());
 		if (members != null) {
@@ -78,6 +81,9 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public List<KiiGroup> getOwnGroups(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		return this.getOwnGroups(user.getUserID());
 	}
 	/**
@@ -88,6 +94,9 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public List<KiiGroup> getOwnGroups(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("?owner=" + userID), Method.GET, headers);
 		try {
@@ -109,6 +118,9 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public List<KiiGroup> getBelongGroups(KiiUser user) throws KiiRestException {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null");
+		}
 		return this.getBelongGroups(user.getUserID());
 	}
 	/**
@@ -118,6 +130,9 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/ja/guides/rest/managing-groups/listing-groups/
 	 */
 	public List<KiiGroup> getBelongGroups(String userID) throws KiiRestException {
+		if (userID == null) {
+			throw new IllegalArgumentException("userID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("?is_member=" + userID), Method.GET, headers);
 		try {

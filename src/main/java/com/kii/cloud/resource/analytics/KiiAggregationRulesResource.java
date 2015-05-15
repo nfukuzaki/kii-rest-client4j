@@ -35,6 +35,9 @@ public class KiiAggregationRulesResource extends KiiRestSubResource {
 	
 	@AdminAPI
 	public String create(KiiAggregationRule aggregationRule) throws KiiRestException {
+		if (aggregationRule == null) {
+			throw new IllegalArgumentException("aggregationRule is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_AGGREGATION_RULE, aggregationRule.getJsonObject());
 		try {

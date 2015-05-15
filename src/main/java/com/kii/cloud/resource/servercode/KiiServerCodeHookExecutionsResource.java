@@ -32,6 +32,9 @@ public class KiiServerCodeHookExecutionsResource extends KiiRestSubResource {
 	}
 	@AdminAPI
 	public KiiScheduleExecutionResult get(String scheduleExecutionID) throws KiiRestException {
+		if (scheduleExecutionID == null) {
+			throw new IllegalArgumentException("scheduleExecutionID is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/" + scheduleExecutionID), Method.GET, headers);
 		try {
@@ -44,6 +47,9 @@ public class KiiServerCodeHookExecutionsResource extends KiiRestSubResource {
 	}
 	@AdminAPI
 	public KiiScheduleExecutionQueryResult query(KiiScheduleExecutionQuery query) throws KiiRestException {
+		if (query == null) {
+			throw new IllegalArgumentException("query is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/query"), Method.POST, headers, MEDIA_TYPE_SCHEDULE_EXECUTION_QUERY_REQUEST, query.toJson());
 		try {

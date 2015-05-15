@@ -40,6 +40,9 @@ public class KiiThingTypeConfigurationResource extends KiiRestSubResource {
 	}
 	@AdminAPI
 	public void save(KiiThingTypeConfiguration configuration) throws KiiRestException {
+		if (configuration == null) {
+			throw new IllegalArgumentException("configuration is null");
+		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers, MEDIA_TYPE_THING_TYPE_CONFIGURATION_REQUEST, configuration.getJsonObject());
 		try {

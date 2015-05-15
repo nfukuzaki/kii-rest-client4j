@@ -23,6 +23,9 @@ public class SocialIntegrationResource extends KiiRestSubResource {
 	 * @return
 	 */
 	public String getSocialIntegrationUrl(SocialProvider provider) {
+		if (provider == null) {
+			throw new IllegalArgumentException("provider is null");
+		}
 		return this.getUrl("/connect?id=" + provider.getID());
 	}
 	/**
@@ -33,6 +36,9 @@ public class SocialIntegrationResource extends KiiRestSubResource {
 	 * @return
 	 */
 	public String getSocialLinkUrl(SocialProvider provider) {
+		if (provider == null) {
+			throw new IllegalArgumentException("provider is null");
+		}
 		return this.getUrl("/link?id=" + provider.getID());
 	}
 	/**
@@ -43,6 +49,9 @@ public class SocialIntegrationResource extends KiiRestSubResource {
 	 * @return
 	 */
 	public String getSocialUnLinkUrl(SocialProvider provider) {
+		if (provider == null) {
+			throw new IllegalArgumentException("provider is null");
+		}
 		return this.getUrl("/unlink?id=" + provider.getID());
 	}
 	

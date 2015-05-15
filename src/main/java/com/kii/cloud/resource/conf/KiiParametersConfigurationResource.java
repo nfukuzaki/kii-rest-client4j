@@ -38,10 +38,16 @@ public class KiiParametersConfigurationResource extends KiiRestSubResource {
 	}
 	@AdminAPI
 	public void set(KiiJsonProperty<?> property, Object value) throws KiiRestException {
+		if (property == null) {
+			throw new IllegalArgumentException("property is null");
+		}
 		this.set(property.getName(), value);
 	}
 	@AdminAPI
 	public void set(String name, Object value) throws KiiRestException {
+		if (name == null) {
+			throw new IllegalArgumentException("property is null");
+		}
 		String requestBody = null;
 		if (value == null) {
 			requestBody = "null";
