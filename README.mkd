@@ -119,7 +119,8 @@ repositories {
   - Retrieving/Listing PushInstallation
 - Admin Features
   - Getting app admin token
-  - Getting/Setting app Configuration Parameters
+  - Getting/Setting App Configuration Parameters
+  - Getting/Setting ThingType Configuration
 - Securing Data
   - Setting ACL to Scope
   - Setting ACL to Buckets
