@@ -12,7 +12,7 @@
 	</properties>
 	
 	<build>
-		<finalName>kii-rest-client4j-${version}</finalName>
+		<finalName>${artifactId}-${version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -76,7 +76,7 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<copy file="pom.xml" tofile="${basedir}/target/kii-rest-client4j-${version}.pom"/>
+								<copy file="pom.xml" tofile="${basedir}/target/${artifactId}-${version}.pom"/>
 							</tasks>
 						</configuration>
 					</execution>
