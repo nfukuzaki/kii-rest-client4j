@@ -113,13 +113,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>tools</artifactId>
-			<version>1.7</version>
-			<scope>system</scope>
-			<!-- TODO:need to change to your environment -->
-			<!-- <systemPath>${java.home}/../lib/tools.jar</systemPath> -->
-			<systemPath>/Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/lib/tools.jar</systemPath>
+			<groupId>org.jboss.forge.roaster</groupId>
+			<artifactId>roaster-api</artifactId>
+			<version>2.13.2.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.forge.roaster</groupId>
+			<artifactId>roaster-jdt</artifactId>
+			<version>2.13.2.Final</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
