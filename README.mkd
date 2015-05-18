@@ -1,6 +1,44 @@
 # KiiRestClinent for Java
 A REST client for [Kii Cloud](http://kii.com) for Android and Java applications.
 
+## Download
+
+Download the [latest JAR](https://bintray.com/nfukuzaki/maven/kii-rest-client4j/_latestVersion) or grab via Maven:
+
+```xml
+<dependency>
+	<groupId>com.kii.cloud.rest.client</groupId>
+	<artifactId>kii-rest-client4j</artifactId>
+	<version>0.5.0</version>
+</dependency>
+```
+or Gradle:
+
+```java
+compile 'com.kii.cloud.rest.client:kii-rest-client4j:0.5.0'
+```
+
+kii-rest-client4j is published jCenter. so you need to add a repository to your project.  
+
+Maven:
+
+```xml
+<repositories>
+	<repository>
+		<id>jcenter</id>
+		<url>http://jcenter.bintray.com</url>
+	</repository>
+</repositories>
+```
+
+Gradle:
+```java
+repositories {
+	jcenter()
+}
+```
+
+
 ## Dependencies
 ```xml
 <dependencies>
