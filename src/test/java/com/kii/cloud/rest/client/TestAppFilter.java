@@ -26,6 +26,7 @@ public class TestAppFilter {
 	private Boolean enableRenRen = null;
 	private Boolean enableSina = null;
 	private Boolean enableQQ = null;
+	private Boolean hasAggregationRuleID = null;
 	
 	public TestAppFilter site(Site site) {
 		this.site = site;
@@ -73,6 +74,10 @@ public class TestAppFilter {
 	}
 	public TestAppFilter disableBucketEncryption() {
 		this.enableBucketEncryption = false;
+		return this;
+	}
+	public TestAppFilter hasAggregationRuleID() {
+		this.hasAggregationRuleID = true;
 		return this;
 	}
 	public TestAppFilter enableGCM() {
@@ -151,6 +156,9 @@ public class TestAppFilter {
 			return false;
 		}
 		if (!this.accept(this.enableBucketEncryption, app.getFlag("EncryptEnabled"))) {
+			return false;
+		}
+		if (this.hasAggregationRuleID == Boolean.TRUE && app.getAggregationRuleID() == null) {
 			return false;
 		}
 		if (!this.accept(this.enableGCM, app.isEnabledPush("GCM"))) {

@@ -25,6 +25,12 @@ public class TestApp {
 	public String getClientSecret() {
 		return GsonUtils.getString(this.json, "ClientSecret");
 	}
+	public boolean hasAppAdminCredentials() {
+		return this.getClientID() != null && this.getClientSecret() != null;
+	}
+	public Integer getAggregationRuleID() {
+		return GsonUtils.getInt(this.json, "AggregationRuleID");
+	}
 	public boolean getFlag(String name) {
 		return GsonUtils.getBoolean(this.json, name);
 	}

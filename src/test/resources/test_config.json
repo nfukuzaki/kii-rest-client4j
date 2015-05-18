@@ -11,6 +11,7 @@
         "PhoneVerification": false,
         "Privacy"          : false,
         "EncryptEnabled"   : false,
+        "AggregationRuleID": null,
         "PushEnabled"      : [
             {"GCM"   : false},
             {"APNS"  : false},
@@ -42,6 +43,7 @@
         "PhoneVerification": false,
         "Privacy"          : false,
         "EncryptEnabled"   : false,
+        "AggregationRuleID": null,
         "PushEnabled"      : [
             {"GCM"   : false},
             {"APNS"  : false},
@@ -73,6 +75,7 @@
         "PhoneVerification": false,
         "Privacy"          : false,
         "EncryptEnabled"   : false,
+        "AggregationRuleID": null,
         "PushEnabled"      : [
             {"GCM"   : false},
             {"APNS"  : false},
@@ -104,6 +107,7 @@
         "PhoneVerification": false,
         "Privacy"          : false,
         "EncryptEnabled"   : false,
+        "AggregationRuleID": null,
         "PushEnabled"      : [
             {"GCM"   : false},
             {"APNS"  : false},
@@ -135,6 +139,39 @@
         "PhoneVerification": true,
         "Privacy"          : true,
         "EncryptEnabled"   : false,
+        "AggregationRuleID": null,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"   : false},
+            {"Yahoo"    : false},
+            {"Twitter"  : false},
+            {"Facebook" : false},
+            {"Live"     : false},
+            {"LinkedIn" : false},
+            {"DropBox"  : false},
+            {"Box"      : false},
+            {"RenRen"   : false},
+            {"Sina"     : false},
+            {"QQ"       : false}
+        ]
+    },
+    {
+        "AppID"            : "5a1cf372",
+        "AppKey"           : "9dfe427fcc61bbf704e3532e44bf3be7",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "JP",
+        "Endpoint"         : null,
+        "RefreshToken"     : false,
+        "EmailVerification": false,
+        "PhoneVerification": false,
+        "Privacy"          : false,
+        "EncryptEnabled"   : false,
+        "AggregationRuleID": 1388,
         "PushEnabled"      : [
             {"GCM"   : false},
             {"APNS"  : false},

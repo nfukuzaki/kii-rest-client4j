@@ -44,17 +44,21 @@ public class TestEnvironments {
 		return TEST_APPS.get(index);
 	}
 	public static TestApp random(TestAppFilter filter) throws TestAppNotFoundException {
-		List<TestApp> acceptedApps = new ArrayList<TestApp>();
-		for (TestApp app : TEST_APPS) {
-			if (filter.accept(app)) {
-				acceptedApps.add(app);
-			}
-		}
+		List<TestApp> acceptedApps = listByFilter(filter);
 		if (acceptedApps.size() == 0) {
 			throw new TestAppNotFoundException("There is no app that match the filter.");
 		}
 		Random random = new Random(System.currentTimeMillis());
 		int index = random.nextInt(acceptedApps.size());
 		return acceptedApps.get(index);
+	}
+	public static List<TestApp> listByFilter(TestAppFilter filter) {
+		List<TestApp> acceptedApps = new ArrayList<TestApp>();
+		for (TestApp app : TEST_APPS) {
+			if (filter.accept(app)) {
+				acceptedApps.add(app);
+			}
+		}
+		return acceptedApps;
 	}
 }
