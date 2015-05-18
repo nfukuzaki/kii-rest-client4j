@@ -1,7 +1,6 @@
-Management server configuration
 ABTest
+Test(analytics, server code result, social)
 Implementing test code
-Improving parameter validation
 Writing javadoc
 
 
