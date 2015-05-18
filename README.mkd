@@ -1,4 +1,4 @@
-# KiiRestClinent for Java
+# KiiRestClient for Java
 A REST client for [Kii Cloud](http://kii.com) for Android and Java applications.
 
 ## Download
