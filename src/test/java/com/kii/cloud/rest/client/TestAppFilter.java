@@ -6,26 +6,26 @@ import com.kii.cloud.rest.client.util.StringUtils;
 public class TestAppFilter {
 	
 	private Site site = null;
-	private boolean hasAppAdminCredentials = false;
-	private boolean enableRefreshToken = false;
-	private boolean enableEmailVerification = false;
-	private boolean enablePhoneVerification = false;
-	private boolean enableExposeFullUserData = false;
-	private boolean enableBucketEncryption = false;
-	private boolean enableGCM = false;
-	private boolean enableAPNS = false;
-	private boolean enableJPush = false;
-	private boolean enableGoogle = false;
-	private boolean enableYahoo = false;
-	private boolean enableTwitter = false;
-	private boolean enableFacebook = false;
-	private boolean enableLive = false;
-	private boolean enableLinkedIn = false;
-	private boolean enableDropBox = false;
-	private boolean enableBox = false;
-	private boolean enableRenRen = false;
-	private boolean enableSina = false;
-	private boolean enableQQ = false;
+	private Boolean hasAppAdminCredentials = null;
+	private Boolean enableRefreshToken = null;
+	private Boolean enableEmailVerification = null;
+	private Boolean enablePhoneVerification = null;
+	private Boolean enableExposeFullUserData = null;
+	private Boolean enableBucketEncryption = null;
+	private Boolean enableGCM = null;
+	private Boolean enableAPNS = null;
+	private Boolean enableJPush = null;
+	private Boolean enableGoogle = null;
+	private Boolean enableYahoo = null;
+	private Boolean enableTwitter = null;
+	private Boolean enableFacebook = null;
+	private Boolean enableLive = null;
+	private Boolean enableLinkedIn = null;
+	private Boolean enableDropBox = null;
+	private Boolean enableBox = null;
+	private Boolean enableRenRen = null;
+	private Boolean enableSina = null;
+	private Boolean enableQQ = null;
 	
 	public TestAppFilter site(Site site) {
 		this.site = site;
@@ -135,78 +135,72 @@ public class TestAppFilter {
 		if (this.site != null && app.getSite() != site) {
 			return false;
 		}
-		if (this.hasAppAdminCredentials && (StringUtils.isEmpty(app.getClientID()) || StringUtils.isEmpty(app.getClientSecret()))) {
+		if (this.hasAppAdminCredentials == Boolean.TRUE && (StringUtils.isEmpty(app.getClientID()) || StringUtils.isEmpty(app.getClientSecret()))) {
 			return false;
 		}
-		if (this.enableRefreshToken && !app.getFlag("RefreshToken")) {
+		if (!this.accept(this.enableRefreshToken, app.getFlag("RefreshToken"))) {
 			return false;
 		}
-		if (this.enableEmailVerification && !app.getFlag("EmailVerification")) {
+		if (!this.accept(this.enableEmailVerification, app.getFlag("EmailVerification"))) {
 			return false;
 		}
-		if (!this.enableEmailVerification && app.getFlag("EmailVerification")) {
-			
-		}
-		if (this.enablePhoneVerification && !app.getFlag("PhoneVerification")) {
+		if (!this.accept(this.enablePhoneVerification, app.getFlag("PhoneVerification"))) {
 			return false;
 		}
-		if (!this.enablePhoneVerification && app.getFlag("PhoneVerification")) {
+		if (!this.accept(this.enableExposeFullUserData, app.getFlag("Privacy"))) {
 			return false;
 		}
-		if (this.enableExposeFullUserData && !app.getFlag("Privacy")) {
+		if (!this.accept(this.enableBucketEncryption, app.getFlag("EncryptEnabled"))) {
 			return false;
 		}
-		if (!this.enableExposeFullUserData && app.getFlag("Privacy")) {
+		if (!this.accept(this.enableGCM, app.isEnabledPush("GCM"))) {
 			return false;
 		}
-		if (this.enableBucketEncryption && !app.getFlag("EncryptEnabled")) {
+		if (!this.accept(this.enableAPNS, app.isEnabledPush("APNS"))) {
 			return false;
 		}
-		if (!this.enableBucketEncryption && app.getFlag("EncryptEnabled")) {
+		if (!this.accept(this.enableJPush, app.isEnabledPush("JPush"))) {
 			return false;
 		}
-		if (this.enableGCM && !app.isEnabledPush("GCM")) {
+		if (!this.accept(this.enableGoogle, app.isEnabledSNS("Google"))) {
 			return false;
 		}
-		if (this.enableAPNS && !app.isEnabledPush("APNS")) {
+		if (!this.accept(this.enableYahoo, app.isEnabledSNS("Yahoo"))) {
 			return false;
 		}
-		if (this.enableJPush && !app.isEnabledPush("JPush")) {
+		if (!this.accept(this.enableTwitter, app.isEnabledSNS("Twitter"))) {
 			return false;
 		}
-		if (this.enableGoogle && !app.isEnabledSNS("Google")) {
+		if (!this.accept(this.enableFacebook, app.isEnabledSNS("Facebook"))) {
 			return false;
 		}
-		if (this.enableYahoo && !app.isEnabledSNS("Yahoo")) {
+		if (!this.accept(this.enableLive, app.isEnabledSNS("Live"))) {
 			return false;
 		}
-		if (this.enableTwitter && !app.isEnabledSNS("Twitter")) {
+		if (!this.accept(this.enableLinkedIn, app.isEnabledSNS("LinkedIn"))) {
 			return false;
 		}
-		if (this.enableFacebook && !app.isEnabledSNS("Facebook")) {
+		if (!this.accept(this.enableDropBox, app.isEnabledSNS("DropBox"))) {
 			return false;
 		}
-		if (this.enableLive && !app.isEnabledSNS("Live")) {
+		if (!this.accept(this.enableBox, app.isEnabledSNS("Box"))) {
 			return false;
 		}
-		if (this.enableLinkedIn && !app.isEnabledSNS("LinkedIn")) {
+		if (!this.accept(this.enableRenRen, app.isEnabledSNS("RenRen"))) {
 			return false;
 		}
-		if (this.enableDropBox && !app.isEnabledSNS("DropBox")) {
+		if (!this.accept(this.enableSina, app.isEnabledSNS("Sina"))) {
 			return false;
 		}
-		if (this.enableBox && !app.isEnabledSNS("Box")) {
-			return false;
-		}
-		if (this.enableRenRen && !app.isEnabledSNS("RenRen")) {
-			return false;
-		}
-		if (this.enableSina && !app.isEnabledSNS("Sina")) {
-			return false;
-		}
-		if (this.enableQQ && !app.isEnabledSNS("QQ")) {
+		if (!this.accept(this.enableQQ, app.isEnabledSNS("QQ"))) {
 			return false;
 		}
 		return true;
+	}
+	private boolean accept(Boolean filterCondition, Boolean value) {
+		if (filterCondition == null) {
+			return true;
+		}
+		return filterCondition == value;
 	}
 }
