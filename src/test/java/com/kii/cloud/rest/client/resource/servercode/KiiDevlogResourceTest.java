@@ -73,7 +73,7 @@ public class KiiDevlogResourceTest {
 			}
 		});
 		
-		new Thread(new Runnable() {
+		Thread th = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -83,17 +83,21 @@ public class KiiDevlogResourceTest {
 					rest.setCredentials(user);
 					for (int i = 0; i < 100; i++) {
 						rest.api().users(user).buckets("my_bucket").objects().save(new KiiObject().set("no", i));
-						Thread.sleep(1000);
+						Thread.sleep(100);
 					}
 				} catch (Exception ignore) {
 				}
 			}
-		})
-		.start();
+		});
+		th.start();
 		
-		if (!latch.await(60, TimeUnit.SECONDS)) {
-			fail("Test timeouts");
+		try {
+			if (!latch.await(60, TimeUnit.SECONDS)) {
+				fail("Test timeouts");
+			}
+			assertTrue(results.size() > 10);
+		} finally {
+			th.interrupt();
 		}
-		assertTrue(results.size() > 10);
 	}
 }
