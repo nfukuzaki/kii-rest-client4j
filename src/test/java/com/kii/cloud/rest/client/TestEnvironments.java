@@ -23,9 +23,13 @@ public class TestEnvironments {
 			InputStream is = ClassLoader.getSystemResourceAsStream("test_config.json");
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
+			try {
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line);
+				}
+			} finally {
+				br.close();
 			}
 			JsonArray apps = (JsonArray)new JsonParser().parse(sb.toString());
 			for (int i = 0; i < apps.size(); i++) {
