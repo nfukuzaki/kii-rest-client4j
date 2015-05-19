@@ -9,13 +9,13 @@ Download the [latest JAR](https://bintray.com/nfukuzaki/maven/kii-rest-client4j/
 <dependency>
 	<groupId>com.kii.cloud.rest.client</groupId>
 	<artifactId>kii-rest-client4j</artifactId>
-	<version>0.5.1</version>
+	<version>0.5.2</version>
 </dependency>
 ```
 or Gradle:
 
 ```java
-compile 'com.kii.cloud.rest.client:kii-rest-client4j:0.5.1'
+compile 'com.kii.cloud.rest.client:kii-rest-client4j:0.5.2'
 ```
 
 kii-rest-client4j is published jCenter. so you need to add a repository to your project.  
