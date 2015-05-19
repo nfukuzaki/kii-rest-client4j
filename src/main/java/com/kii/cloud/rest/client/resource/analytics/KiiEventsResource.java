@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonArray;
-import com.kii.cloud.rest.client.KiiRestException;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.analytics.KiiEvent;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;

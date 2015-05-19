@@ -2,7 +2,7 @@ package com.kii.cloud.rest.client.resource.push;
 
 import java.util.List;
 
-import com.kii.cloud.rest.client.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;

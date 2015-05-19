@@ -12,12 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.kii.cloud.rest.client.KiiRest;
-import com.kii.cloud.rest.client.KiiRestException;
 import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.TestUtils;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiAdminCredentials;
 import com.kii.cloud.rest.client.model.KiiUserCredentials;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;

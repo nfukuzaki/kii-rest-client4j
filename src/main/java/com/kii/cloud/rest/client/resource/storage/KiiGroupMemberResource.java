@@ -3,7 +3,7 @@ package com.kii.cloud.rest.client.resource.storage;
 import java.io.IOException;
 import java.util.Map;
 
-import com.kii.cloud.rest.client.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;

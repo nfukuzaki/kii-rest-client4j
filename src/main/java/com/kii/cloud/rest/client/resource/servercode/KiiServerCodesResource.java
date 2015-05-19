@@ -9,8 +9,8 @@ import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.kii.cloud.rest.client.KiiRestException;
 import com.kii.cloud.rest.client.annotation.AdminAPI;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.servercode.KiiServerCodeVersion;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;

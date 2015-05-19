@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
-import com.kii.cloud.rest.client.KiiRestException;
 import com.kii.cloud.rest.client.annotation.AdminAPI;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;

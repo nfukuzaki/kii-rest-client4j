@@ -13,11 +13,11 @@ import static org.junit.Assert.fail;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.KiiRest;
-import com.kii.cloud.rest.client.KiiRestException;
 import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiAdminCredentials;
 import com.kii.cloud.rest.client.model.servercode.KiiServerCodeVersion;
 import com.kii.cloud.rest.client.util.GsonUtils;

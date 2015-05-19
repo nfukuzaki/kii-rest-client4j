@@ -1,4 +1,4 @@
-package com.kii.cloud.rest.client;
+package com.kii.cloud.rest.client.exception;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.util.GsonUtils;

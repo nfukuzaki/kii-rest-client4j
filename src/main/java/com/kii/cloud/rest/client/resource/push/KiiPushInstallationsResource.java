@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.kii.cloud.rest.client.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;

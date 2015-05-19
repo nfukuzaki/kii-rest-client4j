@@ -11,10 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.kii.cloud.rest.client.KiiRest;
-import com.kii.cloud.rest.client.KiiRestException;
 import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestEnvironments;
+import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.storage.KiiBucket;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
