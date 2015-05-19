@@ -3,6 +3,8 @@ package com.kii.cloud.rest.client.resource;
 import java.util.Map;
 
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
+import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
+import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
@@ -148,13 +150,19 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiConversionRulesResource conversionRules() {
 		return new KiiConversionRulesResource(this);
 	}
-	public KiiConversionRuleResource conversionRules(String conversionRuleID) {
+	public KiiConversionRuleResource conversionRules(KiiConversionRule conversionRule) {
+		return this.conversionRules(conversionRule.getID());
+	}
+	public KiiConversionRuleResource conversionRules(Long conversionRuleID) {
 		return new KiiConversionRuleResource(this.conversionRules(), conversionRuleID);
 	}
 	public KiiAggregationRulesResource aggregationRules() {
 		return new KiiAggregationRulesResource(this);
 	}
-	public KiiAggregationRuleResource aggregationRules(String aggregationRuleID) {
+	public KiiAggregationRuleResource aggregationRules(KiiAggregationRule aggregationRule) {
+		return this.aggregationRules(aggregationRule.getID());
+	}
+	public KiiAggregationRuleResource aggregationRules(Long aggregationRuleID) {
 		return new KiiAggregationRuleResource(this.aggregationRules(), aggregationRuleID);
 	}
 	public SocialIntegrationResource social() {

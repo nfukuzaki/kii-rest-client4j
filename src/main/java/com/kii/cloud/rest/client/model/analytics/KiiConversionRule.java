@@ -20,7 +20,7 @@ public class KiiConversionRule extends KiiJsonModel {
 		OBJECT
 	}
 	
-	public static final KiiJsonProperty<String> PROPERTY_ID = new KiiJsonProperty<String>(String.class, "_id");
+	public static final KiiJsonProperty<Long> PROPERTY_ID = new KiiJsonProperty<Long>(Long.class, "_id");
 	public static final KiiJsonProperty<String> PROPERTY_SCOPE = new KiiJsonProperty<String>(String.class, "scope");
 	public static final KiiJsonProperty<String> PROPERTY_BUCKET = new KiiJsonProperty<String>(String.class, "bucket");
 	public static final KiiJsonProperty<String> PROPERTY_TARGET = new KiiJsonProperty<String>(String.class, "target");
@@ -31,8 +31,12 @@ public class KiiConversionRule extends KiiJsonModel {
 	public KiiConversionRule(JsonObject json) {
 		super(json);
 	}
-	public String getID() {
+	public Long getID() {
 		return PROPERTY_ID.get(this.json);
+	}
+	public KiiConversionRule setID(Long id) {
+		PROPERTY_ID.set(this.json, id);
+		return this;
 	}
 	public Scope getScope() {
 		if (PROPERTY_SCOPE.has(this.json)) {

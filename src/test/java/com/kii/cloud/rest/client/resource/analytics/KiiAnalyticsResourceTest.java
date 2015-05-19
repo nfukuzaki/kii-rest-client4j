@@ -139,10 +139,10 @@ public class KiiAnalyticsResourceTest {
 		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
-		String aggregationRuleID = testApp.getAggregationRuleID().toString();
+		Long aggregationRuleID = testApp.getAggregationRuleID();
 		KiiAggregationRule aggregationRule = rest.api().aggregationRules(aggregationRuleID).get();
 		if (aggregationRule.getConversionRuleID() != null) {
-			String conversionRuleID = aggregationRule.getConversionRuleID().toString();
+			Long conversionRuleID = aggregationRule.getConversionRuleID();
 			KiiConversionRule conversionRule = rest.api().conversionRules(conversionRuleID).get();
 			
 			List<KiiNormalUser> users = new ArrayList<KiiNormalUser>();

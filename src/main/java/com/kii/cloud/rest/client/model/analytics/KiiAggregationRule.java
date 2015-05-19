@@ -10,8 +10,27 @@ import com.kii.cloud.rest.client.model.KiiJsonProperty;
 
 public class KiiAggregationRule extends KiiJsonModel {
 	
+	public enum Source {
+		APP("app"),
+		EVENT("event");
+		private final String value;
+		private Source(String value) {
+			this.value = value;
+		}
+		public String getValue() {
+			return value;
+		}
+		public static Source fromString(String value) {
+			for (Source source : values()) {
+				if (source.value.equalsIgnoreCase(value)) {
+					return source;
+				}
+			}
+			return null;
+		}
+	}
 	
-	public static final KiiJsonProperty<String> PROPERTY_ID = new KiiJsonProperty<String>(String.class, "_id");
+	public static final KiiJsonProperty<Long> PROPERTY_ID = new KiiJsonProperty<Long>(Long.class, "_id");
 	public static final KiiJsonProperty<String> PROPERTY_NAME = new KiiJsonProperty<String>(String.class, "name");
 	public static final KiiJsonProperty<String> PROPERTY_SOURCE = new KiiJsonProperty<String>(String.class, "source");
 	public static final KiiJsonProperty<Long> PROPERTY_CONVERSION_RULE_ID = new KiiJsonProperty<Long>(Long.class, "conversionRuleID");
@@ -25,8 +44,12 @@ public class KiiAggregationRule extends KiiJsonModel {
 		super(json);
 	}
 	
-	public String getID() {
+	public Long getID() {
 		return PROPERTY_ID.get(this.json);
+	}
+	public KiiAggregationRule setID(Long id) {
+		PROPERTY_ID.set(this.json, id);
+		return this;
 	}
 	public String getName() {
 		return PROPERTY_NAME.get(this.json);
@@ -35,11 +58,11 @@ public class KiiAggregationRule extends KiiJsonModel {
 		PROPERTY_NAME.set(this.json, name);
 		return this;
 	}
-	public String getSource() {
-		return PROPERTY_SOURCE.get(this.json);
+	public Source getSource() {
+		return Source.fromString(PROPERTY_SOURCE.get(this.json));
 	}
-	public KiiAggregationRule setSource(String source) {
-		PROPERTY_SOURCE.set(this.json, source);
+	public KiiAggregationRule setSource(Source source) {
+		PROPERTY_SOURCE.set(this.json, source.getValue());
 		return this;
 	}
 	public Long getConversionRuleID() {

@@ -34,7 +34,7 @@ public class KiiAggregationRulesResource extends KiiRestSubResource {
 	}
 	
 	@AdminAPI
-	public String create(KiiAggregationRule aggregationRule) throws KiiRestException {
+	public Long create(KiiAggregationRule aggregationRule) throws KiiRestException {
 		if (aggregationRule == null) {
 			throw new IllegalArgumentException("aggregationRule is null");
 		}
@@ -43,7 +43,9 @@ public class KiiAggregationRulesResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return KiiAggregationRule.PROPERTY_ID.get(responseBody);
+			Long id = KiiAggregationRule.PROPERTY_ID.get(responseBody);
+			aggregationRule.setID(id);
+			return id;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

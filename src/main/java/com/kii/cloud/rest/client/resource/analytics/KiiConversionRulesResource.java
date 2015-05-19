@@ -38,7 +38,7 @@ public class KiiConversionRulesResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	@AdminAPI
-	public String create(KiiConversionRule conversionRule) throws KiiRestException {
+	public Long create(KiiConversionRule conversionRule) throws KiiRestException {
 		if (conversionRule == null) {
 			throw new IllegalArgumentException("conversionRule is null");
 		}
@@ -47,7 +47,9 @@ public class KiiConversionRulesResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return KiiConversionRule.PROPERTY_ID.get(responseBody);
+			Long id = KiiConversionRule.PROPERTY_ID.get(responseBody);
+			conversionRule.setID(id);
+			return id;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
