@@ -112,6 +112,7 @@ repositories {
   - Creating/Listing/Retrieving/Deleting AggregationRules
 - Managing Push Notification
   - Creating/Deleting Topic
+  - Listing Topic names
   - Subscribe/Unsubscribe Topic
   - Checking Subscription status
   - Sending Message
