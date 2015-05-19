@@ -8,13 +8,9 @@ import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.push.KiiPushMessage;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
-import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
-import com.kii.cloud.rest.client.resource.storage.KiiGroupResource;
-import com.kii.cloud.rest.client.resource.storage.KiiThingResource;
-import com.kii.cloud.rest.client.resource.storage.KiiUserResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
@@ -32,33 +28,10 @@ import com.squareup.okhttp.Response;
  */
 public class KiiTopicResource extends KiiRestSubResource {
 	
-	public static final String BASE_PATH = "/topics";
-	
 	public static final MediaType MEDIA_SEND_PUSH_MESSAGE_REQUEST = MediaType.parse("application/vnd.kii.SendPushMessageRequest+json");
 	
 	private final String name;
-	public KiiTopicResource(KiiAppResource parent, String name) {
-		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
-		}
-		this.name = name;
-	}
-	public KiiTopicResource(KiiUserResource parent, String name) {
-		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
-		}
-		this.name = name;
-	}
-	public KiiTopicResource(KiiGroupResource parent, String name) {
-		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
-		}
-		this.name = name;
-	}
-	public KiiTopicResource(KiiThingResource parent, String name) {
+	public KiiTopicResource(KiiTopicsResource parent, String name) {
 		super(parent);
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("name is null or empty");
@@ -312,6 +285,6 @@ public class KiiTopicResource extends KiiRestSubResource {
 	}
 	@Override
 	public String getPath() {
-		return BASE_PATH + "/" + this.name;
+		return "/" + this.name;
 	}
 }

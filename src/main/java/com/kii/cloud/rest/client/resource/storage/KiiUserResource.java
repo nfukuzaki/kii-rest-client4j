@@ -14,6 +14,7 @@ import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.resource.push.KiiTopicResource;
+import com.kii.cloud.rest.client.resource.push.KiiTopicsResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
@@ -286,8 +287,11 @@ public class KiiUserResource extends KiiRestSubResource {
 	public KiiEncryptedBucketResource encryptedBuckets(String name) {
 		return new KiiEncryptedBucketResource(this, name);
 	}
+	public KiiTopicsResource topics() {
+		return new KiiTopicsResource(this);
+	}
 	public KiiTopicResource topics(String name) {
-		return new KiiTopicResource(this, name);
+		return new KiiTopicResource(this.topics(), name);
 	}
 	@Override
 	public String getPath() {

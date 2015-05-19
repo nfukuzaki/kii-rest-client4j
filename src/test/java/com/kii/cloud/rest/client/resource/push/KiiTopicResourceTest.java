@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,11 +37,19 @@ public class KiiTopicResourceTest {
 		
 		String appTopicName = "app_topic" + System.currentTimeMillis();
 		
+		// listing topics
+		List<String> existingTopicNames = rest.api().topics().list();
+		
 		// creating topic
 		rest.api().topics(appTopicName).create();
 		// checking topic
 		boolean exists = rest.api().topics(appTopicName).exists();
 		assertTrue(exists);
+		
+		// listing topics
+		List<String> topicNames = rest.api().topics().list();
+		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
+		assertTrue(topicNames.contains(appTopicName));
 		
 		// subscribing topic
 		rest.api().topics(appTopicName).subscribe(user);
@@ -75,11 +85,19 @@ public class KiiTopicResourceTest {
 		
 		String userTopicName = "user_topic" + System.currentTimeMillis();
 		
+		// listing topics
+		List<String> existingTopicNames = rest.api().users(user).topics().list();
+		
 		// creating topic
 		rest.api().users(user).topics(userTopicName).create();
 		// checking topic
 		boolean exists = rest.api().users(user).topics(userTopicName).exists();
 		assertTrue(exists);
+		
+		// listing topics
+		List<String> topicNames = rest.api().users(user).topics().list();
+		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
+		assertTrue(topicNames.contains(userTopicName));
 		
 		// subscribing topic
 		rest.api().users(user).topics(userTopicName).subscribe(user);
@@ -120,11 +138,19 @@ public class KiiTopicResourceTest {
 		
 		String groupTopicName = "group_topic" + System.currentTimeMillis();
 		
+		// listing topics
+		List<String> existingTopicNames = rest.api().groups(group).topics().list();
+		
 		// creating topic
 		rest.api().groups(group).topics(groupTopicName).create();
 		// checking topic
 		boolean exists = rest.api().groups(group).topics(groupTopicName).exists();
 		assertTrue(exists);
+		
+		// listing topics
+		List<String> topicNames = rest.api().groups(group).topics().list();
+		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
+		assertTrue(topicNames.contains(groupTopicName));
 		
 		// subscribing topic
 		rest.api().groups(group).topics(groupTopicName).subscribeByUser(user.getUserID());
@@ -169,11 +195,19 @@ public class KiiTopicResourceTest {
 		
 		String thingTopicName = "thing_topic" + System.currentTimeMillis();
 		
+		// listing topics
+		List<String> existingTopicNames = rest.api().things(thingID).topics().list();
+		
 		// creating topic
 		rest.api().things(thingID).topics(thingTopicName).create();
 		// checking topic
 		boolean exists = rest.api().things(thingID).topics(thingTopicName).exists();
 		assertTrue(exists);
+		
+		// listing topics
+		List<String> topicNames = rest.api().things(thingID).topics().list();
+		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
+		assertTrue(topicNames.contains(thingTopicName));
 		
 		// subscribing topic
 		rest.api().things(thingID).topics(thingTopicName).subscribe(thing);

@@ -17,6 +17,7 @@ import com.kii.cloud.rest.client.resource.conf.KiiAppConfigurationResource;
 import com.kii.cloud.rest.client.resource.push.KiiPushInstallationResource;
 import com.kii.cloud.rest.client.resource.push.KiiPushInstallationsResource;
 import com.kii.cloud.rest.client.resource.push.KiiTopicResource;
+import com.kii.cloud.rest.client.resource.push.KiiTopicsResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeHookResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeHooksResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeResource;
@@ -107,8 +108,11 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiEncryptedBucketResource encryptedBuckets(String name) {
 		return new KiiEncryptedBucketResource(this, name);
 	}
+	public KiiTopicsResource topics() {
+		return new KiiTopicsResource(this);
+	}
 	public KiiTopicResource topics(String name) {
-		return new KiiTopicResource(this, name);
+		return new KiiTopicResource(this.topics(), name);
 	}
 	public KiiScopeAclResource acl() {
 		return new KiiScopeAclResource(this);
