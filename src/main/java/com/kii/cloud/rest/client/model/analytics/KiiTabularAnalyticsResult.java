@@ -28,6 +28,14 @@ public class KiiTabularAnalyticsResult extends KiiJsonModel implements KiiAnalyt
 		}
 		return labels;
 	}
+	public List<Snapshot> getSnapshots() {
+		List<Snapshot> snapshots = new ArrayList<Snapshot>();
+		JsonArray array = PROPERTY_SNAPSHOTS.get(this.json);
+		for (int i = 0; i < array.size(); i++) {
+			snapshots.add(new Snapshot(array.get(i).getAsJsonObject()));
+		}
+		return snapshots;
+	}
 	@Override
 	public ResultType getResultType() {
 		return ResultType.TabularResult;

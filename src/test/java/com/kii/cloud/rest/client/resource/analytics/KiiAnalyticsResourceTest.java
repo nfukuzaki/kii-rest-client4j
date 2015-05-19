@@ -1,6 +1,8 @@
 package com.kii.cloud.rest.client.resource.analytics;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +24,18 @@ import com.kii.cloud.rest.client.model.analytics.KiiAnalyticsResult.ResultType;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
 import com.kii.cloud.rest.client.model.analytics.KiiGroupedAnalyticsResult;
 import com.kii.cloud.rest.client.model.analytics.KiiTabularAnalyticsResult;
+import com.kii.cloud.rest.client.model.analytics.KiiTabularAnalyticsResult.Label;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
 import com.kii.cloud.rest.client.resource.storage.KiiBucketResource;
+import com.kii.cloud.rest.client.util.StringUtils;
 
 @RunWith(SkipAcceptableTestRunner.class)
 public class KiiAnalyticsResourceTest {
+	
 	@Test
 	public void groupedResultTest() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAggregationRuleID());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388));
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiAnalyticsQuery query = new KiiAnalyticsQuery(ResultType.GroupedResult);
@@ -40,11 +45,19 @@ public class KiiAnalyticsResourceTest {
 		
 		assertTrue(result instanceof KiiGroupedAnalyticsResult);
 		KiiGroupedAnalyticsResult groupedResult = (KiiGroupedAnalyticsResult)result;
-		// TODO
+		
+		List<KiiGroupedAnalyticsResult.Snapshot> snapshots = groupedResult.getSnapshots();
+		assertTrue(snapshots.size() > 0);
+		for (KiiGroupedAnalyticsResult.Snapshot snapshot : snapshots) {
+			assertTrue(!StringUtils.isEmpty(snapshot.getName()));
+			assertTrue(snapshot.getData().size() > 0);
+			assertTrue(snapshot.getPointStart() > 0);
+			assertTrue(snapshot.getPointInterval() > 0);
+		}
 	}
 	@Test
 	public void tabularResultTest() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAggregationRuleID());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388));
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiAnalyticsQuery query = new KiiAnalyticsQuery(ResultType.TabularResult);
@@ -54,7 +67,24 @@ public class KiiAnalyticsResourceTest {
 		
 		assertTrue(result instanceof KiiTabularAnalyticsResult);
 		KiiTabularAnalyticsResult tabularResult = (KiiTabularAnalyticsResult)result;
-		// TODO
+		
+		List<Label> labels = tabularResult.getLabels();
+		assertEquals(2, labels.size());
+		for (Label label : labels) {
+			if ("user_id".equals(label.getLabel())) {
+				assertEquals("DIMENSION", label.getType());
+			} else if ("max".equals(label.getLabel())) {
+				assertEquals("FACT", label.getType());
+			} else {
+				fail("unexpected tabular result");
+			}
+		}
+		List<KiiTabularAnalyticsResult.Snapshot> snapshots = tabularResult.getSnapshots();
+		assertTrue(snapshots.size() > 0);
+		for (KiiTabularAnalyticsResult.Snapshot snapshot : snapshots) {
+			assertTrue(snapshot.getCreatedAt() > 0);
+			assertTrue(snapshot.getData().size() > 0);
+		}
 	}
 	/**
 	 * Creates test data for analytics.
@@ -104,7 +134,7 @@ public class KiiAnalyticsResourceTest {
 	 */
 	@Test
 	public void createTestData() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAggregationRuleID().hasAppAdminCredentials());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388).hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
