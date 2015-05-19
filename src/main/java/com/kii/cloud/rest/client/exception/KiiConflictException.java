@@ -11,4 +11,7 @@ public class KiiConflictException extends KiiRestException {
 	public KiiConflictException(JsonObject body) {
 		super(null, 409, body);
 	}
+	public KiiConflictException(String message, JsonObject body) {
+		super(message, 409, body);
+	}
 }

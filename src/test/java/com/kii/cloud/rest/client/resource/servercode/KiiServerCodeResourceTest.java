@@ -17,7 +17,7 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
-import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.model.KiiAdminCredentials;
 import com.kii.cloud.rest.client.model.servercode.KiiServerCodeVersion;
 import com.kii.cloud.rest.client.util.GsonUtils;
@@ -97,7 +97,7 @@ public class KiiServerCodeResourceTest {
 		try {
 			currentVersionID = rest.api().servercode().getCurrentVersion();
 			fail("KiiRestException must be thrown.");
-		} catch (KiiRestException e) {
+		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
 		}
 		// listing all versions
@@ -114,7 +114,7 @@ public class KiiServerCodeResourceTest {
 		try {
 			rest.api().servercode(versionID).get();
 			fail("KiiRestException must be thrown.");
-		} catch (KiiRestException e) {
+		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
 		}
 	}

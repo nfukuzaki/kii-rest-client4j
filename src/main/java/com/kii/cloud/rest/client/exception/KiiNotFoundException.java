@@ -11,4 +11,7 @@ public class KiiNotFoundException extends KiiRestException {
 	public KiiNotFoundException(JsonObject body) {
 		super(null, 404, body);
 	}
+	public KiiNotFoundException(String message, JsonObject body) {
+		super(message, 404, body);
+	}
 }

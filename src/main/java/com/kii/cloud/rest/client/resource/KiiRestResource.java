@@ -13,7 +13,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kii.cloud.rest.client.OkHttpClientFactory;
+import com.kii.cloud.rest.client.exception.KiiBadRequestException;
+import com.kii.cloud.rest.client.exception.KiiConflictException;
+import com.kii.cloud.rest.client.exception.KiiForbiddenException;
+import com.kii.cloud.rest.client.exception.KiiInternalServerErrorException;
+import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiServiceUnavailableException;
+import com.kii.cloud.rest.client.exception.KiiUnauthorizedException;
 import com.kii.cloud.rest.client.util.IOUtils;
 import com.kii.cloud.rest.client.util.Path;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -166,17 +173,7 @@ public abstract class KiiRestResource {
 	protected void parseResponse(KiiRestRequest request, Response response) throws KiiRestException {
 		try {
 			String body = response.body().string();
-			if (!response.isSuccessful()) {
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				logHeader(response);
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
-			}
+			this.checkHttpStatus(request, response, body);
 			System.out.println(request.getCurl() + "  : " + response.code());
 			logHeader(response);
 			System.out.println(body);
@@ -187,17 +184,7 @@ public abstract class KiiRestResource {
 	protected String parseResponseAsString(KiiRestRequest request, Response response) throws KiiRestException {
 		try {
 			String body = response.body().string();
-			if (!response.isSuccessful()) {
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				logHeader(response);
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
-			}
+			this.checkHttpStatus(request, response, body);
 			System.out.println(request.getCurl() + "  : " + response.code());
 			logHeader(response);
 			System.out.println(body);
@@ -212,17 +199,7 @@ public abstract class KiiRestResource {
 	protected JsonObject parseResponseAsJsonObject(KiiRestRequest request, Response response) throws KiiRestException {
 		try {
 			String body = response.body().string();
-			if (!response.isSuccessful()) {
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				logHeader(response);
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
-			}
+			this.checkHttpStatus(request, response, body);
 			System.out.println(request.getCurl() + "  : " + response.code());
 			logHeader(response);
 			System.out.println(body);
@@ -237,17 +214,7 @@ public abstract class KiiRestResource {
 	protected JsonArray parseResponseAsJsonArray(KiiRestRequest request, Response response) throws KiiRestException {
 		try {
 			String body = response.body().string();
-			if (!response.isSuccessful()) {
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				logHeader(response);
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
-			}
+			this.checkHttpStatus(request, response, body);
 			System.out.println(request.getCurl() + "  : " + response.code());
 			logHeader(response);
 			System.out.println(body);
@@ -263,21 +230,43 @@ public abstract class KiiRestResource {
 		try {
 			if (!response.isSuccessful()) {
 				String body = response.body().string();
-				JsonObject errorDetail = null;
-				try {
-					errorDetail = (JsonObject)new JsonParser().parse(body);
-				} catch (Exception ignore) {
-				}
-				System.out.println(request.getCurl() + "  : " + response.code());
-				logHeader(response);
-				System.out.println(body);
-				throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+				this.checkHttpStatus(request, response, body);
 			}
 			System.out.println(request.getCurl() + "  : " + response.code());
 			logHeader(response);
 			return response.body().byteStream();
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	protected void checkHttpStatus(KiiRestRequest request, Response response, String responseBody) throws KiiRestException {
+		if (!response.isSuccessful()) {
+			JsonObject errorDetail = null;
+			try {
+				errorDetail = (JsonObject)new JsonParser().parse(responseBody);
+			} catch (Exception ignore) {
+			}
+			System.out.println(request.getCurl() + "  : " + response.code());
+			logHeader(response);
+			System.out.println(responseBody);
+			switch (response.code()) {
+				case 400:
+					throw new KiiBadRequestException(request.getCurl(), errorDetail);
+				case 401:
+					throw new KiiUnauthorizedException(request.getCurl(), errorDetail);
+				case 403:
+					throw new KiiForbiddenException(request.getCurl(), errorDetail);
+				case 404:
+					throw new KiiNotFoundException(request.getCurl(), errorDetail);
+				case 409:
+					throw new KiiConflictException(request.getCurl(), errorDetail);
+				case 500:
+					throw new KiiInternalServerErrorException(request.getCurl(), errorDetail);
+				case 503:
+					throw new KiiServiceUnavailableException(request.getCurl(), errorDetail);
+				default:
+					throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+			}
 		}
 	}
 	protected void logHeader(Response response) {

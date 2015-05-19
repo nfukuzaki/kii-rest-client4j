@@ -11,5 +11,8 @@ public class KiiUnauthorizedException extends KiiRestException {
 	public KiiUnauthorizedException(JsonObject body) {
 		super(null, 401, body);
 	}
+	public KiiUnauthorizedException(String message, JsonObject body) {
+		super(message, 401, body);
+	}
 
 }

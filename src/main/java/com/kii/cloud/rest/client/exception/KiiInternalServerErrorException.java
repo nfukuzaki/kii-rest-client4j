@@ -11,5 +11,8 @@ public class KiiInternalServerErrorException extends KiiRestException {
 	public KiiInternalServerErrorException(JsonObject body) {
 		super(null, 500, body);
 	}
+	public KiiInternalServerErrorException(String message, JsonObject body) {
+		super(message, 500, body);
+	}
 
 }

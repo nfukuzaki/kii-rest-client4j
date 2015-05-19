@@ -16,9 +16,6 @@ public class KiiRestException extends Exception {
 		this.status = 0;
 		this.body = null;
 	}
-	public KiiRestException(int status, JsonObject body) {
-		this(null, status, body);
-	}
 	public KiiRestException(String message, int status, JsonObject body) {
 		super(message);
 		this.status = status;

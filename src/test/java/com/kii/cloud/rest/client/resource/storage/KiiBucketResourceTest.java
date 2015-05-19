@@ -14,7 +14,7 @@ import com.kii.cloud.rest.client.KiiRest;
 import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestEnvironments;
-import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.model.storage.KiiBucket;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
@@ -84,7 +84,7 @@ public class KiiBucketResourceTest {
 		try {
 			rest.api().buckets(appBucketName).get();
 			fail("KiiRestException must be thrown.");
-		} catch (KiiRestException e) {
+		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
 		}
 	}
@@ -144,7 +144,7 @@ public class KiiBucketResourceTest {
 		try {
 			rest.api().users(user).buckets(userBucketName).get();
 			fail("KiiRestException must be thrown.");
-		} catch (KiiRestException e) {
+		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
 		}
 	}
@@ -209,7 +209,7 @@ public class KiiBucketResourceTest {
 		try {
 			rest.api().groups(group).buckets(groupBucketName).get();
 			fail("KiiRestException must be thrown.");
-		} catch (KiiRestException e) {
+		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
 		}
 	}
@@ -285,7 +285,7 @@ public class KiiBucketResourceTest {
 		try {
 			rest.api().things(thingID).buckets(thingBucketName).get();
 			fail("KiiRestException must be thrown.");
-		} catch (KiiRestException e) {
+		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
 		}
 	}

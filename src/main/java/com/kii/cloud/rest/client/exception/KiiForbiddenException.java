@@ -11,4 +11,7 @@ public class KiiForbiddenException extends KiiRestException {
 	public KiiForbiddenException(JsonObject body) {
 		super(null, 403, body);
 	}
+	public KiiForbiddenException(String message, JsonObject body) {
+		super(message, 403, body);
+	}
 }

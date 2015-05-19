@@ -11,5 +11,8 @@ public class KiiServiceUnavailableException extends KiiRestException {
 	public KiiServiceUnavailableException(JsonObject body) {
 		super(null, 503, body);
 	}
+	public KiiServiceUnavailableException(String message, JsonObject body) {
+		super(message, 503, body);
+	}
 
 }

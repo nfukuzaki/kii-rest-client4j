@@ -11,4 +11,7 @@ public class KiiBadRequestException extends KiiRestException {
 	public KiiBadRequestException(JsonObject body) {
 		super(null, 400, body);
 	}
+	public KiiBadRequestException(String message, JsonObject body) {
+		super(message, 400, body);
+	}
 }
