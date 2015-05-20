@@ -3,12 +3,14 @@ package com.kii.cloud.rest.client.resource.storage;
 import java.util.List;
 
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.model.storage.KiiAcl.ScopeAction;
 import com.kii.cloud.rest.client.model.storage.KiiAcl.Subject;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
+import com.kii.cloud.rest.client.resource.ScopedResource;
 
 /**
  * Represents the scope acl resource like following URI:
@@ -20,7 +22,7 @@ import com.kii.cloud.rest.client.resource.KiiAppResource;
  * </ul>
  *
  */
-public class KiiScopeAclResource extends KiiAclResource {
+public class KiiScopeAclResource extends KiiAclResource implements ScopedResource {
 	public KiiScopeAclResource(KiiAppResource parent) {
 		super(parent);
 	}
@@ -32,6 +34,20 @@ public class KiiScopeAclResource extends KiiAclResource {
 	}
 	public KiiScopeAclResource(KiiThingResource parent) {
 		super(parent);
+	}
+	@Override
+	public KiiScope getScope() {
+		if (this.parent instanceof KiiAppResource) {
+			return KiiScope.APP;
+		} else if (this.parent instanceof KiiGroupResource) {
+			return KiiScope.GROUP;
+		} else if (this.parent instanceof KiiUserResource) {
+			return KiiScope.USER;
+		} else if (this.parent instanceof KiiThingResource) {
+			return KiiScope.THING;
+		} else {
+			throw new AssertionError();
+		}
 	}
 	/**
 	 * @param action

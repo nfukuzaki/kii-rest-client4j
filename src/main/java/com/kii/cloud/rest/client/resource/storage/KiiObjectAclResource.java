@@ -3,11 +3,13 @@ package com.kii.cloud.rest.client.resource.storage;
 import java.util.List;
 
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.model.storage.KiiAcl.ObjectAction;
 import com.kii.cloud.rest.client.model.storage.KiiAcl.Subject;
+import com.kii.cloud.rest.client.resource.ScopedResource;
 
 /**
  * Represents the object acl resource like following URI:
@@ -19,9 +21,13 @@ import com.kii.cloud.rest.client.model.storage.KiiAcl.Subject;
  * </ul>
  *
  */
-public class KiiObjectAclResource extends KiiAclResource {
+public class KiiObjectAclResource extends KiiAclResource implements ScopedResource {
 	public KiiObjectAclResource(KiiObjectResource parent) {
 		super(parent);
+	}
+	@Override
+	public KiiScope getScope() {
+		return ((KiiObjectResource)this.parent).getScope();
 	}
 	/**
 	 * @param action

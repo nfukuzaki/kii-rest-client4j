@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiBucket;
 import com.kii.cloud.rest.client.model.storage.KiiCountingQuery;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
@@ -15,6 +16,7 @@ import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.ScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -31,7 +33,7 @@ import com.squareup.okhttp.Response;
  * </ul>
  *
  */
-public class KiiBucketResource extends KiiRestSubResource {
+public class KiiBucketResource extends KiiRestSubResource implements ScopedResource {
 	
 	public static final MediaType MEDIA_TYPE_BUCKET_CREATION_REQUEST = MediaType.parse("application/vnd.kii.BucketCreationRequest+json");
 	public static final MediaType MEDIA_TYPE_QUERY_REQUEST = MediaType.parse("application/vnd.kii.QueryRequest+json");
@@ -68,7 +70,20 @@ public class KiiBucketResource extends KiiRestSubResource {
 		}
 		this.name = name;
 	}
-	
+	@Override
+	public KiiScope getScope() {
+		if (this.parent instanceof KiiAppResource) {
+			return KiiScope.APP;
+		} else if (this.parent instanceof KiiGroupResource) {
+			return KiiScope.GROUP;
+		} else if (this.parent instanceof KiiUserResource) {
+			return KiiScope.USER;
+		} else if (this.parent instanceof KiiThingResource) {
+			return KiiScope.THING;
+		} else {
+			throw new AssertionError();
+		}
+	}
 	public KiiBucketAclResource acl() {
 		return new KiiBucketAclResource(this);
 	}

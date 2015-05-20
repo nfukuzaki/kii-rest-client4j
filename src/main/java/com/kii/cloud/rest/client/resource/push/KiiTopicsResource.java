@@ -8,9 +8,11 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.ScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.resource.storage.KiiGroupResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingResource;
@@ -18,7 +20,7 @@ import com.kii.cloud.rest.client.resource.storage.KiiUserResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.squareup.okhttp.Response;
 
-public class KiiTopicsResource extends KiiRestSubResource {
+public class KiiTopicsResource extends KiiRestSubResource implements ScopedResource {
 	public static final String BASE_PATH = "/topics";
 	public KiiTopicsResource(KiiAppResource parent) {
 		super(parent);
@@ -31,6 +33,20 @@ public class KiiTopicsResource extends KiiRestSubResource {
 	}
 	public KiiTopicsResource(KiiThingResource parent) {
 		super(parent);
+	}
+	@Override
+	public KiiScope getScope() {
+		if (this.parent instanceof KiiAppResource) {
+			return KiiScope.APP;
+		} else if (this.parent instanceof KiiGroupResource) {
+			return KiiScope.GROUP;
+		} else if (this.parent instanceof KiiUserResource) {
+			return KiiScope.USER;
+		} else if (this.parent instanceof KiiThingResource) {
+			return KiiScope.THING;
+		} else {
+			throw new AssertionError();
+		}
 	}
 	/**
 	 * Gets list of topic names.

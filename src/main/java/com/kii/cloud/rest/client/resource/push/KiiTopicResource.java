@@ -5,11 +5,13 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiPushMessage;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.ScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -26,7 +28,7 @@ import com.squareup.okhttp.Response;
  * </ul>
  *
  */
-public class KiiTopicResource extends KiiRestSubResource {
+public class KiiTopicResource extends KiiRestSubResource implements ScopedResource {
 	
 	public static final MediaType MEDIA_SEND_PUSH_MESSAGE_REQUEST = MediaType.parse("application/vnd.kii.SendPushMessageRequest+json");
 	
@@ -38,7 +40,10 @@ public class KiiTopicResource extends KiiRestSubResource {
 		}
 		this.name = name;
 	}
-	
+	@Override
+	public KiiScope getScope() {
+		return ((KiiTopicsResource)this.parent).getScope();
+	}
 	/**
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/creating-topic/

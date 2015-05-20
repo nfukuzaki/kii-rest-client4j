@@ -5,9 +5,11 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.ScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
@@ -22,11 +24,19 @@ import com.squareup.okhttp.Response;
  * </ul>
  *
  */
-public class KiiObjectsResource extends KiiRestSubResource {
+public class KiiObjectsResource extends KiiRestSubResource implements ScopedResource {
 	public static final String BASE_PATH = "/objects";
 	public KiiObjectsResource(KiiBucketResource parent) {
 		super(parent);
 	}
+	@Override
+	public KiiScope getScope() {
+		return ((KiiBucketResource)this.parent).getScope();
+	}
+	/**
+	 * @param object
+	 * @throws KiiRestException
+	 */
 	public void save(KiiObject object) throws KiiRestException {
 		this.save("application/json", object);
 	}

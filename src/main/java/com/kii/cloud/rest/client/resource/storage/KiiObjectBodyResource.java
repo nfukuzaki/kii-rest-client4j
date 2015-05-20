@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.annotation.AdminAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.HttpContentRange;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiChunkedDownloadContext;
 import com.kii.cloud.rest.client.model.storage.KiiChunkedUploadContext;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
@@ -18,6 +19,7 @@ import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.ScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.IOUtils;
@@ -34,7 +36,7 @@ import com.squareup.okhttp.Response;
  * </ul>
  *
  */
-public class KiiObjectBodyResource extends KiiRestSubResource {
+public class KiiObjectBodyResource extends KiiRestSubResource implements ScopedResource {
 	
 	public static final String BASE_PATH = "/body";
 	
@@ -45,6 +47,10 @@ public class KiiObjectBodyResource extends KiiRestSubResource {
 	
 	public KiiObjectBodyResource(KiiObjectResource parent) {
 		super(parent);
+	}
+	@Override
+	public KiiScope getScope() {
+		return ((KiiObjectResource)this.parent).getScope();
 	}
 	@Override
 	public String getPath() {
