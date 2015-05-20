@@ -12,7 +12,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
-import com.kii.cloud.rest.client.resource.ScopedResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.resource.storage.KiiGroupResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingResource;
@@ -20,7 +20,7 @@ import com.kii.cloud.rest.client.resource.storage.KiiUserResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.squareup.okhttp.Response;
 
-public class KiiTopicsResource extends KiiRestSubResource implements ScopedResource {
+public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedResource {
 	public static final String BASE_PATH = "/topics";
 	public KiiTopicsResource(KiiAppResource parent) {
 		super(parent);

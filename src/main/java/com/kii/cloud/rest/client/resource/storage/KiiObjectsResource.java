@@ -9,7 +9,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
-import com.kii.cloud.rest.client.resource.ScopedResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
@@ -24,7 +24,7 @@ import com.squareup.okhttp.Response;
  * </ul>
  *
  */
-public class KiiObjectsResource extends KiiRestSubResource implements ScopedResource {
+public class KiiObjectsResource extends KiiRestSubResource implements KiiScopedResource {
 	public static final String BASE_PATH = "/objects";
 	public KiiObjectsResource(KiiBucketResource parent) {
 		super(parent);

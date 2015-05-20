@@ -16,7 +16,7 @@ import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
-import com.kii.cloud.rest.client.resource.ScopedResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -33,7 +33,7 @@ import com.squareup.okhttp.Response;
  * </ul>
  *
  */
-public class KiiBucketResource extends KiiRestSubResource implements ScopedResource {
+public class KiiBucketResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final MediaType MEDIA_TYPE_BUCKET_CREATION_REQUEST = MediaType.parse("application/vnd.kii.BucketCreationRequest+json");
 	public static final MediaType MEDIA_TYPE_QUERY_REQUEST = MediaType.parse("application/vnd.kii.QueryRequest+json");

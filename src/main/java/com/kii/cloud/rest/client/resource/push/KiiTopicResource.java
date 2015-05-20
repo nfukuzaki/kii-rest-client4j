@@ -11,7 +11,7 @@ import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
-import com.kii.cloud.rest.client.resource.ScopedResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -28,7 +28,7 @@ import com.squareup.okhttp.Response;
  * </ul>
  *
  */
-public class KiiTopicResource extends KiiRestSubResource implements ScopedResource {
+public class KiiTopicResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final MediaType MEDIA_SEND_PUSH_MESSAGE_REQUEST = MediaType.parse("application/vnd.kii.SendPushMessageRequest+json");
 	

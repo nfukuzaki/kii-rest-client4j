@@ -9,7 +9,7 @@ import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.model.storage.KiiAcl.ObjectAction;
 import com.kii.cloud.rest.client.model.storage.KiiAcl.Subject;
-import com.kii.cloud.rest.client.resource.ScopedResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 
 /**
  * Represents the object acl resource like following URI:
@@ -21,7 +21,7 @@ import com.kii.cloud.rest.client.resource.ScopedResource;
  * </ul>
  *
  */
-public class KiiObjectAclResource extends KiiAclResource implements ScopedResource {
+public class KiiObjectAclResource extends KiiAclResource implements KiiScopedResource {
 	public KiiObjectAclResource(KiiObjectResource parent) {
 		super(parent);
 	}
