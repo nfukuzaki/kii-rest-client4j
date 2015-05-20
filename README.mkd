@@ -18,7 +18,7 @@ or Gradle:
 compile 'com.kii.cloud.rest.client:kii-rest-client4j:0.5.2'
 ```
 
-kii-rest-client4j is published jCenter. so you need to add a repository to your project.  
+kii-rest-client4j is published in JCenter repository. so you need to add a repository to your project.  
 
 Maven:
 
