@@ -1,4 +1,4 @@
-# KiiRestClient for Java
+# KiiRestClient for Java [ ![Download](https://api.bintray.com/packages/nfukuzaki/maven/kii-rest-client4j/images/download.svg) ](https://bintray.com/nfukuzaki/maven/kii-rest-client4j/_latestVersion)
 A REST client for [Kii Cloud](http://kii.com) for Android and Java applications.
 
 ## Download
