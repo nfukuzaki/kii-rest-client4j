@@ -36,17 +36,7 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 	}
 	@Override
 	public KiiScope getScope() {
-		if (this.parent instanceof KiiAppResource) {
-			return KiiScope.APP;
-		} else if (this.parent instanceof KiiGroupResource) {
-			return KiiScope.GROUP;
-		} else if (this.parent instanceof KiiUserResource) {
-			return KiiScope.USER;
-		} else if (this.parent instanceof KiiThingResource) {
-			return KiiScope.THING;
-		} else {
-			throw new AssertionError("detected the unexpected scope.");
-		}
+		return ((KiiScopedResource)this.parent).getScope();
 	}
 	/**
 	 * Gets list of topic names.
