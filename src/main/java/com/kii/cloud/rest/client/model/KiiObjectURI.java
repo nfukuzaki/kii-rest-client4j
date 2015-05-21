@@ -15,9 +15,7 @@ import com.kii.cloud.rest.client.util.StringUtils;
  * 
  * @see http://documentation.kii.com/en/starts/cloudsdk/cloudoverview/idanduri/
  */
-public class KiiObjectURI {
-	
-	public static final String SCHEME = "kiicloud://";
+public class KiiObjectURI extends KiiURI {
 	
 	public static KiiObjectURI create(String str) {
 		if (StringUtils.isEmpty(str)) {
@@ -57,19 +55,15 @@ public class KiiObjectURI {
 		return new KiiObjectURI(scope, scopeID, bucketName, objectID);
 	}
 	
-	private final KiiScope scope;
-	private final String scopeID;
-	private final String bucketName;
-	private final String objectID;
+	protected final String scopeID;
+	protected final String bucketName;
+	protected final String objectID;
 	
 	private KiiObjectURI(KiiScope scope, String scopeID, String bucketName, String objectID) {
-		this.scope = scope;
+		super(scope);
 		this.scopeID = scopeID;
 		this.bucketName = bucketName;
 		this.objectID = objectID;
-	}
-	public KiiScope getScope() {
-		return scope;
 	}
 	public String getScopeID() {
 		return scopeID;

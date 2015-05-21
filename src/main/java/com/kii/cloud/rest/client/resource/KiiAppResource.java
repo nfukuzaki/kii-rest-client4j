@@ -3,7 +3,10 @@ package com.kii.cloud.rest.client.resource;
 import java.util.Map;
 
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
+import com.kii.cloud.rest.client.model.KiiGroupURI;
 import com.kii.cloud.rest.client.model.KiiObjectURI;
+import com.kii.cloud.rest.client.model.KiiThingURI;
+import com.kii.cloud.rest.client.model.KiiUserURI;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
@@ -85,6 +88,9 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiUserResource users(String identifier) {
 		return new KiiUserResource(this.users(), identifier);
 	}
+	public KiiUserResource users(KiiUserURI uri) {
+		return new KiiUserResource(this.users(), uri.getScopeID());
+	}
 	public KiiUserResource users(KiiUser user) {
 		return new KiiUserResource(this.users(), user.getUserID());
 	}
@@ -97,6 +103,9 @@ public class KiiAppResource extends KiiRestResource {
 	public KiiThingResource things(String identifier) {
 		return new KiiThingResource(this.things(), identifier);
 	}
+	public KiiThingResource things(KiiThingURI uri) {
+		return new KiiThingResource(this.things(), uri.getScopeID());
+	}
 	public KiiGroupsResource groups() {
 		return new KiiGroupsResource(this);
 	}
@@ -105,6 +114,9 @@ public class KiiAppResource extends KiiRestResource {
 	}
 	public KiiGroupResource groups(String groupID) {
 		return new KiiGroupResource(this.groups(), groupID);
+	}
+	public KiiGroupResource groups(KiiGroupURI uri) {
+		return new KiiGroupResource(this.groups(), uri.getScopeID());
 	}
 	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);
