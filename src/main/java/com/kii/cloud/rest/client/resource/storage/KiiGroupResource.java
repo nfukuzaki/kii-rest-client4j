@@ -5,10 +5,12 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.resource.push.KiiTopicResource;
 import com.kii.cloud.rest.client.resource.push.KiiTopicsResource;
@@ -22,7 +24,7 @@ import com.squareup.okhttp.Response;
  * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}
  * </ul>
  */
-public class KiiGroupResource extends KiiRestSubResource {
+public class KiiGroupResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final MediaType MEDIA_TYPE_GROUP_OWNER_CHANGE_REQUEST = MediaType.parse("application/vnd.kii.GroupOwnerChangeRequest+json");
 	
@@ -139,5 +141,9 @@ public class KiiGroupResource extends KiiRestSubResource {
 	@Override
 	public String getPath() {
 		return "/" + groupID;
+	}
+	@Override
+	public KiiScope getScope() {
+		return ((KiiGroupsResource)this.parent).getScope();
 	}
 }

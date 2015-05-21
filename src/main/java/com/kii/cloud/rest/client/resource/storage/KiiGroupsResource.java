@@ -8,12 +8,14 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiGroupMembers;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.squareup.okhttp.MediaType;
@@ -25,7 +27,7 @@ import com.squareup.okhttp.Response;
  * <li>https://hostname/api/apps/{APP_ID}/groups
  * </ul>
  */
-public class KiiGroupsResource extends KiiRestSubResource {
+public class KiiGroupsResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final MediaType MEDIA_TYPE_GROUP_CREATION_REQUEST = MediaType.parse("application/vnd.kii.GroupCreationRequest+json");
 	
@@ -151,5 +153,9 @@ public class KiiGroupsResource extends KiiRestSubResource {
 	@Override
 	public String getPath() {
 		return BASE_PATH;
+	}
+	@Override
+	public KiiScope getScope() {
+		return KiiScope.GROUP;
 	}
 }

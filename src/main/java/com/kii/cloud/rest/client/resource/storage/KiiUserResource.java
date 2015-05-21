@@ -7,11 +7,13 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.annotation.AdminAPI;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.resource.push.KiiTopicResource;
 import com.kii.cloud.rest.client.resource.push.KiiTopicsResource;
@@ -26,7 +28,7 @@ import com.squareup.okhttp.Response;
  * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}
  * </ul>
  */
-public class KiiUserResource extends KiiRestSubResource {
+public class KiiUserResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final MediaType MEDIA_TYPE_USER_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.UserUpdateRequest+json");
 	public static final MediaType MEDIA_TYPE_RESET_PASSWORD_REQUEST = MediaType.parse("application/vnd.kii.ResetPasswordRequest+json");
@@ -296,5 +298,9 @@ public class KiiUserResource extends KiiRestSubResource {
 	@Override
 	public String getPath() {
 		return "/" + KiiUser.getAccountType(this.identifier) + this.identifier;
+	}
+	@Override
+	public KiiScope getScope() {
+		return ((KiiUsersResource)this.parent).getScope();
 	}
 }

@@ -5,10 +5,12 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.push.KiiTopicResource;
 import com.kii.cloud.rest.client.resource.push.KiiTopicsResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
@@ -22,7 +24,7 @@ import com.squareup.okhttp.Response;
  * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}
  * </ul>
  */
-public class KiiThingResource extends KiiRestSubResource {
+public class KiiThingResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final MediaType MEDIA_TYPE_THING_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.ThingUpdateRequest+json");
 	public static final MediaType MEDIA_TYPE_THING_STATUS_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.ThingStatusUpdateRequest+json");
@@ -172,5 +174,9 @@ public class KiiThingResource extends KiiRestSubResource {
 			return "/" + this.thingID;
 		}
 		return "/VENDOR_THING_ID:" + this.vendorThingID;
+	}
+	@Override
+	public KiiScope getScope() {
+		return ((KiiThingsResource)this.parent).getScope();
 	}
 }

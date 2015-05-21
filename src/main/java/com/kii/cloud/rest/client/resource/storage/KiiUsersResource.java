@@ -7,12 +7,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
@@ -23,7 +25,7 @@ import com.squareup.okhttp.Response;
  * <li>https://hostname/api/apps/{APP_ID}/users
  * </ul>
  */
-public class KiiUsersResource extends KiiRestSubResource {
+public class KiiUsersResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final String BASE_PATH = "/users";
 	
@@ -95,5 +97,9 @@ public class KiiUsersResource extends KiiRestSubResource {
 	@Override
 	public String getPath() {
 		return BASE_PATH;
+	}
+	@Override
+	public KiiScope getScope() {
+		return KiiScope.USER;
 	}
 }

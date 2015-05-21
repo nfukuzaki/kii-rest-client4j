@@ -6,10 +6,12 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
@@ -20,7 +22,7 @@ import com.squareup.okhttp.Response;
  * <li>https://hostname/api/apps/{APP_ID}/things
  * </ul>
  */
-public class KiiThingsResource extends KiiRestSubResource {
+public class KiiThingsResource extends KiiRestSubResource implements KiiScopedResource {
 	
 	public static final String BASE_PATH = "/things";
 	
@@ -61,5 +63,9 @@ public class KiiThingsResource extends KiiRestSubResource {
 	@Override
 	public String getPath() {
 		return BASE_PATH;
+	}
+	@Override
+	public KiiScope getScope() {
+		return KiiScope.THING;
 	}
 }

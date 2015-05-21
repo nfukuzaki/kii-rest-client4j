@@ -5,6 +5,7 @@ import java.util.Map;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.model.KiiGroupURI;
 import com.kii.cloud.rest.client.model.KiiObjectURI;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.KiiThingURI;
 import com.kii.cloud.rest.client.model.KiiUserURI;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
@@ -48,7 +49,7 @@ import com.kii.cloud.rest.client.resource.storage.KiiUsersResource;
  * <p>
  * This resource is the root for all other resources.
  */
-public class KiiAppResource extends KiiRestResource {
+public class KiiAppResource extends KiiRestResource implements KiiScopedResource {
 	public static final String BASE_PATH = "/apps";
 	
 	private final String appID;
@@ -199,6 +200,10 @@ public class KiiAppResource extends KiiRestResource {
 	@Override
 	public String getPath() {
 		return this.endpoint + BASE_PATH + "/" + this.appID;
+	}
+	@Override
+	public KiiScope getScope() {
+		return KiiScope.APP;
 	}
 	@Override
 	protected KiiRestResource getParent() {

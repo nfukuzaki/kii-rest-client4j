@@ -27,7 +27,7 @@ public class KiiThingURI extends KiiScopeURI {
 		}
 	}
 
-	private KiiThingURI(String thingID) {
+	public KiiThingURI(String thingID) {
 		super(KiiScope.THING, thingID);
 	}
 

@@ -27,7 +27,7 @@ public class KiiGroupURI extends KiiScopeURI {
 		}
 	}
 
-	private KiiGroupURI(String groupID) {
+	public KiiGroupURI(String groupID) {
 		super(KiiScope.GROUP, groupID);
 	}
 
