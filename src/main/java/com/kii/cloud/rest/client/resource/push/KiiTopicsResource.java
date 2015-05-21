@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.model.KiiListResult;
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
@@ -18,6 +19,7 @@ import com.kii.cloud.rest.client.resource.storage.KiiGroupResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingResource;
 import com.kii.cloud.rest.client.resource.storage.KiiUserResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
+import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.Response;
 
 public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedResource {
@@ -44,9 +46,18 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 	 * @return
 	 * @throws KiiRestException
 	 */
-	public List<String> list() throws KiiRestException {
+	public KiiListResult<String> list() throws KiiRestException {
+		return this.list(null);
+	}
+	/**
+	 * @param paginationKey
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public KiiListResult<String> list(String paginationKey) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
+		String param = StringUtils.isEmpty(paginationKey) ? "" : "?paginationKey=" + paginationKey;
+		KiiRestRequest request = new KiiRestRequest(getUrl() + param, Method.GET, headers);
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
@@ -55,7 +66,8 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 			for (int i = 0; i < topics.size(); i++) {
 				result.add(GsonUtils.getString(topics.get(i).getAsJsonObject(), "topicID"));
 			}
-			return result;
+			String newPaginationKey = GsonUtils.getString(responseBody, "paginationKey");
+			return new KiiListResult<String>(result, newPaginationKey);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
