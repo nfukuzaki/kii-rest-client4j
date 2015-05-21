@@ -3,6 +3,7 @@ package com.kii.cloud.rest.client.resource;
 import java.util.Map;
 
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
+import com.kii.cloud.rest.client.model.KiiObjectURI;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
@@ -29,6 +30,7 @@ import com.kii.cloud.rest.client.resource.storage.KiiBucketResource;
 import com.kii.cloud.rest.client.resource.storage.KiiEncryptedBucketResource;
 import com.kii.cloud.rest.client.resource.storage.KiiGroupResource;
 import com.kii.cloud.rest.client.resource.storage.KiiGroupsResource;
+import com.kii.cloud.rest.client.resource.storage.KiiObjectResource;
 import com.kii.cloud.rest.client.resource.storage.KiiScopeAclResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingsResource;
@@ -109,6 +111,19 @@ public class KiiAppResource extends KiiRestResource {
 	}
 	public KiiEncryptedBucketResource encryptedBuckets(String name) {
 		return new KiiEncryptedBucketResource(this, name);
+	}
+	public KiiObjectResource objects(KiiObjectURI uri) {
+		switch (uri.getScope()) {
+			case APP:
+				return this.buckets(uri.getBucketName()).objects(uri.getObjectID());
+			case GROUP:
+				return this.groups(uri.getScopeID()).buckets(uri.getBucketName()).objects(uri.getObjectID());
+			case USER:
+				return this.users(uri.getScopeID()).buckets(uri.getBucketName()).objects(uri.getObjectID());
+			case THING:
+				return this.things(uri.getScopeID()).buckets(uri.getBucketName()).objects(uri.getObjectID());
+		}
+		throw new AssertionError("KiiObjectURI has unexpected scope.");
 	}
 	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);

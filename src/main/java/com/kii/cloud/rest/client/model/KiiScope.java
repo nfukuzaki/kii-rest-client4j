@@ -19,4 +19,12 @@ public enum KiiScope {
 	public String getCollectionName() {
 		return collectionName;
 	}
+	public static KiiScope fromString(String str) {
+		for (KiiScope scope : values()) {
+			if (scope.name.equals(str) || scope.collectionName.equals(str)) {
+				return scope;
+			}
+		}
+		return null;
+	}
 }

@@ -45,7 +45,7 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 		} else if (this.parent instanceof KiiThingResource) {
 			return KiiScope.THING;
 		} else {
-			throw new AssertionError();
+			throw new AssertionError("detected the unexpected scope.");
 		}
 	}
 	/**
