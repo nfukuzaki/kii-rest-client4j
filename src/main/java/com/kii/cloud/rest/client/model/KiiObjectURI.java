@@ -59,7 +59,7 @@ public class KiiObjectURI extends KiiURI {
 	protected final String bucketName;
 	protected final String objectID;
 	
-	private KiiObjectURI(KiiScope scope, String scopeID, String bucketName, String objectID) {
+	public KiiObjectURI(KiiScope scope, String scopeID, String bucketName, String objectID) {
 		super(scope);
 		this.scopeID = scopeID;
 		this.bucketName = bucketName;
