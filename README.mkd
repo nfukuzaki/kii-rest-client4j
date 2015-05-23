@@ -162,6 +162,13 @@ If you want to skip unit tests, try following command.
 mvn package -DskipTests
 ```
 
+If you want to calculate code coverage, try following command.
+
+```sh
+mvn cobertura:cobertura
+open target/site/cobertura/index.html
+```
+
 ## Example usage
 ```java
 // initialize rest client
