@@ -108,21 +108,28 @@ public class KiiDevlogResource {
 		this.call = WebSocketCall.create(client, request);
 		this.call.enqueue(new WebSocketListener() {
 			@Override
-			public void onOpen(WebSocket webSocket, Request request, Response response) throws IOException {
-				Buffer buffer = new Buffer();
-				try {
-					buffer.writeUtf8(requestBody.toString());
-					webSocket.sendMessage(PayloadType.TEXT, buffer);
-				} finally {
-					buffer.close();
-				}
+			public void onOpen(final WebSocket webSocket, Response response) {
+				new Thread() {
+					@Override
+					public void run() {
+						Buffer buffer = new Buffer();
+						try {
+							buffer.writeUtf8(requestBody.toString());
+							webSocket.sendMessage(PayloadType.TEXT, buffer);
+						} catch (IOException e) {
+							e.printStackTrace();
+						} finally {
+							buffer.close();
+						}
+					}
+				}.start();
 			}
 			@Override
 			public void onClose(int code, String reason) {
 				latch.countDown();
 			}
 			@Override
-			public void onFailure(IOException e) {
+			public void onFailure(IOException e, Response response) {
 				exception.set(e);
 				latch.countDown();
 			}
@@ -195,20 +202,27 @@ public class KiiDevlogResource {
 		this.call = WebSocketCall.create(client, request);
 		this.call.enqueue(new WebSocketListener() {
 			@Override
-			public void onOpen(WebSocket webSocket, Request request, Response response) throws IOException {
-				Buffer buffer = new Buffer();
-				try {
-					buffer.writeUtf8(requestBody.toString());
-					webSocket.sendMessage(PayloadType.TEXT, buffer);
-				} finally {
-					buffer.close();
-				}
+			public void onOpen(final WebSocket webSocket, Response response) {
+				new Thread() {
+					@Override
+					public void run() {
+						Buffer buffer = new Buffer();
+						try {
+							buffer.writeUtf8(requestBody.toString());
+							webSocket.sendMessage(PayloadType.TEXT, buffer);
+						} catch (IOException e) {
+							e.printStackTrace();
+						} finally {
+							buffer.close();
+						}
+					}
+				}.start();
 			}
 			@Override
 			public void onClose(int code, String reason) {
 			}
 			@Override
-			public void onFailure(IOException e) {
+			public void onFailure(IOException e, Response response) {
 				listener.onFailure(e);
 			}
 			@Override

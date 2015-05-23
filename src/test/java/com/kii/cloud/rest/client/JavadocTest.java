@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
+import org.jboss.forge.roaster.ParserException;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaDocTag;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -30,18 +31,21 @@ public class JavadocTest {
 		
 		Set<String> seeLinks = new HashSet<String>();
 		for (File javaFile : javaFiles) {
-			JavaClassSource javaClass = Roaster.parse(JavaClassSource.class, javaFile);
-			JavaDocSource<JavaClassSource> classJavaDoc = javaClass.getJavaDoc();
-			for (JavaDocTag tag : classJavaDoc.getTags("@see")) {
-				seeLinks.add(tag.getValue());
-			}
-			for (MethodSource<JavaClassSource> method : javaClass.getMethods()) {
-				JavaDocSource<MethodSource<JavaClassSource>> methodJavaDoc = method.getJavaDoc();
-				for (JavaDocTag tag : methodJavaDoc.getTags("@see")) {
-					if (tag.getValue().startsWith("http")) {
-						seeLinks.add(tag.getValue());
+			try {
+				JavaClassSource javaClass = Roaster.parse(JavaClassSource.class, javaFile);
+				JavaDocSource<JavaClassSource> classJavaDoc = javaClass.getJavaDoc();
+				for (JavaDocTag tag : classJavaDoc.getTags("@see")) {
+					seeLinks.add(tag.getValue());
+				}
+				for (MethodSource<JavaClassSource> method : javaClass.getMethods()) {
+					JavaDocSource<MethodSource<JavaClassSource>> methodJavaDoc = method.getJavaDoc();
+					for (JavaDocTag tag : methodJavaDoc.getTags("@see")) {
+						if (tag.getValue().startsWith("http")) {
+							seeLinks.add(tag.getValue());
+						}
 					}
 				}
+			} catch (ParserException ignore) {
 			}
 		}
 		Set<String> brokenLinks = new HashSet<String>();
