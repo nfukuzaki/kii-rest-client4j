@@ -1,7 +1,6 @@
-package com.kii.cloud.rest.client.resource.storage;
+package com.kii.cloud.rest.client.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +14,10 @@ import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiThingOwner;
-
+import com.kii.cloud.rest.client.util.KiiURIUtils;
 
 @RunWith(SkipAcceptableTestRunner.class)
-public class KiiObjectResourceTest {
+public class KiiObjectURITest {
 	@Test
 	public void appScopeTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
@@ -34,31 +33,13 @@ public class KiiObjectResourceTest {
 		KiiObject object1 = new KiiObject().set("score", 100);
 		rest.api().buckets(appBucketName).objects().save(object1);
 		
-		// check object
-		boolean exists = rest.api().buckets(appBucketName).objects(object1.getObjectID()).exists();
-		assertTrue(exists);
+		KiiObjectURI uri = KiiURIUtils.createAppScopeObject(appBucketName, object1.getObjectID());
+		assertEquals(String.format("kiicloud://buckets/%s/objects/%s", appBucketName, object1.getObjectID()), uri.toString());
+		KiiObject object2 = rest.api().objects(uri).get();
 		
-		// updating object
-		object1.set("score", 200);
-		rest.api().buckets(appBucketName).objects(object1).update(object1);
+		assertEquals(object1.getObjectID(), object2.getObjectID());
+		assertEquals(object1.getInt("score"), object2.getInt("score"));
 		
-		// getting object
-		KiiObject object2 = rest.api().buckets(appBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
-		
-		// partial updating
-		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().buckets(appBucketName).objects(object2).partialUpdate(object3);
-		
-		// getting object
-		KiiObject object4 = rest.api().buckets(appBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
-		
-		// deleting object
-		rest.api().buckets(appBucketName).objects(object4).delete();
-		
-		// deleting bucket
 		rest.api().buckets(appBucketName).delete();
 	}
 	@Test
@@ -81,31 +62,13 @@ public class KiiObjectResourceTest {
 		KiiObject object1 = new KiiObject().set("score", 100);
 		rest.api().groups(group).buckets(groupBucketName).objects().save(object1);
 		
-		// check object
-		boolean exists = rest.api().groups(group).buckets(groupBucketName).objects(object1.getObjectID()).exists();
-		assertTrue(exists);
+		KiiObjectURI uri = KiiURIUtils.createGroupScopeObject(group.getGroupID(), groupBucketName, object1.getObjectID());
+		assertEquals(String.format("kiicloud://groups/%s/buckets/%s/objects/%s", group.getGroupID(), groupBucketName, object1.getObjectID()), uri.toString());
+		KiiObject object2 = rest.api().objects(uri).get();
 		
-		// updating object
-		object1.set("score", 200);
-		rest.api().groups(group).buckets(groupBucketName).objects(object1).update(object1);
+		assertEquals(object1.getObjectID(), object2.getObjectID());
+		assertEquals(object1.getInt("score"), object2.getInt("score"));
 		
-		// getting object
-		KiiObject object2 = rest.api().groups(group).buckets(groupBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
-		
-		// partial updating
-		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().groups(group).buckets(groupBucketName).objects(object2).partialUpdate(object3);
-		
-		// getting object
-		KiiObject object4 = rest.api().groups(group).buckets(groupBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
-		
-		// deleting object
-		rest.api().groups(group).buckets(groupBucketName).objects(object4).delete();
-		
-		// deleting bucket
 		rest.api().groups(group).buckets(groupBucketName).delete();
 	}
 	@Test
@@ -123,31 +86,13 @@ public class KiiObjectResourceTest {
 		KiiObject object1 = new KiiObject().set("score", 100);
 		rest.api().users(user).buckets(userBucketName).objects().save(object1);
 		
-		// check object
-		boolean exists = rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).exists();
-		assertTrue(exists);
+		KiiObjectURI uri = KiiURIUtils.createUserScopeObject(user.getUserID(), userBucketName, object1.getObjectID());
+		assertEquals(String.format("kiicloud://users/%s/buckets/%s/objects/%s", user.getUserID(), userBucketName, object1.getObjectID()), uri.toString());
+		KiiObject object2 = rest.api().objects(uri).get();
 		
-		// updating object
-		object1.set("score", 200);
-		rest.api().users(user).buckets(userBucketName).objects(object1).update(object1);
+		assertEquals(object1.getObjectID(), object2.getObjectID());
+		assertEquals(object1.getInt("score"), object2.getInt("score"));
 		
-		// getting object
-		KiiObject object2 = rest.api().users(user).buckets(userBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
-		
-		// partial updating
-		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().users(user).buckets(userBucketName).objects(object2).partialUpdate(object3);
-		
-		// getting object
-		KiiObject object4 = rest.api().users(user).buckets(userBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
-		
-		// deleting object
-		rest.api().users(user).buckets(userBucketName).objects(object4).delete();
-		
-		// deleting bucket
 		rest.api().users(user).buckets(userBucketName).delete();
 	}
 	@Test
@@ -182,31 +127,13 @@ public class KiiObjectResourceTest {
 		KiiObject object1 = new KiiObject().set("score", 100);
 		rest.api().things(thing).buckets(thingBucketName).objects().save(object1);
 		
-		// check object
-		boolean exists = rest.api().things(thing).buckets(thingBucketName).objects(object1.getObjectID()).exists();
-		assertTrue(exists);
+		KiiObjectURI uri = KiiURIUtils.createThingScopeObject(thing.getThingID(), thingBucketName, object1.getObjectID());
+		assertEquals(String.format("kiicloud://things/%s/buckets/%s/objects/%s", thing.getThingID(), thingBucketName, object1.getObjectID()), uri.toString());
+		KiiObject object2 = rest.api().objects(uri).get();
 		
-		// updating object
-		object1.set("score", 200);
-		rest.api().things(thing).buckets(thingBucketName).objects(object1).update(object1);
+		assertEquals(object1.getObjectID(), object2.getObjectID());
+		assertEquals(object1.getInt("score"), object2.getInt("score"));
 		
-		// getting object
-		KiiObject object2 = rest.api().things(thing).buckets(thingBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
-		
-		// partial updating
-		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().things(thing).buckets(thingBucketName).objects(object2).partialUpdate(object3);
-		
-		// getting object
-		KiiObject object4 = rest.api().things(thing).buckets(thingBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
-		
-		// deleting object
-		rest.api().things(thing).buckets(thingBucketName).objects(object4).delete();
-		
-		// deleting bucket
 		rest.api().things(thing).buckets(thingBucketName).delete();
 	}
 }
