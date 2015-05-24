@@ -11,6 +11,7 @@ import com.kii.cloud.rest.client.model.KiiUserURI;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
+import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
@@ -29,7 +30,8 @@ import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeHookResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeHooksResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodesResource;
-import com.kii.cloud.rest.client.resource.social.SocialIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiNativeSocialIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiWebAuthSocialIntegrationResource;
 import com.kii.cloud.rest.client.resource.storage.KiiBucketResource;
 import com.kii.cloud.rest.client.resource.storage.KiiEncryptedBucketResource;
 import com.kii.cloud.rest.client.resource.storage.KiiGroupResource;
@@ -193,8 +195,11 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	public KiiAggregationRuleResource aggregationRules(Long aggregationRuleID) {
 		return new KiiAggregationRuleResource(this.aggregationRules(), aggregationRuleID);
 	}
-	public SocialIntegrationResource social() {
-		return new SocialIntegrationResource(this);
+	public KiiWebAuthSocialIntegrationResource webauth() {
+		return new KiiWebAuthSocialIntegrationResource(this);
+	}
+	public KiiNativeSocialIntegrationResource social(KiiSocialProvider provider) {
+		return new KiiNativeSocialIntegrationResource(this, provider);
 	}
 	
 	@Override

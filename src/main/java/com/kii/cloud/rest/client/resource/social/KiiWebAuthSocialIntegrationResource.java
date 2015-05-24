@@ -1,17 +1,17 @@
 package com.kii.cloud.rest.client.resource.social;
 
-import com.kii.cloud.rest.client.model.social.SocialProvider;
+import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 
 /**
  * 
  */
-public class SocialIntegrationResource extends KiiRestSubResource {
+public class KiiWebAuthSocialIntegrationResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/integration/webauth";
 	
-	public SocialIntegrationResource(KiiAppResource parent) {
+	public KiiWebAuthSocialIntegrationResource(KiiAppResource parent) {
 		super(parent);
 	}
 	
@@ -22,7 +22,7 @@ public class SocialIntegrationResource extends KiiRestSubResource {
 	 * @param provider
 	 * @return
 	 */
-	public String getSocialIntegrationUrl(SocialProvider provider) {
+	public String getSocialIntegrationUrl(KiiSocialProvider provider) {
 		if (provider == null) {
 			throw new IllegalArgumentException("provider is null");
 		}
@@ -35,7 +35,7 @@ public class SocialIntegrationResource extends KiiRestSubResource {
 	 * @param provider
 	 * @return
 	 */
-	public String getSocialLinkUrl(SocialProvider provider) {
+	public String getSocialLinkUrl(KiiSocialProvider provider) {
 		if (provider == null) {
 			throw new IllegalArgumentException("provider is null");
 		}
@@ -48,7 +48,7 @@ public class SocialIntegrationResource extends KiiRestSubResource {
 	 * @param provider
 	 * @return
 	 */
-	public String getSocialUnLinkUrl(SocialProvider provider) {
+	public String getSocialUnLinkUrl(KiiSocialProvider provider) {
 		if (provider == null) {
 			throw new IllegalArgumentException("provider is null");
 		}

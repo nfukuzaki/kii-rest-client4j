@@ -8,6 +8,7 @@ import com.kii.cloud.rest.client.annotation.AdminAPI;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
+import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
@@ -17,6 +18,7 @@ import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.resource.push.KiiTopicResource;
 import com.kii.cloud.rest.client.resource.push.KiiTopicsResource;
+import com.kii.cloud.rest.client.resource.social.KiiUserSocialIntegrationResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
@@ -294,6 +296,13 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	}
 	public KiiTopicResource topics(String name) {
 		return new KiiTopicResource(this.topics(), name);
+	}
+	/**
+	 * @param provider Must be FACEBOOK, GOOGLE, TWITTER, RENREN or QQ.
+	 * @return
+	 */
+	public KiiUserSocialIntegrationResource socialIntegration(KiiSocialProvider provider) {
+		return new KiiUserSocialIntegrationResource(this, provider);
 	}
 	@Override
 	public String getPath() {

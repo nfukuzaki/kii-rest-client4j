@@ -69,7 +69,8 @@ repositories {
 - Managing Users
   - Sing-Up
   - Sign-In
-  - Social Network Integration (only Generating URL)
+  - Authenticating with the SocialNetworkConnector (only Generating URL)
+  - Authenticating with the Native Applications
   - Refreshing Token
   - Changing Passwords
   - Resetting Passwords

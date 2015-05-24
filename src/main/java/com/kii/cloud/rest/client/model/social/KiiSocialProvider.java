@@ -1,6 +1,8 @@
 package com.kii.cloud.rest.client.model.social;
 
-public enum SocialProvider {
+import com.kii.cloud.rest.client.util.StringUtils;
+
+public enum KiiSocialProvider {
 	FACEBOOK("facebook", "graph.facebook.com."),
 	TWITTER("twitter", "twitter.com."),
 	LINKEDIN("linkedin", "api.linkedin.com."),
@@ -17,7 +19,7 @@ public enum SocialProvider {
 	
 	private final String id;
 	private final String socialAuthPrefix;
-	private SocialProvider(String id, String socialAuthPrefix) {
+	private KiiSocialProvider(String id, String socialAuthPrefix) {
 		this.id = id;
 		this.socialAuthPrefix = socialAuthPrefix;
 	}
@@ -27,5 +29,13 @@ public enum SocialProvider {
 	}
 	public String getSocialAuthPrefix() {
 		return socialAuthPrefix;
+	}
+	public String getTokenRequestContentType() {
+		String providerName = StringUtils.capitalize(this.id);
+		return "application/vnd.kii.AuthToken" + providerName + "Request+json";
+	}
+	public String getLinkRequestContentType() {
+		String providerName = StringUtils.capitalize(this.id);
+		return "application/vnd.kii.Link" + providerName + "Request+json";
 	}
 }

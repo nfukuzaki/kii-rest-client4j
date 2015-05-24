@@ -3,7 +3,7 @@ package com.kii.cloud.rest.client.model.conf;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.KiiJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
-import com.kii.cloud.rest.client.model.social.SocialProvider;
+import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.util.GsonUtils;
 
 public class KiiAppConfigurationParameter extends KiiJsonModel {
@@ -40,10 +40,10 @@ public class KiiAppConfigurationParameter extends KiiJsonModel {
 	public KiiAppConfigurationParameter(JsonObject json) {
 		super(json);
 	}
-	public String getConsumerKey(SocialProvider provider) {
+	public String getConsumerKey(KiiSocialProvider provider) {
 		return GsonUtils.getString(this.json, provider.getSocialAuthPrefix() + PROPERTY_NAME_CONSUMER_KEY);
 	}
-	public String getConsumerSecret(SocialProvider provider) {
+	public String getConsumerSecret(KiiSocialProvider provider) {
 		return GsonUtils.getString(this.json, provider.getSocialAuthPrefix() + PROPERTY_NAME_CONSUMER_SECRET);
 	}
 	
