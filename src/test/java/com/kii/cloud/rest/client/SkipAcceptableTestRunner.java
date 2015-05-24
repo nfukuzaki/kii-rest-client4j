@@ -34,6 +34,7 @@ public class SkipAcceptableTestRunner extends BlockJUnit4ClassRunner {
 		try {
 			statement.evaluate();
 		} catch (TestAppNotFoundException e) {
+			System.out.println("[WARN] " + description.getClassName() + "." + description.getMethodName() + " is skipped. " + e.getMessage());
 			eachNotifier.fireTestIgnored();
 		} catch (AssumptionViolatedException e) {
 			eachNotifier.addFailedAssumption(e);

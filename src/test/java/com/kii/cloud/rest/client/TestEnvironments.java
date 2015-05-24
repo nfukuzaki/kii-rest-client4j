@@ -50,7 +50,7 @@ public class TestEnvironments {
 	public static TestApp random(TestAppFilter filter) throws TestAppNotFoundException {
 		List<TestApp> acceptedApps = listByFilter(filter);
 		if (acceptedApps.size() == 0) {
-			throw new TestAppNotFoundException("There is no app that match the filter.");
+			throw new TestAppNotFoundException("There is no app that match the filter. filter=" + filter.toString());
 		}
 		Random random = new Random(System.currentTimeMillis());
 		int index = random.nextInt(acceptedApps.size());

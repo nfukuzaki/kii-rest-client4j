@@ -35,7 +35,7 @@ public class KiiAnalyticsResourceTest {
 	
 	@Test
 	public void groupedResultTest() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388));
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388L));
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiAnalyticsQuery query = new KiiAnalyticsQuery(ResultType.GroupedResult);
@@ -57,7 +57,7 @@ public class KiiAnalyticsResourceTest {
 	}
 	@Test
 	public void tabularResultTest() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388));
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388L));
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiAnalyticsQuery query = new KiiAnalyticsQuery(ResultType.TabularResult);
@@ -134,7 +134,7 @@ public class KiiAnalyticsResourceTest {
 	 */
 	@Test
 	public void createTestData() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388).hasAppAdminCredentials());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388L).hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);

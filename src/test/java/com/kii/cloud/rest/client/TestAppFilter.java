@@ -26,7 +26,7 @@ public class TestAppFilter {
 	private Boolean enableRenRen = null;
 	private Boolean enableSina = null;
 	private Boolean enableQQ = null;
-	private Integer aggregationRuleID = null;
+	private Long aggregationRuleID = null;
 	
 	public TestAppFilter site(Site site) {
 		this.site = site;
@@ -76,7 +76,7 @@ public class TestAppFilter {
 		this.enableBucketEncryption = false;
 		return this;
 	}
-	public TestAppFilter aggregationRuleID(Integer aggregationRuleID) {
+	public TestAppFilter aggregationRuleID(Long aggregationRuleID) {
 		this.aggregationRuleID = aggregationRuleID;
 		return this;
 	}
@@ -210,5 +210,76 @@ public class TestAppFilter {
 			return true;
 		}
 		return filterCondition == value;
+	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		if (this.site != null) {
+			sb.append("site=" + site.toString() + " ");
+		}
+		if (this.hasAppAdminCredentials != null) {
+			sb.append("hasAppAdminCredentials=" + hasAppAdminCredentials + " ");
+		}
+		if (this.enableRefreshToken != null) {
+			sb.append("enableRefreshToken=" + enableRefreshToken + " ");
+		}
+		if (this.enableEmailVerification != null) {
+			sb.append("enableEmailVerification=" + enableEmailVerification + " ");
+		}
+		if (this.enablePhoneVerification != null) {
+			sb.append("enablePhoneVerification=" + enablePhoneVerification + " ");
+		}
+		if (this.enableExposeFullUserData != null) {
+			sb.append("enableExposeFullUserData=" + enableExposeFullUserData + " ");
+		}
+		if (this.enableBucketEncryption != null) {
+			sb.append("enableBucketEncryption=" + enableBucketEncryption + " ");
+		}
+		if (this.enableGCM != null) {
+			sb.append("enableGCM=" + enableGCM + " ");
+		}
+		if (this.enableAPNS != null) {
+			sb.append("enableAPNS=" + enableAPNS + " ");
+		}
+		if (this.enableJPush != null) {
+			sb.append("enableJPush=" + enableJPush + " ");
+		}
+		if (this.enableGoogle != null) {
+			sb.append("enableGoogle=" + enableGoogle + " ");
+		}
+		if (this.enableYahoo != null) {
+			sb.append("enableYahoo=" + enableYahoo + " ");
+		}
+		if (this.enableTwitter != null) {
+			sb.append("enableTwitter=" + enableTwitter + " ");
+		}
+		if (this.enableFacebook != null) {
+			sb.append("enableFacebook=" + enableFacebook + " ");
+		}
+		if (this.enableLive != null) {
+			sb.append("enableLive=" + enableLive + " ");
+		}
+		if (this.enableLinkedIn != null) {
+			sb.append("enableLinkedIn=" + enableLinkedIn + " ");
+		}
+		if (this.enableDropBox != null) {
+			sb.append("enableDropBox=" + enableDropBox + " ");
+		}
+		if (this.enableBox != null) {
+			sb.append("enableBox=" + enableBox + " ");
+		}
+		if (this.enableRenRen != null) {
+			sb.append("enableRenRen=" + enableRenRen + " ");
+		}
+		if (this.enableSina != null) {
+			sb.append("enableSina=" + enableSina + " ");
+		}
+		if (this.enableQQ != null) {
+			sb.append("enableQQ=" + enableQQ + " ");
+		}
+		if (this.aggregationRuleID != null) {
+			sb.append("aggregationRuleID=" + aggregationRuleID + " ");
+		}
+		return sb.toString();
 	}
 }
