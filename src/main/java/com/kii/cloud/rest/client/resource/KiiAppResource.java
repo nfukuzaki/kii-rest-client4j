@@ -12,7 +12,6 @@ import com.kii.cloud.rest.client.model.KiiUserURI;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
-import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
@@ -201,8 +200,8 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	public KiiWebAuthSocialIntegrationResource webauth() {
 		return new KiiWebAuthSocialIntegrationResource(this);
 	}
-	public KiiNativeSocialIntegrationResource social(KiiSocialProvider provider) {
-		return new KiiNativeSocialIntegrationResource(this, provider);
+	public KiiNativeSocialIntegrationResource social() {
+		return new KiiNativeSocialIntegrationResource(this);
 	}
 	
 	@Override

@@ -209,7 +209,7 @@
         "PhoneVerification": false,
         "Privacy"          : false,
         "EncryptEnabled"   : false,
-        "AggregationRuleID": 1388,
+        "AggregationRuleID": null,
         "PushEnabled"      : [
             {"GCM"   : false},
             {"APNS"  : false},

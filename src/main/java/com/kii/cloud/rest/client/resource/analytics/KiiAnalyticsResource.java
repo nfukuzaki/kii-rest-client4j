@@ -45,7 +45,7 @@ public class KiiAnalyticsResource extends KiiRestSubResource {
 		}
 		Map<String, String> headers = this.newAppHeaders();
 		headers.put("Accept", query.getResultType().getContentType());
-		KiiRestRequest request = new KiiRestRequest(getUrl("/data"), Method.GET, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("/data" + query.toQueryString()), Method.GET, headers);
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);

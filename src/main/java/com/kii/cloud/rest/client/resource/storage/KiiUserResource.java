@@ -8,7 +8,6 @@ import com.kii.cloud.rest.client.annotation.AdminAPI;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
-import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
@@ -301,8 +300,8 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	 * @param provider Must be FACEBOOK, GOOGLE, TWITTER, RENREN or QQ.
 	 * @return
 	 */
-	public KiiUserSocialIntegrationResource socialIntegration(KiiSocialProvider provider) {
-		return new KiiUserSocialIntegrationResource(this, provider);
+	public KiiUserSocialIntegrationResource socialIntegration() {
+		return new KiiUserSocialIntegrationResource(this);
 	}
 	@Override
 	public String getPath() {
