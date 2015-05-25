@@ -10,9 +10,29 @@ import java.util.Random;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import com.kii.cloud.rest.client.util.GsonUtils;
+import com.kii.cloud.rest.client.util.StringUtils;
 
 /**
- * test/resources/test_config.json
+ * Reads the application configuration from test/resources/test_config.json.
+ * Some tests needs admin credentials, but you must not push the admin credentials to the github.
+ * You can write the admin credentials in test/resources/test_admin_credential_config.json.
+ * This file is specified by the .gitignore file.
+ * 
+ * Format of test_admin_credential_config.json
+ * [
+ *     {
+ *         "AppID"            : "9a15048a",
+ *         "ClientID"         : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+ *         "ClientSecret"     : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ *     },
+ *     {
+ *         "AppID"            : "9a30c24b",
+ *         "ClientID"         : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+ *         "ClientSecret"     : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ *     },
+ *     ....
+ * ]
  */
 public class TestEnvironments {
 	
@@ -22,21 +42,44 @@ public class TestEnvironments {
 		try {
 			InputStream is = ClassLoader.getSystemResourceAsStream("test_config.json");
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			StringBuilder sb = new StringBuilder();
-			try {
-				String line = null;
-				while ((line = br.readLine()) != null) {
-					sb.append(line);
-				}
-			} finally {
-				br.close();
-			}
-			JsonArray apps = (JsonArray)new JsonParser().parse(sb.toString());
+			String conf = read(br);
+			JsonArray apps = (JsonArray)new JsonParser().parse(conf);
 			for (int i = 0; i < apps.size(); i++) {
 				TEST_APPS.add(new TestApp(apps.get(i).getAsJsonObject()));
 			}
+			is = ClassLoader.getSystemResourceAsStream("test_admin_credential_config.json");
+			if (is != null) {
+				br = new BufferedReader(new InputStreamReader(is));
+				conf = read(br);
+				JsonArray credentials = (JsonArray)new JsonParser().parse(conf);
+				for (int i = 0; i < credentials.size(); i++) {
+					String appID = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "AppID");
+					String clientID = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "ClientID");
+					String clientSecret = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "ClientSecret");
+					if (!StringUtils.isEmpty(appID) && !StringUtils.isEmpty(clientID) && !StringUtils.isEmpty(clientSecret)) {
+						for (TestApp testApp : TEST_APPS) {
+							if (StringUtils.equals(appID, testApp.getAppID())) {
+								testApp.setClientID(clientID);
+								testApp.setClientSecret(clientSecret);
+							}
+						}
+					}
+				}
+			}
 		} catch (IOException e) {
 			throw new RuntimeException("failed to parse test_config.json", e);
+		}
+	}
+	private static String read(BufferedReader reader) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		try {
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+			}
+			return sb.toString();
+		} finally {
+			reader.close();
 		}
 	}
 	public static TestApp random() throws TestAppNotFoundException {

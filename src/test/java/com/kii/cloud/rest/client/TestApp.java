@@ -22,8 +22,14 @@ public class TestApp {
 	public String getClientID() {
 		return GsonUtils.getString(this.json, "ClientID");
 	}
+	public void setClientID(String clientID) {
+		this.json.addProperty("ClientID", clientID);
+	}
 	public String getClientSecret() {
 		return GsonUtils.getString(this.json, "ClientSecret");
+	}
+	public void setClientSecret(String clientSecret) {
+		this.json.addProperty("ClientSecret", clientSecret);
 	}
 	public boolean hasAppAdminCredentials() {
 		return this.getClientID() != null && this.getClientSecret() != null;

@@ -7,4 +7,4 @@ target
 *.log
 Thumbs.db
 .DS_Store
-
+test_admin_credential_config.json
