@@ -2,6 +2,7 @@ package com.kii.cloud.rest.client.resource;
 
 import java.util.Map;
 
+import com.kii.cloud.rest.client.logging.KiiLogger;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.model.KiiGroupURI;
 import com.kii.cloud.rest.client.model.KiiObjectURI;
@@ -58,12 +59,14 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	private final String appKey;
 	private final String endpoint;
 	private final KiiCredentialsContainer credentials;
+	private final KiiLogger logger;
 	
-	public KiiAppResource(String appID, String appKey, String endpoint, KiiCredentialsContainer credentials) {
+	public KiiAppResource(String appID, String appKey, String endpoint, KiiCredentialsContainer credentials, KiiLogger logger) {
 		this.appID = appID;
 		this.appKey = appKey;
 		this.endpoint = endpoint;
 		this.credentials = credentials;
+		this.logger = logger;
 	}
 	
 	public String getAppID() {
@@ -225,5 +228,9 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		if (this.credentials != null) {
 			headers.put("Authorization", "Bearer " + this.credentials.getAccessToken());
 		}
+	}
+	@Override
+	protected KiiLogger getLogger() {
+		return this.logger;
 	}
 }

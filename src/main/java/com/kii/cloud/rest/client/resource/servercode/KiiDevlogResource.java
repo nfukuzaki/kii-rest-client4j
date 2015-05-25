@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kii.cloud.rest.client.OkHttpClientFactory;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.logging.KiiLogger;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.model.servercode.KiiDevlog;
 import com.kii.cloud.rest.client.model.servercode.KiiDevlogFilter;
@@ -48,14 +49,16 @@ public class KiiDevlogResource {
 	private final String appKey;
 	private final String endpoint;
 	private final KiiCredentialsContainer credentials;
+	private final KiiLogger logger;
 	private static final OkHttpClient client = OkHttpClientFactory.newInstance();
 	private WebSocketCall call;
 	
-	public KiiDevlogResource(String appID, String appKey, String endpoint, KiiCredentialsContainer credentials) {
+	public KiiDevlogResource(String appID, String appKey, String endpoint, KiiCredentialsContainer credentials, KiiLogger logger) {
 		this.appID = appID;
 		this.appKey = appKey;
 		this.endpoint = endpoint;
 		this.credentials = credentials;
+		this.logger = logger;
 	}
 	@Override
 	protected void finalize() throws Throwable {
@@ -101,6 +104,7 @@ public class KiiDevlogResource {
 		final AtomicReference<JsonArray> logs = new AtomicReference<JsonArray>();
 		final AtomicReference<Exception> exception = new AtomicReference<Exception>();
 		
+		this.logger.info("connect to " + this.endpoint);
 		Request request = new Request.Builder()
 			.url(this.endpoint)
 			.get()
@@ -109,6 +113,7 @@ public class KiiDevlogResource {
 		this.call.enqueue(new WebSocketListener() {
 			@Override
 			public void onOpen(final WebSocket webSocket, Response response) {
+				logger.info("WebSocketListener.onOpen");
 				new Thread() {
 					@Override
 					public void run() {
@@ -126,10 +131,12 @@ public class KiiDevlogResource {
 			}
 			@Override
 			public void onClose(int code, String reason) {
+				logger.info("WebSocketListener.onClose");
 				latch.countDown();
 			}
 			@Override
 			public void onFailure(IOException e, Response response) {
+				logger.error("WebSocketListener.onFailure", e);
 				exception.set(e);
 				latch.countDown();
 			}
@@ -195,6 +202,7 @@ public class KiiDevlogResource {
 		requestBody.addProperty("token", this.credentials.getAccessToken());
 		requestBody.addProperty("command", "tail");
 		
+		this.logger.info("connect to " + this.endpoint);
 		Request request = new Request.Builder()
 			.url(this.endpoint)
 			.get()
@@ -203,6 +211,7 @@ public class KiiDevlogResource {
 		this.call.enqueue(new WebSocketListener() {
 			@Override
 			public void onOpen(final WebSocket webSocket, Response response) {
+				logger.info("WebSocketListener.onOpen");
 				new Thread() {
 					@Override
 					public void run() {
@@ -220,9 +229,11 @@ public class KiiDevlogResource {
 			}
 			@Override
 			public void onClose(int code, String reason) {
+				logger.info("WebSocketListener.onClose");
 			}
 			@Override
 			public void onFailure(IOException e, Response response) {
+				logger.error("WebSocketListener.onFailure", e);
 				listener.onFailure(e);
 			}
 			@Override

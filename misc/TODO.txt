@@ -4,8 +4,8 @@ Writing javadoc
 
 
 Test
-	server code result
 	social
-	uri
 
+
+Listで返すメソッドはNotFoundExceptionじゃなくて空のListを返す。
 

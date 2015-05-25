@@ -1,5 +1,8 @@
 package com.kii.cloud.rest.client;
 
+import com.kii.cloud.rest.client.logging.KiiDefaultLogger;
+import com.kii.cloud.rest.client.logging.KiiEmptyLogger;
+import com.kii.cloud.rest.client.logging.KiiLogger;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiDevlogResource;
@@ -30,6 +33,7 @@ public class KiiRest {
 	private final String endpoint;
 	private final String devlogEndpoint;
 	private KiiCredentialsContainer credentials;
+	private KiiLogger logger = KiiDefaultLogger.INSTANCE;
 	
 	public KiiRest(String appID, String appKey, Site site) {
 		this(appID, appKey, site.endpoint, site.devlogEndpoint);
@@ -44,10 +48,10 @@ public class KiiRest {
 		this.devlogEndpoint = devlogEndpoint;
 	}
 	public KiiAppResource api() {
-		return new KiiAppResource(this.appID, this.appKey, this.endpoint, this.credentials);
+		return new KiiAppResource(this.appID, this.appKey, this.endpoint, this.credentials, this.logger);
 	}
 	public KiiDevlogResource logs() {
-		return new KiiDevlogResource(this.appID, this.appKey, this.devlogEndpoint, this.credentials);
+		return new KiiDevlogResource(this.appID, this.appKey, this.devlogEndpoint, this.credentials, this.logger);
 	}
 	/**
 	 * @param credentials Try anonymous access if specify null.
@@ -63,5 +67,12 @@ public class KiiRest {
 	}
 	public boolean hasCredentials() {
 		return this.credentials != null;
+	}
+	public void setLogger(KiiLogger logger) {
+		if (logger == null) {
+			this.logger = KiiEmptyLogger.INSTANCE;
+		} else {
+			this.logger = logger;
+		}
 	}
 }

@@ -21,6 +21,7 @@ import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.exception.KiiServiceUnavailableException;
 import com.kii.cloud.rest.client.exception.KiiUnauthorizedException;
+import com.kii.cloud.rest.client.logging.KiiLogger;
 import com.kii.cloud.rest.client.util.IOUtils;
 import com.kii.cloud.rest.client.util.Path;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -174,9 +175,9 @@ public abstract class KiiRestResource {
 		try {
 			String body = response.body().string();
 			this.checkHttpStatus(request, response, body);
-			System.out.println(request.getCurl() + "  : " + response.code());
+			this.getLogger().info(request.getCurl() + "  : " + response.code());
 			logHeader(response);
-			System.out.println(body);
+			this.getLogger().info(body);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -185,9 +186,9 @@ public abstract class KiiRestResource {
 		try {
 			String body = response.body().string();
 			this.checkHttpStatus(request, response, body);
-			System.out.println(request.getCurl() + "  : " + response.code());
+			this.getLogger().info(request.getCurl() + "  : " + response.code());
 			logHeader(response);
-			System.out.println(body);
+			this.getLogger().info(body);
 			if (StringUtils.isEmpty(body)) {
 				return null;
 			}
@@ -200,9 +201,9 @@ public abstract class KiiRestResource {
 		try {
 			String body = response.body().string();
 			this.checkHttpStatus(request, response, body);
-			System.out.println(request.getCurl() + "  : " + response.code());
+			this.getLogger().info(request.getCurl() + "  : " + response.code());
 			logHeader(response);
-			System.out.println(body);
+			this.getLogger().info(body);
 			if (StringUtils.isEmpty(body)) {
 				return null;
 			}
@@ -215,9 +216,9 @@ public abstract class KiiRestResource {
 		try {
 			String body = response.body().string();
 			this.checkHttpStatus(request, response, body);
-			System.out.println(request.getCurl() + "  : " + response.code());
+			this.getLogger().info(request.getCurl() + "  : " + response.code());
 			logHeader(response);
-			System.out.println(body);
+			this.getLogger().info(body);
 			if (StringUtils.isEmpty(body)) {
 				return null;
 			}
@@ -232,7 +233,7 @@ public abstract class KiiRestResource {
 				String body = response.body().string();
 				this.checkHttpStatus(request, response, body);
 			}
-			System.out.println(request.getCurl() + "  : " + response.code());
+			this.getLogger().info(request.getCurl() + "  : " + response.code());
 			logHeader(response);
 			return response.body().byteStream();
 		} catch (IOException e) {
@@ -246,9 +247,9 @@ public abstract class KiiRestResource {
 				errorDetail = (JsonObject)new JsonParser().parse(responseBody);
 			} catch (Exception ignore) {
 			}
-			System.out.println(request.getCurl() + "  : " + response.code());
+			this.getLogger().info(request.getCurl() + "  : " + response.code());
 			logHeader(response);
-			System.out.println(responseBody);
+			this.getLogger().info(responseBody);
 			switch (response.code()) {
 				case 400:
 					throw new KiiBadRequestException(request.getCurl(), errorDetail);
@@ -271,7 +272,8 @@ public abstract class KiiRestResource {
 	}
 	protected void logHeader(Response response) {
 		for (String name : response.headers().names()) {
-			System.out.println("    " + name + ":" + response.header(name));
+			this.getLogger().info("    " + name + ":" + response.header(name));
 		}
 	}
+	protected abstract KiiLogger getLogger();
 }
