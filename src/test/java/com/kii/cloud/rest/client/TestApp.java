@@ -58,4 +58,16 @@ public class TestApp {
 		}
 		return false;
 	}
+	public String getTwitterAccessToken() {
+		return GsonUtils.getString(this.json, "TwitterAccessToken");
+	}
+	public void setTwitterAccessToken(String accessToken) {
+		this.json.addProperty("TwitterAccessToken", accessToken);
+	}
+	public String getTwitterAccessTokenSecret() {
+		return GsonUtils.getString(this.json, "TwitterAccessTokenSecret");
+	}
+	public void setTwitterAccessTokenSecret(String accessTokenSecret) {
+		this.json.addProperty("TwitterAccessTokenSecret", accessTokenSecret);
+	}
 }

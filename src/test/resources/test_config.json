@@ -18,17 +18,18 @@
             {"JPush" : false}
         ],
         "SNSEnabled"       : [
-            {"Google"   : false},
-            {"Yahoo"    : false},
-            {"Twitter"  : false},
-            {"Facebook" : false},
-            {"Live"     : false},
-            {"LinkedIn" : false},
-            {"DropBox"  : false},
-            {"Box"      : false},
-            {"RenRen"   : false},
-            {"Sina"     : false},
-            {"QQ"       : false}
+            {"Google"         : false},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : false},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
         ]
     },
     {
@@ -50,17 +51,18 @@
             {"JPush" : false}
         ],
         "SNSEnabled"       : [
-            {"Google"   : false},
-            {"Yahoo"    : false},
-            {"Twitter"  : false},
-            {"Facebook" : false},
-            {"Live"     : false},
-            {"LinkedIn" : false},
-            {"DropBox"  : false},
-            {"Box"      : false},
-            {"RenRen"   : false},
-            {"Sina"     : false},
-            {"QQ"       : false}
+            {"Google"         : false},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : false},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
         ]
     },
     {
@@ -82,17 +84,18 @@
             {"JPush" : false}
         ],
         "SNSEnabled"       : [
-            {"Google"   : false},
-            {"Yahoo"    : false},
-            {"Twitter"  : false},
-            {"Facebook" : false},
-            {"Live"     : false},
-            {"LinkedIn" : false},
-            {"DropBox"  : false},
-            {"Box"      : false},
-            {"RenRen"   : false},
-            {"Sina"     : false},
-            {"QQ"       : false}
+            {"Google"         : false},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : false},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
         ]
     },
     {
@@ -114,17 +117,18 @@
             {"JPush" : false}
         ],
         "SNSEnabled"       : [
-            {"Google"   : false},
-            {"Yahoo"    : false},
-            {"Twitter"  : false},
-            {"Facebook" : false},
-            {"Live"     : false},
-            {"LinkedIn" : false},
-            {"DropBox"  : false},
-            {"Box"      : false},
-            {"RenRen"   : false},
-            {"Sina"     : false},
-            {"QQ"       : false}
+            {"Google"         : false},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : false},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
         ]
     },
     {
@@ -146,17 +150,18 @@
             {"JPush" : false}
         ],
         "SNSEnabled"       : [
-            {"Google"   : false},
-            {"Yahoo"    : false},
-            {"Twitter"  : false},
-            {"Facebook" : false},
-            {"Live"     : false},
-            {"LinkedIn" : false},
-            {"DropBox"  : false},
-            {"Box"      : false},
-            {"RenRen"   : false},
-            {"Sina"     : false},
-            {"QQ"       : false}
+            {"Google"         : false},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : false},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
         ]
     },
     {
@@ -178,17 +183,51 @@
             {"JPush" : false}
         ],
         "SNSEnabled"       : [
-            {"Google"   : false},
-            {"Yahoo"    : false},
-            {"Twitter"  : false},
-            {"Facebook" : false},
-            {"Live"     : false},
-            {"LinkedIn" : false},
-            {"DropBox"  : false},
-            {"Box"      : false},
-            {"RenRen"   : false},
-            {"Sina"     : false},
-            {"QQ"       : false}
+            {"Google"         : false},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : false},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
+        ]
+    },
+    {
+        "AppID"            : "da42b662",
+        "AppKey"           : "49478febc2590b10f8eee9290d136e7f",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "JP",
+        "Endpoint"         : null,
+        "RefreshToken"     : false,
+        "EmailVerification": false,
+        "PhoneVerification": false,
+        "Privacy"          : false,
+        "EncryptEnabled"   : false,
+        "AggregationRuleID": 1388,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"         : true},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : true},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
         ]
     }
 ]

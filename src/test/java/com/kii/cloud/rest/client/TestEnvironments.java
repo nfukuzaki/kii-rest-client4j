@@ -22,14 +22,16 @@ import com.kii.cloud.rest.client.util.StringUtils;
  * Format of test_admin_credential_config.json
  * [
  *     {
- *         "AppID"            : "9a15048a",
- *         "ClientID"         : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
- *         "ClientSecret"     : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ *         "AppID"                    : "9a15048a",
+ *         "ClientID"                 : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+ *         "ClientSecret"             : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
  *     },
  *     {
- *         "AppID"            : "9a30c24b",
- *         "ClientID"         : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
- *         "ClientSecret"     : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ *         "AppID"                    : "9a30c24b",
+ *         "ClientID"                 : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+ *         "ClientSecret"             : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+ *         "TwitterAccessToken"       : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ *         "TwitterAccessTokenSecret" : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
  *     },
  *     ....
  * ]
@@ -56,11 +58,19 @@ public class TestEnvironments {
 					String appID = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "AppID");
 					String clientID = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "ClientID");
 					String clientSecret = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "ClientSecret");
+					String twitterAccessToken = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "TwitterAccessToken");
+					String twitterAccessTokenSecret = GsonUtils.getString(credentials.get(i).getAsJsonObject(), "TwitterAccessTokenSecret");
 					if (!StringUtils.isEmpty(appID) && !StringUtils.isEmpty(clientID) && !StringUtils.isEmpty(clientSecret)) {
 						for (TestApp testApp : TEST_APPS) {
 							if (StringUtils.equals(appID, testApp.getAppID())) {
 								testApp.setClientID(clientID);
 								testApp.setClientSecret(clientSecret);
+								if (!StringUtils.isEmpty(twitterAccessToken)) {
+									testApp.setTwitterAccessToken(twitterAccessToken);
+								}
+								if (!StringUtils.isEmpty(twitterAccessTokenSecret)) {
+									testApp.setTwitterAccessTokenSecret(twitterAccessTokenSecret);
+								}
 							}
 						}
 					}

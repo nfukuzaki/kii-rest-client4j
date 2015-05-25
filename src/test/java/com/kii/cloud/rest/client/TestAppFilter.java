@@ -18,6 +18,7 @@ public class TestAppFilter {
 	private Boolean enableGoogle = null;
 	private Boolean enableYahoo = null;
 	private Boolean enableTwitter = null;
+	private Boolean enableTwitterNative = null;
 	private Boolean enableFacebook = null;
 	private Boolean enableLive = null;
 	private Boolean enableLinkedIn = null;
@@ -26,6 +27,8 @@ public class TestAppFilter {
 	private Boolean enableRenRen = null;
 	private Boolean enableSina = null;
 	private Boolean enableQQ = null;
+	private Boolean hasTwitterAccessToken = null;
+	private Boolean hasTwitterAccessTokenSecret = null;
 	private Long aggregationRuleID = null;
 	
 	public TestAppFilter site(Site site) {
@@ -104,6 +107,10 @@ public class TestAppFilter {
 		this.enableTwitter = true;
 		return this;
 	}
+	public TestAppFilter enableTwitterNative() {
+		this.enableTwitterNative = true;
+		return this;
+	}
 	public TestAppFilter enableFacebook() {
 		this.enableFacebook = true;
 		return this;
@@ -134,6 +141,14 @@ public class TestAppFilter {
 	}
 	public TestAppFilter enableQQ() {
 		this.enableQQ = true;
+		return this;
+	}
+	public TestAppFilter hasTwitterAccessToken() {
+		this.hasTwitterAccessToken = true;
+		return this;
+	}
+	public TestAppFilter hasTwitterAccessTokenSecret() {
+		this.hasTwitterAccessTokenSecret = true;
 		return this;
 	}
 	public boolean accept(TestApp app) {
@@ -179,6 +194,9 @@ public class TestAppFilter {
 		if (!this.accept(this.enableTwitter, app.isEnabledSNS("Twitter"))) {
 			return false;
 		}
+		if (!this.accept(this.enableTwitterNative, app.isEnabledSNS("TwitterNative"))) {
+			return false;
+		}
 		if (!this.accept(this.enableFacebook, app.isEnabledSNS("Facebook"))) {
 			return false;
 		}
@@ -201,6 +219,12 @@ public class TestAppFilter {
 			return false;
 		}
 		if (!this.accept(this.enableQQ, app.isEnabledSNS("QQ"))) {
+			return false;
+		}
+		if (this.hasTwitterAccessToken == Boolean.TRUE && StringUtils.isEmpty(app.getTwitterAccessToken())) {
+			return false;
+		}
+		if (this.hasTwitterAccessTokenSecret == Boolean.TRUE && StringUtils.isEmpty(app.getTwitterAccessTokenSecret())) {
 			return false;
 		}
 		return true;
@@ -253,6 +277,9 @@ public class TestAppFilter {
 		if (this.enableTwitter != null) {
 			sb.append("enableTwitter=" + enableTwitter + " ");
 		}
+		if (this.enableTwitterNative != null) {
+			sb.append("enableTwitterNative=" + enableTwitterNative + " ");
+		}
 		if (this.enableFacebook != null) {
 			sb.append("enableFacebook=" + enableFacebook + " ");
 		}
@@ -276,6 +303,12 @@ public class TestAppFilter {
 		}
 		if (this.enableQQ != null) {
 			sb.append("enableQQ=" + enableQQ + " ");
+		}
+		if (this.hasTwitterAccessToken != null) {
+			sb.append("hasTwitterAccessToken=" + hasTwitterAccessToken + " ");
+		}
+		if (this.hasTwitterAccessTokenSecret != null) {
+			sb.append("hasTwitterAccessTokenSecret=" + hasTwitterAccessTokenSecret + " ");
 		}
 		if (this.aggregationRuleID != null) {
 			sb.append("aggregationRuleID=" + aggregationRuleID + " ");

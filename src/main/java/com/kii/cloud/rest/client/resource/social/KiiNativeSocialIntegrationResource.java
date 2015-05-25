@@ -42,10 +42,16 @@ public class KiiNativeSocialIntegrationResource extends KiiRestSubResource {
 	 * Login with SNS Account
 	 * 
 	 * @param accessToken
+	 * @return
 	 * @throws KiiRestException
 	 */
-	public void login(String accessToken) throws KiiRestException {
-		this.login(accessToken, null);
+	public KiiUser login(String accessToken) throws KiiRestException {
+		if (StringUtils.isEmpty(accessToken)) {
+			throw new IllegalArgumentException("accessToken is null or empty");
+		}
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("accessToken", accessToken);
+		return this.login(requestBody);
 	}
 	/**
 	 * Login with QQ Account
@@ -53,22 +59,45 @@ public class KiiNativeSocialIntegrationResource extends KiiRestSubResource {
 	 * 
 	 * @param accessToken
 	 * @param openID
+	 * @return
 	 * @throws KiiRestException
 	 */
-	public KiiUser login(String accessToken, String openID) throws KiiRestException {
+	public KiiUser loginWithQQ(String accessToken, String openID) throws KiiRestException {
 		if (StringUtils.isEmpty(accessToken)) {
 			throw new IllegalArgumentException("accessToken is null or empty");
 		}
-		if (this.provider == KiiSocialProvider.QQ && StringUtils.isEmpty(openID)) {
+		if (StringUtils.isEmpty(openID)) {
 			throw new IllegalArgumentException("QQ integration requires openID");
 		}
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("accessToken", accessToken);
-		if (this.provider == KiiSocialProvider.QQ) {
-			requestBody.addProperty("openID", openID);
+		requestBody.addProperty("openID", openID);
+		return this.login(requestBody);
+	}
+	/**
+	 * Login with Twitter Account
+	 * In order to use Twitter integration your app needs to be configured with your Twitter access accessToken and accessTokenSecret.
+	 * 
+	 * @param accessToken
+	 * @param openID
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public KiiUser loginWithTwitter(String accessToken, String accessTokenSecret) throws KiiRestException {
+		if (StringUtils.isEmpty(accessToken)) {
+			throw new IllegalArgumentException("accessToken is null or empty");
 		}
+		if (StringUtils.isEmpty(accessTokenSecret)) {
+			throw new IllegalArgumentException("Twitter integration requires accessTokenSecret");
+		}
+		JsonObject requestBody = new JsonObject();
+		requestBody.addProperty("accessToken", accessToken);
+		requestBody.addProperty("accessTokenSecret", accessTokenSecret);
+		return this.login(requestBody);
+	}
+	private KiiUser login(JsonObject requestBody) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("/link"), Method.POST, headers, MediaType.parse(this.provider.getTokenRequestContentType()), requestBody);
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MediaType.parse(this.provider.getTokenRequestContentType()), requestBody);
 		
 		try {
 			Response response = this.execute(request);
