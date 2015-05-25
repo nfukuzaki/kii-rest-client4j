@@ -31,7 +31,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public static final KiiJsonProperty<String> PROPERTY_REFRESH_TOKEN = new KiiJsonProperty<String>(String.class, "_refreshToken", "refresh_token");
 	public static final KiiJsonProperty<Long> PROPERTY_EXPIRES_IN = new KiiJsonProperty<Long>(Long.class, "expires_in");
 	public static final KiiJsonProperty<String> PROPERTY_USER_ID = new KiiJsonProperty<String>(String.class, "userID", "id");
-	public static final KiiJsonProperty<String> PROPERTY_INTERNAL_USER_ID = new KiiJsonProperty<String>(String.class, "internalUserID");
+	public static final KiiJsonProperty<Long> PROPERTY_INTERNAL_USER_ID = new KiiJsonProperty<Long>(Long.class, "internalUserID");
 	public static final KiiJsonProperty<String> PROPERTY_USERNAME = new KiiJsonProperty<String>(String.class, "loginName", new RegularExpressionValidator(USERNAME_PATTERN));
 	public static final KiiJsonProperty<String> PROPERTY_DISPLAY_NAME = new KiiJsonProperty<String>(String.class, "displayName", new RangeLengthValidator(1, 50));
 	public static final KiiJsonProperty<String> PROPERTY_COUNTRY = new KiiJsonProperty<String>(String.class, "country", new RegularExpressionValidator(COUNTRY_PATTERN));
@@ -75,6 +75,12 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public KiiUser setRefreshToken(String refreshToken) {
 		PROPERTY_REFRESH_TOKEN.set(this.credentials, refreshToken);
 		return this;
+	}
+	public long getInternalUserID() {
+		return PROPERTY_INTERNAL_USER_ID.get(this.json);
+	}
+	public boolean hasPassword() {
+		return PROPERTY_HAS_PASSWORD.get(this.json);
 	}
 	@Override
 	public boolean isAdmin() {

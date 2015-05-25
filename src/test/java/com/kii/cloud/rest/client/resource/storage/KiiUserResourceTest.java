@@ -7,10 +7,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kii.cloud.rest.client.KiiRest;
 import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
@@ -270,5 +275,56 @@ public class KiiUserResourceTest {
 		// check the phoneNumberVerified
 		user = (KiiNormalUser)rest.api().users(registeredUser).get();
 		assertTrue(user.isPhoneNumberVerified());
+	}
+	@Test
+	public void allUserFieldsTest() throws Exception {
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().disableEmailVerification().disablePhoneVerification());
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		String currentTime = String.valueOf(System.currentTimeMillis());
+		String username = "test-" + currentTime;
+		String email = username + "@example.com";
+		String phone = TestUtils.getRandomGlobalJpPhoneNumber();
+		String displayname =  username.toUpperCase();
+		String country = "JP";
+		String password = "pa$$word";
+		
+		KiiNormalUser testUser = (KiiNormalUser)new KiiNormalUser()
+			.setUsername(username)
+			.setEmail(email)
+			.setPhone(phone)
+			.setDisplayName(displayname)
+			.setCountry(country)
+			.set("string_field", "abc")
+			.set("int_field", 10)
+			.set("long_field", 100L)
+			.set("bool_field", false)
+			.set("bigdecimal_field", new BigDecimal("3.14"))
+			.set("json_field", (JsonObject)new JsonParser().parse("{\"json\":123}"))
+			.set("json_array_field", (JsonArray)new JsonParser().parse("[1,2,3]"))
+			;
+		
+		// register new user
+		KiiUser registeredUser = rest.api().users().register(testUser, password);
+		rest.setCredentials(registeredUser);
+		
+		KiiNormalUser actual = (KiiNormalUser)rest.api().users(registeredUser).get();
+		
+		assertTrue(actual.hasPassword());
+		assertTrue(actual.getInternalUserID() > 0);
+		assertEquals(username, actual.getUsername());
+		assertEquals(phone, actual.getPhone());
+		assertEquals(email, actual.getEmail());
+		assertEquals(country, actual.getCountry());
+		assertTrue(actual.isEmailAddressVerified());
+		assertTrue(actual.isPhoneNumberVerified());
+		assertFalse(actual.isDisabled());
+		assertEquals("abc", actual.getString("string_field"));
+		assertEquals(10, (int)actual.getInt("int_field"));
+		assertEquals(100, (long)actual.getLong("long_field"));
+		assertEquals(false, (boolean)actual.getBoolean("bool_field"));
+		assertEquals(new BigDecimal("3.14"), actual.getBigDecimal("bigdecimal_field"));
+		assertEquals(new JsonParser().parse("{\"json\":123}"), actual.getJsonObject("json_field"));
+		assertEquals(new JsonParser().parse("[1,2,3]"), actual.getJsonArray("json_array_field"));
 	}
 }

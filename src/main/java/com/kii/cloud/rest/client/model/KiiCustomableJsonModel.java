@@ -16,14 +16,17 @@ public abstract class KiiCustomableJsonModel<T extends KiiCustomableJsonModel<?>
 	public String getString(String name) {
 		return GsonUtils.getString(this.json, name);
 	}
-	public int getInt(String name) {
+	public Integer getInt(String name) {
 		return GsonUtils.getInt(this.json, name);
 	}
-	public long getLong(String name) {
+	public Long getLong(String name) {
 		return GsonUtils.getLong(this.json, name);
 	}
 	public BigDecimal getBigDecimal(String name) {
 		return GsonUtils.getBigDecimal(this.json, name);
+	}
+	public Boolean getBoolean(String name) {
+		return GsonUtils.getBoolean(this.json, name);
 	}
 	public JsonObject getJsonObject(String name) {
 		return GsonUtils.getJsonObject(this.json, name);

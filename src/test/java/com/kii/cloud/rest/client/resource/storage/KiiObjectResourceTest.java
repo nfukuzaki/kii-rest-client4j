@@ -46,7 +46,7 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object2 = rest.api().buckets(appBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
+		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
@@ -54,8 +54,8 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object4 = rest.api().buckets(appBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
+		assertEquals(200, (int)object4.getInt("score"));
+		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
 		rest.api().buckets(appBucketName).objects(object4).delete();
@@ -93,7 +93,7 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object2 = rest.api().groups(group).buckets(groupBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
+		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
@@ -101,8 +101,8 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object4 = rest.api().groups(group).buckets(groupBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
+		assertEquals(200, (int)object4.getInt("score"));
+		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
 		rest.api().groups(group).buckets(groupBucketName).objects(object4).delete();
@@ -135,7 +135,7 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object2 = rest.api().users(user).buckets(userBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
+		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
@@ -143,8 +143,8 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object4 = rest.api().users(user).buckets(userBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
+		assertEquals(200, (int)object4.getInt("score"));
+		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
 		rest.api().users(user).buckets(userBucketName).objects(object4).delete();
@@ -194,7 +194,7 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object2 = rest.api().things(thing).buckets(thingBucketName).objects(object1).get();
-		assertEquals(200, object2.getInt("score"));
+		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
@@ -202,8 +202,8 @@ public class KiiObjectResourceTest {
 		
 		// getting object
 		KiiObject object4 = rest.api().things(thing).buckets(thingBucketName).objects(object1).get();
-		assertEquals(200, object4.getInt("score"));
-		assertEquals(1, object4.getInt("level"));
+		assertEquals(200, (int)object4.getInt("score"));
+		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
 		rest.api().things(thing).buckets(thingBucketName).objects(object4).delete();
@@ -240,7 +240,7 @@ public class KiiObjectResourceTest {
 		// getting object
 		KiiObject updatedObject = rest.api().users(user).buckets(userBucketName).objects(object.getObjectID()).get();
 		
-		assertEquals(100, updatedObject.getInt("score"));
-		assertEquals(2, updatedObject.getInt("level"));
+		assertEquals(100, (int)updatedObject.getInt("score"));
+		assertEquals(2, (int)updatedObject.getInt("level"));
 	}
 }
