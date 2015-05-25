@@ -3,6 +3,7 @@ package com.kii.cloud.rest.client.resource.storage;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +19,7 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
+import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.model.KiiAdminCredentials;
 import com.kii.cloud.rest.client.model.storage.KiiChunkedDownloadContext;
 import com.kii.cloud.rest.client.model.storage.KiiChunkedUploadContext;
@@ -65,6 +67,9 @@ public class KiiObjectBodyResourceTest {
 		rest.api().users(user).buckets(userBucketName).objects(object).body().download(os);
 		
 		assertArrayEquals(body, os.toByteArray());
+		
+		// deleting object body
+		rest.api().users(user).buckets(userBucketName).objects(object).body().delete();
 	}
 	@Test
 	public void chunkedTransferTest() throws Exception {
@@ -106,6 +111,44 @@ public class KiiObjectBodyResourceTest {
 			downloadContext = bodyResource.downloadByChunk(downloadContext, os);
 		}
 		assertArrayEquals(body, os.toByteArray());
+		
+		// deleting object body
+		rest.api().users(user).buckets(userBucketName).objects(object).body().delete();
+	}
+	@Test
+	public void chunkedTransferCancelTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		
+		byte[] body = this.createObjectBody(1024*3);
+		
+		// creating object
+		KiiObject object = new KiiObject().set("size", 1024*3);
+		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		
+		// uploading object body by chunk
+		KiiObjectBodyResource bodyResource =rest.api().users(user).buckets(userBucketName).objects(object).body();
+		KiiChunkedUploadContext uploadContext = bodyResource.beginChunkedUpload("image/jpg", body.length);
+		int offset = 0;
+		int chunkSize = 1024;
+		while (!uploadContext.isCompleted()) {
+			uploadContext = bodyResource.uploadByChunk(uploadContext, Arrays.copyOfRange(body, offset, (offset + chunkSize)));
+			offset += chunkSize;
+		}
+		bodyResource.cancelChunkedUpload(uploadContext);
+		
+		// publishing body
+		try {
+			rest.api().users(user).buckets(userBucketName).objects(object).body().publish();
+			fail("KiiNotFoundException should be thrown");
+		} catch (KiiNotFoundException e) {
+		}
 	}
 	@Test
 	public void moveToAppScopeTest() throws Exception {
