@@ -1,5 +1,7 @@
 package com.kii.cloud.rest.client.resource.storage;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,7 +38,7 @@ public class KiiGroupResourceTest {
 		
 		// creating new group
 		KiiGroup group1 = new KiiGroup();
-		group1.setName("MyGroup");
+		group1.setName("MyGroup1");
 		group1.setOwner(user1.getUserID());
 		
 		KiiGroupMembers members = new KiiGroupMembers();
@@ -44,14 +46,41 @@ public class KiiGroupResourceTest {
 		members.addMember(user3.getUserID());
 		rest.api().groups().save(group1, members);
 		
+		KiiGroup group2 = new KiiGroup();
+		group2.setName("MyGroup3");
+		group2.setOwner(user3.getUserID());
+		members = new KiiGroupMembers();
+		members.addMember(user1.getUserID());
+		rest.api().groups().save(group2, members);
+		
+		// getting own groups
+		List<KiiGroup> user1OwnedGroups = rest.api().groups().getOwnGroups(user1);
+		List<KiiGroup> user2OwnedGroups = rest.api().groups().getOwnGroups(user2);
+		List<KiiGroup> user3OwnedGroups = rest.api().groups().getOwnGroups(user3);
+		List<KiiGroup> user4OwnedGroups = rest.api().groups().getOwnGroups(user4);
+		assertEquals(1, user1OwnedGroups.size());
+		assertEquals(0, user2OwnedGroups.size());
+		assertEquals(1, user3OwnedGroups.size());
+		assertEquals(0, user4OwnedGroups.size());
+		
+		// getting belonged groups
+		List<KiiGroup> user1BelongedGroups = rest.api().groups().getBelongGroups(user1);
+		List<KiiGroup> user2BelongedGroups = rest.api().groups().getBelongGroups(user2);
+		List<KiiGroup> user3BelongedGroups = rest.api().groups().getBelongGroups(user3);
+		List<KiiGroup> user4BelongedGroups = rest.api().groups().getBelongGroups(user4);
+		assertEquals(2, user1BelongedGroups.size());
+		assertEquals(1, user2BelongedGroups.size());
+		assertEquals(2, user3BelongedGroups.size());
+		assertEquals(0, user4BelongedGroups.size());
+		
 		// changing group name
 		rest.api().groups(group1).changeName("NewMyGroup");
-		KiiGroup group2 = rest.api().groups(group1).get();
-		assertEquals("NewMyGroup", group2.getName());
+		KiiGroup group1Renamed = rest.api().groups(group1).get();
+		assertEquals("NewMyGroup", group1Renamed.getName());
 		
 		// remove/add member
-		rest.api().groups(group1).members(user3.getUserID()).remove();
-		rest.api().groups(group1).members(user4.getUserID()).add();
+		rest.api().groups(group1.getGroupID()).members(user3.getUserID()).remove();
+		rest.api().groups(group1.getGroupID()).members(user4.getUserID()).add();
 		// getting list of members
 		members = rest.api().groups(group1).members().list();
 		assertEquals(3, members.getMembers().size());
@@ -60,12 +89,12 @@ public class KiiGroupResourceTest {
 		assertTrue(members.getMembers().contains(user4.getUserID()));
 		
 		// changing owner
-		assertEquals(user1.getUserID(), group2.getOwner());
-		rest.api().groups(group2.getGroupID()).changeOwner(user2.getUserID());
+		assertEquals(user1.getUserID(), group1Renamed.getOwner());
+		rest.api().groups(group1Renamed.getGroupID()).changeOwner(user2.getUserID());
 		KiiGroup group3 = rest.api().groups(group1).get();
 		assertEquals(user2.getUserID(), group3.getOwner());
 		rest.setCredentials(user2);
 		
-		rest.api().groups(group2.getGroupID()).delete();
+		rest.api().groups(group1Renamed.getGroupID()).delete();
 	}
 }

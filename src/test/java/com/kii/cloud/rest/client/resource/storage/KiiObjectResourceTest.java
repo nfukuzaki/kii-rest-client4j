@@ -2,6 +2,7 @@ package com.kii.cloud.rest.client.resource.storage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,7 @@ import com.kii.cloud.rest.client.KiiRest;
 import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestEnvironments;
+import com.kii.cloud.rest.client.exception.KiiConflictException;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
@@ -208,5 +210,37 @@ public class KiiObjectResourceTest {
 		
 		// deleting bucket
 		rest.api().things(thing).buckets(thingBucketName).delete();
+	}
+	@Test
+	public void optimisticLockTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		
+		// creating object
+		KiiObject object = new KiiObject().set("score", 100);
+		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		
+		// partial updating
+		KiiObject partialObject = new KiiObject().set("level", 2);
+		rest.api().users(user).buckets(userBucketName).objects(object.getObjectID()).partialUpdate(partialObject);
+		
+		// updating object with optimistic lock
+		try {
+			rest.api().users(user).buckets(userBucketName).objects(object.getObjectID()).updateWithOptimisticLock(object);
+			fail("KiiConflictException should be thrown");
+		} catch (KiiConflictException e) {
+		}
+		
+		// getting object
+		KiiObject updatedObject = rest.api().users(user).buckets(userBucketName).objects(object.getObjectID()).get();
+		
+		assertEquals(100, updatedObject.getInt("score"));
+		assertEquals(2, updatedObject.getInt("level"));
 	}
 }

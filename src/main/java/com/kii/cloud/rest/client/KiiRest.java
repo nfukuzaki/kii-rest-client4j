@@ -17,6 +17,12 @@ public class KiiRest {
 			this.endpoint = endpoint;
 			this.devlogEndpoint = devlogEndpoint;
 		}
+		public String getEndpoint() {
+			return endpoint;
+		}
+		public String getDevlogEndpoint() {
+			return devlogEndpoint;
+		}
 	}
 
 	private final String appID;
