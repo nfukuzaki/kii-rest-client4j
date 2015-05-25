@@ -7,6 +7,10 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.validation.KiiJsonPropertyValidator;
 import com.kii.cloud.rest.client.util.GsonUtils;
 
+/**
+ * 
+ * @param <T>
+ */
 public class KiiJsonProperty<T> {
 	
 	private final String name;

@@ -13,6 +13,7 @@ import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.model.KiiAdminCredentials;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.analytics.FieldType;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationAggregateRule;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationGroupByRule;
@@ -21,7 +22,6 @@ import com.kii.cloud.rest.client.model.analytics.KiiAggregationAggregateRule.Agg
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule.Source;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionMappingRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
-import com.kii.cloud.rest.client.model.analytics.KiiConversionRule.Scope;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule.Target;
 
 @RunWith(SkipAcceptableTestRunner.class)
@@ -39,7 +39,7 @@ public class KiiAggregationRuleResourceTest {
 		// creating new conversion rule
 		KiiConversionRule conversionRule = new KiiConversionRule();
 		conversionRule.setBucket("app_bucket");
-		conversionRule.setScope(Scope.APP);
+		conversionRule.setScope(KiiScope.APP);
 		conversionRule.setTarget(Target.OBJECT);
 		conversionRule.addMappingRule(new KiiConversionMappingRule().setName("id").setSource("_id").setType(FieldType.INT));
 		conversionRule.addMappingRule(new KiiConversionMappingRule().setName("name").setSource("_name").setType(FieldType.STRING));

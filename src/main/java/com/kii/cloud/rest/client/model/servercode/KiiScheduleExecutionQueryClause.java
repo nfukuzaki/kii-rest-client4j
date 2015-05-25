@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.kii.cloud.rest.client.model.KiiJsonProperty;
 
 public class KiiScheduleExecutionQueryClause {
 	private JsonObject json = new JsonObject();
@@ -20,66 +19,66 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("type", "all");
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause eq(KiiJsonProperty<?> key, int value) {
+	public static KiiScheduleExecutionQueryClause eq(KiiScheduleExecutionQueryProperty<?> key, int value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "eq");
 		clause.json.addProperty("field", key.getName());
 		clause.json.addProperty("value", value);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause eq(KiiJsonProperty<?> key, long value) {
+	public static KiiScheduleExecutionQueryClause eq(KiiScheduleExecutionQueryProperty<?> key, long value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "eq");
 		clause.json.addProperty("field", key.getName());
 		clause.json.addProperty("value", value);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause eq(KiiJsonProperty<?> key, BigDecimal value) {
+	public static KiiScheduleExecutionQueryClause eq(KiiScheduleExecutionQueryProperty<?> key, BigDecimal value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "eq");
 		clause.json.addProperty("field", key.getName());
 		clause.json.addProperty("value", value);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause eq(KiiJsonProperty<?> key, String value) {
+	public static KiiScheduleExecutionQueryClause eq(KiiScheduleExecutionQueryProperty<?> key, String value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "eq");
 		clause.json.addProperty("field", key.getName());
 		clause.json.addProperty("value", value);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause eq(KiiJsonProperty<?> key, boolean value) {
+	public static KiiScheduleExecutionQueryClause eq(KiiScheduleExecutionQueryProperty<?> key, boolean value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "eq");
 		clause.json.addProperty("field", key.getName());
 		clause.json.addProperty("value", value);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause neq(KiiJsonProperty<?> key, int value) {
+	public static KiiScheduleExecutionQueryClause neq(KiiScheduleExecutionQueryProperty<?> key, int value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "not");
 		clause.json.add("clause", eq(key, value).getJson());
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause neq(KiiJsonProperty<?> key, long value) {
+	public static KiiScheduleExecutionQueryClause neq(KiiScheduleExecutionQueryProperty<?> key, long value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "not");
 		clause.json.add("clause", eq(key, value).getJson());
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause neq(KiiJsonProperty<?> key, BigDecimal value) {
+	public static KiiScheduleExecutionQueryClause neq(KiiScheduleExecutionQueryProperty<?> key, BigDecimal value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "not");
 		clause.json.add("clause", eq(key, value).getJson());
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause neq(KiiJsonProperty<?> key, String value) {
+	public static KiiScheduleExecutionQueryClause neq(KiiScheduleExecutionQueryProperty<?> key, String value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "not");
 		clause.json.add("clause", eq(key, value).getJson());
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause neq(KiiJsonProperty<?> key, boolean value) {
+	public static KiiScheduleExecutionQueryClause neq(KiiScheduleExecutionQueryProperty<?> key, boolean value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "not");
 		clause.json.add("clause", eq(key, value).getJson());
@@ -109,7 +108,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.add("clauses", conditions);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause in(KiiJsonProperty<?> key, int first, int second, int... values) {
+	public static KiiScheduleExecutionQueryClause in(KiiScheduleExecutionQueryProperty<?> key, int first, int second, int... values) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "in");
 		clause.json.addProperty("field", key.getName());
@@ -122,7 +121,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.add("values", conditions);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause in(KiiJsonProperty<?> key, long first, long second, long... values) {
+	public static KiiScheduleExecutionQueryClause in(KiiScheduleExecutionQueryProperty<?> key, long first, long second, long... values) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "in");
 		clause.json.addProperty("field", key.getName());
@@ -135,7 +134,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.add("values", conditions);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause in(KiiJsonProperty<?> key, BigDecimal first, BigDecimal second, BigDecimal... values) {
+	public static KiiScheduleExecutionQueryClause in(KiiScheduleExecutionQueryProperty<?> key, BigDecimal first, BigDecimal second, BigDecimal... values) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "in");
 		clause.json.addProperty("field", key.getName());
@@ -148,7 +147,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.add("values", conditions);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause in(KiiJsonProperty<?> key, String first, String second, String... values) {
+	public static KiiScheduleExecutionQueryClause in(KiiScheduleExecutionQueryProperty<?> key, String first, String second, String... values) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "in");
 		clause.json.addProperty("field", key.getName());
@@ -161,7 +160,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.add("values", conditions);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gt(KiiJsonProperty<?> key, int value) {
+	public static KiiScheduleExecutionQueryClause gt(KiiScheduleExecutionQueryProperty<?> key, int value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -169,7 +168,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gt(KiiJsonProperty<?> key, long value) {
+	public static KiiScheduleExecutionQueryClause gt(KiiScheduleExecutionQueryProperty<?> key, long value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -177,7 +176,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gt(KiiJsonProperty<?> key, BigDecimal value) {
+	public static KiiScheduleExecutionQueryClause gt(KiiScheduleExecutionQueryProperty<?> key, BigDecimal value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -185,7 +184,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gt(KiiJsonProperty<?> key, String value) {
+	public static KiiScheduleExecutionQueryClause gt(KiiScheduleExecutionQueryProperty<?> key, String value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -193,7 +192,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gte(KiiJsonProperty<?> key, int value) {
+	public static KiiScheduleExecutionQueryClause gte(KiiScheduleExecutionQueryProperty<?> key, int value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -201,7 +200,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gte(KiiJsonProperty<?> key, long value) {
+	public static KiiScheduleExecutionQueryClause gte(KiiScheduleExecutionQueryProperty<?> key, long value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -209,7 +208,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gte(KiiJsonProperty<?> key, BigDecimal value) {
+	public static KiiScheduleExecutionQueryClause gte(KiiScheduleExecutionQueryProperty<?> key, BigDecimal value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -217,7 +216,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause gte(KiiJsonProperty<?> key, String value) {
+	public static KiiScheduleExecutionQueryClause gte(KiiScheduleExecutionQueryProperty<?> key, String value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -225,7 +224,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("lowerIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lt(KiiJsonProperty<?> key, int value) {
+	public static KiiScheduleExecutionQueryClause lt(KiiScheduleExecutionQueryProperty<?> key, int value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -233,7 +232,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lt(KiiJsonProperty<?> key, long value) {
+	public static KiiScheduleExecutionQueryClause lt(KiiScheduleExecutionQueryProperty<?> key, long value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -241,7 +240,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lt(KiiJsonProperty<?> key, BigDecimal value) {
+	public static KiiScheduleExecutionQueryClause lt(KiiScheduleExecutionQueryProperty<?> key, BigDecimal value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -249,7 +248,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lt(KiiJsonProperty<?> key, String value) {
+	public static KiiScheduleExecutionQueryClause lt(KiiScheduleExecutionQueryProperty<?> key, String value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -257,7 +256,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", false);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lte(KiiJsonProperty<?> key, int value) {
+	public static KiiScheduleExecutionQueryClause lte(KiiScheduleExecutionQueryProperty<?> key, int value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -265,7 +264,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lte(KiiJsonProperty<?> key, long value) {
+	public static KiiScheduleExecutionQueryClause lte(KiiScheduleExecutionQueryProperty<?> key, long value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -273,7 +272,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lte(KiiJsonProperty<?> key, BigDecimal value) {
+	public static KiiScheduleExecutionQueryClause lte(KiiScheduleExecutionQueryProperty<?> key, BigDecimal value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -281,7 +280,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause lte(KiiJsonProperty<?> key, String value) {
+	public static KiiScheduleExecutionQueryClause lte(KiiScheduleExecutionQueryProperty<?> key, String value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "range");
 		clause.json.addProperty("field", key.getName());
@@ -289,7 +288,7 @@ public class KiiScheduleExecutionQueryClause {
 		clause.json.addProperty("upperIncluded", true);
 		return clause;
 	}
-	public static KiiScheduleExecutionQueryClause prefix(KiiJsonProperty<?> key, String value) {
+	public static KiiScheduleExecutionQueryClause prefix(KiiScheduleExecutionQueryProperty<?> key, String value) {
 		KiiScheduleExecutionQueryClause clause = new KiiScheduleExecutionQueryClause();
 		clause.json.addProperty("type", "prefix");
 		clause.json.addProperty("field", key.getName());

@@ -13,10 +13,10 @@ import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.model.KiiAdminCredentials;
+import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.analytics.FieldType;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionMappingRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
-import com.kii.cloud.rest.client.model.analytics.KiiConversionRule.Scope;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule.Target;
 
 @RunWith(SkipAcceptableTestRunner.class)
@@ -34,7 +34,7 @@ public class KiiConversionRuleResourceTest {
 		// creating new conversion rule
 		KiiConversionRule newConversionRule = new KiiConversionRule();
 		newConversionRule.setBucket("app_bucket");
-		newConversionRule.setScope(Scope.APP);
+		newConversionRule.setScope(KiiScope.APP);
 		newConversionRule.setTarget(Target.OBJECT);
 		newConversionRule.addMappingRule(new KiiConversionMappingRule().setName("id").setSource("_id").setType(FieldType.INT));
 		newConversionRule.addMappingRule(new KiiConversionMappingRule().setName("name").setSource("_name").setType(FieldType.STRING));

@@ -2,7 +2,6 @@ package com.kii.cloud.rest.client.model.servercode;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.KiiJsonModel;
-import com.kii.cloud.rest.client.model.KiiJsonProperty;
 
 public class KiiScheduleExecutionResult extends KiiJsonModel {
 	
@@ -12,12 +11,12 @@ public class KiiScheduleExecutionResult extends KiiJsonModel {
 		RUNNING
 	}
 	
-	public static final KiiJsonProperty<String> PROPERTY_SCHEDULE_EXECUTION_ID = new KiiJsonProperty<String>(String.class, "scheduleExecutionID");
-	public static final KiiJsonProperty<String> PROPERTY_JOB_NAME = new KiiJsonProperty<String>(String.class, "name");
-	public static final KiiJsonProperty<String> PROPERTY_STATUS = new KiiJsonProperty<String>(String.class, "status");
-	public static final KiiJsonProperty<Long> PROPERTY_STARTED_AT = new KiiJsonProperty<Long>(Long.class, "startedAt");
-	public static final KiiJsonProperty<Long> PROPERTY_FINISHED_AT = new KiiJsonProperty<Long>(Long.class, "finishedAt");
-	public static final KiiJsonProperty<String> PROPERTY_RESULT = new KiiJsonProperty<String>(String.class, "result");
+	public static final KiiScheduleExecutionQueryProperty<String> PROPERTY_SCHEDULE_EXECUTION_ID = new KiiScheduleExecutionQueryProperty<String>(String.class, "scheduleExecutionID");
+	public static final KiiScheduleExecutionQueryProperty<String> PROPERTY_JOB_NAME = new KiiScheduleExecutionQueryProperty<String>(String.class, "name");
+	public static final KiiScheduleExecutionQueryProperty<String> PROPERTY_STATUS = new KiiScheduleExecutionQueryProperty<String>(String.class, "status");
+	public static final KiiScheduleExecutionQueryProperty<Long> PROPERTY_STARTED_AT = new KiiScheduleExecutionQueryProperty<Long>(Long.class, "startedAt");
+	public static final KiiScheduleExecutionQueryProperty<Long> PROPERTY_FINISHED_AT = new KiiScheduleExecutionQueryProperty<Long>(Long.class, "finishedAt");
+	public static final KiiScheduleExecutionQueryProperty<String> PROPERTY_RESULT = new KiiScheduleExecutionQueryProperty<String>(String.class, "result");
 	
 	public KiiScheduleExecutionResult(JsonObject json) {
 		super(json);

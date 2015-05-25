@@ -7,14 +7,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.KiiJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
+import com.kii.cloud.rest.client.model.KiiScope;
 
 public class KiiConversionRule extends KiiJsonModel {
 	
-	public enum Scope {
-		APP,
-		USER,
-		GROUP
-	}
 	public enum Target {
 		BUCKET,
 		OBJECT
@@ -38,13 +34,13 @@ public class KiiConversionRule extends KiiJsonModel {
 		PROPERTY_ID.set(this.json, id);
 		return this;
 	}
-	public Scope getScope() {
+	public KiiScope getScope() {
 		if (PROPERTY_SCOPE.has(this.json)) {
-			return Enum.valueOf(Scope.class, PROPERTY_SCOPE.get(this.json));
+			return Enum.valueOf(KiiScope.class, PROPERTY_SCOPE.get(this.json));
 		}
 		return null;
 	}
-	public KiiConversionRule setScope(Scope scope) {
+	public KiiConversionRule setScope(KiiScope scope) {
 		PROPERTY_SCOPE.set(this.json, scope.name());
 		return this;
 	}

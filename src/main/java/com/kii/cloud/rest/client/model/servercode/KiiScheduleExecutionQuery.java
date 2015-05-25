@@ -1,7 +1,6 @@
 package com.kii.cloud.rest.client.model.servercode;
 
 import com.google.gson.JsonObject;
-import com.kii.cloud.rest.client.model.KiiJsonProperty;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
 
@@ -24,12 +23,12 @@ public class KiiScheduleExecutionQuery {
 		}
 		this.json = clauseJson;
 	}
-	public KiiScheduleExecutionQuery sortByAsc(KiiJsonProperty<?> key) {
+	public KiiScheduleExecutionQuery sortByAsc(KiiScheduleExecutionQueryProperty<?> key) {
 		this.json.addProperty("orderBy", key.getName());
 		this.json.addProperty("descending", false);
 		return this;
 	}
-	public KiiScheduleExecutionQuery sortByDesc(KiiJsonProperty<?> key) {
+	public KiiScheduleExecutionQuery sortByDesc(KiiScheduleExecutionQueryProperty<?> key) {
 		this.json.addProperty("orderBy", key.getName());
 		this.json.addProperty("descending", true);
 		return this;
