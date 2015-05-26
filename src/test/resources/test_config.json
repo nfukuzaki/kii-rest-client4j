@@ -220,7 +220,7 @@
             {"Yahoo"          : false},
             {"Twitter"        : false},
             {"TwitterNative"  : true},
-            {"Facebook"       : false},
+            {"Facebook"       : true},
             {"Live"           : false},
             {"LinkedIn"       : false},
             {"DropBox"        : false},

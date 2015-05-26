@@ -1,11 +1,16 @@
 package com.kii.cloud.rest.client.model.storage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.model.KiiCustomableJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
+import com.kii.cloud.rest.client.model.social.KiiSocialAccountInfo;
 import com.kii.cloud.rest.client.model.validation.RangeLengthValidator;
 import com.kii.cloud.rest.client.model.validation.RegularExpressionValidator;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -41,6 +46,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public static final KiiJsonProperty<Boolean> PROPERTY_PHONE_NUMBER_VERIFIED = new KiiJsonProperty<Boolean>(Boolean.class, "phoneNumberVerified");
 	public static final KiiJsonProperty<Boolean> PROPERTY_HAS_PASSWORD = new KiiJsonProperty<Boolean>(Boolean.class, "_hasPassword");
 	public static final KiiJsonProperty<Boolean> PROPERTY_DISABLED = new KiiJsonProperty<Boolean>(Boolean.class, "_disabled");
+	public static final KiiJsonProperty<JsonObject> PROPERTY_THIRD_PARTY_ACCOUNTS = new KiiJsonProperty<JsonObject>(JsonObject.class, "_thirdPartyAccounts");
 	
 	public static final String ME = "me";
 	
@@ -98,6 +104,16 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	}
 	public boolean isDisabled() {
 		return PROPERTY_DISABLED.get(this.json);
+	}
+	public List<KiiSocialAccountInfo> getThirdPartyAccounts() {
+		List<KiiSocialAccountInfo> result = new ArrayList<KiiSocialAccountInfo>();
+		JsonObject thirdPartyAccounts = PROPERTY_THIRD_PARTY_ACCOUNTS.get(this.json);
+		if (thirdPartyAccounts != null) {
+			for (Map.Entry<String, JsonElement> thirdPartyAccount : thirdPartyAccounts.entrySet()) {
+				result.add(new KiiSocialAccountInfo((JsonObject)thirdPartyAccount.getValue()));
+			}
+		}
+		return result;
 	}
 	public static String getAccountType(String identifier) {
 		if (KiiUser.EMAIL_ADDRESS_PATTERN.matcher(identifier).matches()) {

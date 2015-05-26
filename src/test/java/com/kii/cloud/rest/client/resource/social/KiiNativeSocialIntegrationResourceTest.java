@@ -1,5 +1,10 @@
 package com.kii.cloud.rest.client.resource.social;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -8,6 +13,8 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
+import com.kii.cloud.rest.client.model.social.KiiSocialAccountInfo;
+import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 
@@ -36,6 +43,16 @@ public class KiiNativeSocialIntegrationResourceTest {
 		
 		// link with current user to twitter account.
 		rest.api().users(user).twitter().link(testApp.getTwitterAccessToken(), testApp.getTwitterAccessTokenSecret());
+		
+		user = (KiiNormalUser)rest.api().users(user).get();
+		List<KiiSocialAccountInfo> thirdPartyAccounts = user.getThirdPartyAccounts();
+		assertEquals(1, thirdPartyAccounts.size());
+		for (KiiSocialAccountInfo thirdPartyAccount : thirdPartyAccounts) {
+			assertNotNull(thirdPartyAccount.getID());
+			assertEquals(KiiSocialProvider.TWITTER, thirdPartyAccount.getType());
+			assertNotNull(thirdPartyAccount.getCreatedAt());
+		}
+		
 		// unlink with current user to twitter account.
 		rest.api().users(user).twitter().unlink();
 	}

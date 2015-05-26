@@ -212,7 +212,7 @@ public class KiiObjectResourceTest {
 		rest.api().things(thing).buckets(thingBucketName).delete();
 	}
 	@Test
-	public void optimisticLockTest() throws Exception {
+	public void updateWithOptimisticLockTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
@@ -223,24 +223,79 @@ public class KiiObjectResourceTest {
 		String userBucketName = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object
-		KiiObject object = new KiiObject().set("score", 100);
-		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		KiiObject object1 = new KiiObject().set("score", 100);
+		rest.api().users(user).buckets(userBucketName).objects().save(object1);
 		
 		// partial updating
 		KiiObject partialObject = new KiiObject().set("level", 2);
-		rest.api().users(user).buckets(userBucketName).objects(object.getObjectID()).partialUpdate(partialObject);
+		rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdate(partialObject);
 		
 		// updating object with optimistic lock
 		try {
-			rest.api().users(user).buckets(userBucketName).objects(object.getObjectID()).updateWithOptimisticLock(object);
+			rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).updateWithOptimisticLock(object1);
 			fail("KiiConflictException should be thrown");
 		} catch (KiiConflictException e) {
 		}
 		
 		// getting object
-		KiiObject updatedObject = rest.api().users(user).buckets(userBucketName).objects(object.getObjectID()).get();
+		KiiObject object2 = rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).get();
 		
-		assertEquals(100, (int)updatedObject.getInt("score"));
-		assertEquals(2, (int)updatedObject.getInt("level"));
+		assertEquals(100, (int)object2.getInt("score"));
+		assertEquals(2, (int)object2.getInt("level"));
+		
+		// updating object with optimistic lock
+		object2.set("score", 200);
+		object2.set("level", 3);
+		rest.api().users(user).buckets(userBucketName).objects(object2.getObjectID()).updateWithOptimisticLock(object2);
+		
+		// getting object
+		KiiObject object3 = rest.api().users(user).buckets(userBucketName).objects(object2.getObjectID()).get();
+		
+		assertEquals(200, (int)object3.getInt("score"));
+		assertEquals(3, (int)object3.getInt("level"));
+	}
+	@Test
+	public void partialUupdateWithOptimisticLockTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		
+		// creating object
+		KiiObject object1 = new KiiObject().set("score", 100);
+		rest.api().users(user).buckets(userBucketName).objects().save(object1);
+		String version = object1.getVersion();
+		
+		// updating object
+		object1.set("level", 1);
+		rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdate(object1);
+		
+		// partial updating object with optimistic lock
+		try {
+			KiiObject partialObject = new KiiObject().set("level", 2).setVersion(version);
+			rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdateWithOptimisticLock(partialObject);
+			fail("KiiConflictException should be thrown");
+		} catch (KiiConflictException e) {
+		}
+		
+		// getting object
+		KiiObject object2 = rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).get();
+		
+		assertEquals(100, (int)object2.getInt("score"));
+		assertEquals(1, (int)object2.getInt("level"));
+		
+		// partial updating object with optimistic lock
+		KiiObject partialObject = new KiiObject().set("level", 3).setVersion(object2.getVersion());
+		rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdateWithOptimisticLock(partialObject);
+		
+		// getting object
+		KiiObject object3 = rest.api().users(user).buckets(userBucketName).objects(object2.getObjectID()).get();
+		
+		assertEquals(100, (int)object3.getInt("score"));
+		assertEquals(3, (int)object3.getInt("level"));
 	}
 }

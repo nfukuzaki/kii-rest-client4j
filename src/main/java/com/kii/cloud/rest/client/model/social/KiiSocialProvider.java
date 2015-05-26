@@ -38,4 +38,12 @@ public enum KiiSocialProvider {
 		String providerName = StringUtils.capitalize(this.id);
 		return "application/vnd.kii.Link" + providerName + "Request+json";
 	}
+	public static KiiSocialProvider fromString(String value) {
+		for (KiiSocialProvider provider : values()) {
+			if (provider.getID().equalsIgnoreCase(value)) {
+				return provider;
+			}
+		}
+		return null;
+	}
 }

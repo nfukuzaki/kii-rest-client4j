@@ -16,25 +16,25 @@ import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 public class KiiWebAuthSocialIntegrationResourceTest {
 	@Test
 	public void test() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().enableGoogle());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().enableFacebook());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		String expectedBaseUrl = String.format("%s/apps/%s/integration/webauth/", testApp.getSite().getEndpoint(), testApp.getAppID());
 		
 		
-		System.out.println(rest.api().webauth().getSocialIntegrationUrl(KiiSocialProvider.GOOGLE));
-		System.out.println(rest.api().webauth().getSocialLinkUrl(KiiSocialProvider.GOOGLE));
-		System.out.println(rest.api().webauth().getSocialUnLinkUrl(KiiSocialProvider.GOOGLE));
+		System.out.println(rest.api().webauth().getSocialIntegrationUrl(KiiSocialProvider.FACEBOOK));
+		System.out.println(rest.api().webauth().getSocialLinkUrl(KiiSocialProvider.FACEBOOK));
+		System.out.println(rest.api().webauth().getSocialUnLinkUrl(KiiSocialProvider.FACEBOOK));
 		
 		assertEquals(
-				expectedBaseUrl + "connect?id=" + KiiSocialProvider.GOOGLE.getID(),
-				rest.api().webauth().getSocialIntegrationUrl(KiiSocialProvider.GOOGLE));
+				expectedBaseUrl + "connect?id=" + KiiSocialProvider.FACEBOOK.getID(),
+				rest.api().webauth().getSocialIntegrationUrl(KiiSocialProvider.FACEBOOK));
 		assertEquals(
-				expectedBaseUrl + "link?id=" + KiiSocialProvider.GOOGLE.getID(),
-				rest.api().webauth().getSocialLinkUrl(KiiSocialProvider.GOOGLE));
+				expectedBaseUrl + "link?id=" + KiiSocialProvider.FACEBOOK.getID(),
+				rest.api().webauth().getSocialLinkUrl(KiiSocialProvider.FACEBOOK));
 		assertEquals(
-				expectedBaseUrl + "unlink?id=" + KiiSocialProvider.GOOGLE.getID(),
-				rest.api().webauth().getSocialUnLinkUrl(KiiSocialProvider.GOOGLE));
+				expectedBaseUrl + "unlink?id=" + KiiSocialProvider.FACEBOOK.getID(),
+				rest.api().webauth().getSocialUnLinkUrl(KiiSocialProvider.FACEBOOK));
 		// TODO:send request to the URLs
 	}
 }
