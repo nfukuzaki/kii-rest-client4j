@@ -8,8 +8,6 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
-import com.kii.cloud.rest.client.model.social.KiiNativeSocialCredentials;
-import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 
@@ -21,8 +19,7 @@ public class KiiNativeSocialIntegrationResourceTest {
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		// login with Twitter account
-		KiiNativeSocialCredentials credentials = KiiNativeSocialCredentials.twitter(testApp.getTwitterAccessToken(), testApp.getTwitterAccessTokenSecret());
-		KiiUser user = rest.api().social().login(credentials);
+		KiiUser user = rest.api().social().twitter().login(testApp.getTwitterAccessToken(), testApp.getTwitterAccessTokenSecret());
 		rest.setCredentials(user);
 		
 		// deleting user
@@ -37,9 +34,9 @@ public class KiiNativeSocialIntegrationResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		KiiNativeSocialCredentials credentials = KiiNativeSocialCredentials.twitter(testApp.getTwitterAccessToken(), testApp.getTwitterAccessTokenSecret());
-		rest.api().users(user).socialIntegration().link(credentials);
-		
-		rest.api().users(user).socialIntegration().unlink(KiiSocialProvider.TWITTER);
+		// link with current user to twitter account.
+		rest.api().users(user).twitter().link(testApp.getTwitterAccessToken(), testApp.getTwitterAccessTokenSecret());
+		// unlink with current user to twitter account.
+		rest.api().users(user).twitter().unlink();
 	}
 }

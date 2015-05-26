@@ -30,7 +30,7 @@ import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeHookResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeHooksResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodeResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiServerCodesResource;
-import com.kii.cloud.rest.client.resource.social.KiiNativeSocialIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiSocialIntegrationResource;
 import com.kii.cloud.rest.client.resource.social.KiiWebAuthSocialIntegrationResource;
 import com.kii.cloud.rest.client.resource.storage.KiiBucketResource;
 import com.kii.cloud.rest.client.resource.storage.KiiEncryptedBucketResource;
@@ -200,8 +200,8 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	public KiiWebAuthSocialIntegrationResource webauth() {
 		return new KiiWebAuthSocialIntegrationResource(this);
 	}
-	public KiiNativeSocialIntegrationResource social() {
-		return new KiiNativeSocialIntegrationResource(this);
+	public KiiSocialIntegrationResource social() {
+		return new KiiSocialIntegrationResource(this);
 	}
 	
 	@Override

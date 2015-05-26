@@ -17,7 +17,11 @@ import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.resource.push.KiiTopicResource;
 import com.kii.cloud.rest.client.resource.push.KiiTopicsResource;
-import com.kii.cloud.rest.client.resource.social.KiiUserSocialIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiUserFacebookIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiUserGoogleIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiUserQqIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiUserRenrenIntegrationResource;
+import com.kii.cloud.rest.client.resource.social.KiiUserTwitterIntegrationResource;
 import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
@@ -296,12 +300,20 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	public KiiTopicResource topics(String name) {
 		return new KiiTopicResource(this.topics(), name);
 	}
-	/**
-	 * @param provider Must be FACEBOOK, GOOGLE, TWITTER, RENREN or QQ.
-	 * @return
-	 */
-	public KiiUserSocialIntegrationResource socialIntegration() {
-		return new KiiUserSocialIntegrationResource(this);
+	public KiiUserFacebookIntegrationResource facebook() {
+		return new KiiUserFacebookIntegrationResource(this);
+	}
+	public KiiUserGoogleIntegrationResource google() {
+		return new KiiUserGoogleIntegrationResource(this);
+	}
+	public KiiUserTwitterIntegrationResource twitter() {
+		return new KiiUserTwitterIntegrationResource(this);
+	}
+	public KiiUserRenrenIntegrationResource renren() {
+		return new KiiUserRenrenIntegrationResource(this);
+	}
+	public KiiUserQqIntegrationResource qq() {
+		return new KiiUserQqIntegrationResource(this);
 	}
 	@Override
 	public String getPath() {
