@@ -94,33 +94,51 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		return new KiiUserResource(this.users(), identifier);
 	}
 	public KiiUserResource users(KiiUserURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
 		return new KiiUserResource(this.users(), uri.getScopeID());
 	}
 	public KiiUserResource users(KiiUser user) {
+		if (user == null) {
+			throw new IllegalArgumentException("user is null"); 
+		}
 		return new KiiUserResource(this.users(), user.getUserID());
 	}
 	public KiiThingsResource things() {
 		return new KiiThingsResource(this);
 	}
 	public KiiThingResource things(KiiThing thing) {
+		if (thing == null) {
+			throw new IllegalArgumentException("thing is null"); 
+		}
 		return new KiiThingResource(this.things(), thing.getIdentifier());
 	}
 	public KiiThingResource things(String identifier) {
 		return new KiiThingResource(this.things(), identifier);
 	}
 	public KiiThingResource things(KiiThingURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
 		return new KiiThingResource(this.things(), uri.getScopeID());
 	}
 	public KiiGroupsResource groups() {
 		return new KiiGroupsResource(this);
 	}
 	public KiiGroupResource groups(KiiGroup group) {
+		if (group == null) {
+			throw new IllegalArgumentException("group is null"); 
+		}
 		return groups(group.getGroupID());
 	}
 	public KiiGroupResource groups(String groupID) {
 		return new KiiGroupResource(this.groups(), groupID);
 	}
 	public KiiGroupResource groups(KiiGroupURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
 		return new KiiGroupResource(this.groups(), uri.getScopeID());
 	}
 	public KiiBucketResource buckets(String name) {
@@ -130,6 +148,9 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		return new KiiEncryptedBucketResource(this, name);
 	}
 	public KiiObjectResource objects(KiiObjectURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
 		switch (uri.getScope()) {
 			case APP:
 				return this.buckets(uri.getBucketName()).objects(uri.getObjectID());
@@ -183,6 +204,9 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		return new KiiConversionRulesResource(this);
 	}
 	public KiiConversionRuleResource conversionRules(KiiConversionRule conversionRule) {
+		if (conversionRule == null) {
+			throw new IllegalArgumentException("conversionRule is null"); 
+		}
 		return this.conversionRules(conversionRule.getID());
 	}
 	public KiiConversionRuleResource conversionRules(Long conversionRuleID) {
@@ -192,6 +216,9 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		return new KiiAggregationRulesResource(this);
 	}
 	public KiiAggregationRuleResource aggregationRules(KiiAggregationRule aggregationRule) {
+		if (aggregationRule == null) {
+			throw new IllegalArgumentException("aggregationRule is null"); 
+		}
 		return this.aggregationRules(aggregationRule.getID());
 	}
 	public KiiAggregationRuleResource aggregationRules(Long aggregationRuleID) {
