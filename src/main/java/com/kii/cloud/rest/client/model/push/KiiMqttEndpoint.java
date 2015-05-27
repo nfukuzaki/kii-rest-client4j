@@ -72,6 +72,12 @@ public class KiiMqttEndpoint extends KiiJsonModel {
 	public int getMqttTtl() {
 		return PROPERTY_X_MQTT_TTL.get(this.json);
 	}
+	public String getTcpServerURI() {
+		return String.format("tcp://%s:%d", this.getHost(), this.getPortTcp());
+	}
+	public String getSslServerURI() {
+		return String.format("tcp://%s:%d", this.getHost(), this.getPortSsl());
+	}
 	public KiiMqttEndpoint setMqttTtl(int mqttTtl) {
 		PROPERTY_X_MQTT_TTL.set(this.json, mqttTtl);
 		return this;

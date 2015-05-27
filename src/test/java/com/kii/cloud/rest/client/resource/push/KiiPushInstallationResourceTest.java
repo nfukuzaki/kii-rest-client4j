@@ -1,27 +1,39 @@
 package com.kii.cloud.rest.client.resource.push;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kii.cloud.rest.client.KiiRest;
 import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.exception.KiiNotFoundException;
+import com.kii.cloud.rest.client.exception.KiiServiceUnavailableException;
 import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.push.KiiMqttEndpoint;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
 import com.kii.cloud.rest.client.model.push.KiiPushMessage;
-import com.kii.cloud.rest.client.model.push.MqttMessage;
+import com.kii.cloud.rest.client.model.push.KiiMqttMessage;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiThingOwner;
@@ -82,17 +94,68 @@ public class KiiPushInstallationResourceTest {
 		rest.api().things(thing).topics("thing-topic").create();
 		rest.api().things(thing).topics("thing-topic").subscribe(thing);
 		
-		Thread.sleep(2000);
 		// getting MQTT Endpoint
-		KiiMqttEndpoint mqttEndpoint = rest.api().installations(pushInstallation2).getMqttEndpoint();
-		assertEquals(pushInstallation2.getInstallationID(), mqttEndpoint.getInstallationID());
+		KiiMqttEndpoint mqttEndpoint = null;
+		for (int retry = 5; retry > 0; retry--) {
+			Thread.sleep(3000);
+			try {
+				mqttEndpoint = rest.api().installations(pushInstallation2).getMqttEndpoint();
+				assertEquals(pushInstallation2.getInstallationID(), mqttEndpoint.getInstallationID());
+				break;
+			} catch (KiiServiceUnavailableException e) {
+			}
+		}
+		if (mqttEndpoint == null) {
+			fail("Failed to get KiiMqttEndpoint");
+		}
+		
+		// receiving MQTT
+		final CountDownLatch latch = new CountDownLatch(1);
+		final AtomicReference<Throwable> throwable = new AtomicReference<Throwable>();
+		final AtomicReference<MqttMessage> message = new AtomicReference<MqttMessage>();
+		MemoryPersistence persistence = new MemoryPersistence();
+		MqttClient mqttClient = new MqttClient(mqttEndpoint.getTcpServerURI(), mqttEndpoint.getMqttTopic(), persistence);
+		MqttConnectOptions options = new MqttConnectOptions();
+		options.setCleanSession(true);
+		options.setConnectionTimeout(60 * 10);
+		options.setKeepAliveInterval(60 * 5); 
+		options.setUserName(mqttEndpoint.getUsername());
+		options.setPassword(mqttEndpoint.getPassword().toCharArray());
+		mqttClient.setCallback(new MqttCallback() {
+			@Override
+			public void messageArrived(String topic, MqttMessage msg) throws Exception {
+				message.set(msg);
+				latch.countDown();
+			}
+			@Override
+			public void deliveryComplete(IMqttDeliveryToken token) {
+			}
+			@Override
+			public void connectionLost(Throwable cause) {
+				throwable.set(cause);
+				latch.countDown();
+			}
+		});
+		mqttClient.connect(options);
+		mqttClient.subscribe(mqttEndpoint.getMqttTopic());
 		
 		// sending message to the topic
 		JsonObject messageBody = new JsonObject();
-		messageBody.addProperty("msg", "test");
-		KiiPushMessage message = new KiiPushMessage(messageBody);
-		message.setMqtt(new MqttMessage());
-		rest.api().things(thing).topics("thing-topic").send(message);
+		messageBody.addProperty("msg", "mqtt test");
+		KiiPushMessage pushMessage = new KiiPushMessage(messageBody).setSendToDevelopment(true);
+		JsonObject mqttMessageBody = new JsonObject();
+		mqttMessageBody.addProperty("msg", "mqtt body");
+		pushMessage.setMqtt(new KiiMqttMessage(mqttMessageBody));
+		rest.api().things(thing).topics("thing-topic").send(pushMessage);
+		
+		if (!latch.await(20, TimeUnit.SECONDS)) {
+			fail("Test timeouts");
+		}
+		mqttClient.disconnect();
+		mqttClient.close();
+		assertNull(throwable.get());
+		JsonObject payload = (JsonObject)new JsonParser().parse(new String(message.get().getPayload()));
+		assertEquals("mqtt body", payload.get("msg").getAsString());
 		
 		// deleting push installation
 		rest.api().installations(pushInstallation2).delete();

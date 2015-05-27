@@ -15,7 +15,7 @@ import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.KiiListResult;
-import com.kii.cloud.rest.client.model.push.GCMMessage;
+import com.kii.cloud.rest.client.model.push.KiiGCMMessage;
 import com.kii.cloud.rest.client.model.push.KiiPushMessage;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
@@ -60,7 +60,7 @@ public class KiiTopicResourceTest {
 		JsonObject messageBody = new JsonObject();
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
-		message.setGCM(new GCMMessage(new JsonObject()));
+		message.setGCM(new KiiGCMMessage(new JsonObject()));
 		String pushMessageID = rest.api().topics(appTopicName).send(message);
 		assertNotNull(pushMessageID);
 		
@@ -108,7 +108,7 @@ public class KiiTopicResourceTest {
 		JsonObject messageBody = new JsonObject();
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
-		message.setGCM(new GCMMessage(new JsonObject()));
+		message.setGCM(new KiiGCMMessage(new JsonObject()));
 		String pushMessageID = rest.api().users(user).topics(userTopicName).send(message);
 		assertNotNull(pushMessageID);
 		
@@ -161,7 +161,7 @@ public class KiiTopicResourceTest {
 		JsonObject messageBody = new JsonObject();
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
-		message.setGCM(new GCMMessage(new JsonObject()));
+		message.setGCM(new KiiGCMMessage(new JsonObject()));
 		String pushMessageID = rest.api().groups(group).topics(groupTopicName).send(message);
 		assertNotNull(pushMessageID);
 		
@@ -217,7 +217,7 @@ public class KiiTopicResourceTest {
 		JsonObject messageBody = new JsonObject();
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
-		message.setGCM(new GCMMessage(new JsonObject()));
+		message.setGCM(new KiiGCMMessage(new JsonObject()));
 		String pushMessageID = rest.api().things(thingID).topics(thingTopicName).send(message);
 		assertNotNull(pushMessageID);
 		

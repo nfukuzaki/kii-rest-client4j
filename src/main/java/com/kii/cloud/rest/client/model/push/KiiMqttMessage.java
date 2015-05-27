@@ -3,38 +3,33 @@ package com.kii.cloud.rest.client.model.push;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.util.GsonUtils;
 
-public class GCMMessage {
+public class KiiMqttMessage {
 	private final JsonObject messageMeta = new JsonObject();
 	private final JsonObject messageBody;
 	
-	public GCMMessage() {
+	public KiiMqttMessage() {
 		this.messageMeta.addProperty("enabled", false);
 		this.messageBody = new JsonObject();
 	}
-	public GCMMessage(JsonObject messageBody) {
+	public KiiMqttMessage(JsonObject messageBody) {
 		this.messageMeta.addProperty("enabled", true);
 		this.messageBody = messageBody;
 	}
 	
-	public GCMMessage setEnable(boolean enabled) {
+	public KiiMqttMessage setEnable(boolean enabled) {
 		this.messageMeta.addProperty("enabled", enabled);
 		return this;
 	}
-	
-	public GCMMessage setRestrictedPackageName(String restrictedPackageName) {
-		this.messageMeta.addProperty("restrictedPackageName", restrictedPackageName);
+	public KiiMqttMessage setDryRun(boolean dryRun) {
+		this.messageMeta.addProperty("dryRun", dryRun);
 		return this;
 	}
-	public GCMMessage setTimeToLive(int timeToLive) {
-		this.messageMeta.addProperty("timeToLive", timeToLive);
+	public KiiMqttMessage setRetain(boolean retain) {
+		this.messageMeta.addProperty("retain", retain);
 		return this;
 	}
-	public GCMMessage setCollapseKey(String collapseKey) {
-		this.messageMeta.addProperty("collapseKey", collapseKey);
-		return this;
-	}
-	public GCMMessage setDelayWhileIdle(boolean delayWhileIdle) {
-		this.messageMeta.addProperty("delayWhileIdle", delayWhileIdle);
+	public KiiMqttMessage setQos(int qos) {
+		this.messageMeta.addProperty("qos", qos);
 		return this;
 	}
 	

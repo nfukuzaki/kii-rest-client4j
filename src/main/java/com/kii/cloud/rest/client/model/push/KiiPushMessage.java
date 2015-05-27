@@ -7,10 +7,10 @@ public class KiiPushMessage {
 	
 	private final JsonObject messageMeta = new JsonObject();
 	private final JsonObject messageBody;
-	private APNSMessage apns = null;
-	private GCMMessage gcm = null;
-	private JPushMessage jpush = null;
-	private MqttMessage mqtt = null;
+	private KiiAPNSMessage apns = null;
+	private KiiGCMMessage gcm = null;
+	private KiiJPushMessage jpush = null;
+	private KiiMqttMessage mqtt = null;
 	
 	public KiiPushMessage(JsonObject messageBody) {
 		if (messageBody == null) {
@@ -18,28 +18,28 @@ public class KiiPushMessage {
 		}
 		this.messageBody = messageBody;
 	}
-	public KiiPushMessage setAPNS(APNSMessage apns) {
+	public KiiPushMessage setAPNS(KiiAPNSMessage apns) {
 		if (apns != null) {
 			apns.setEnable(true);
 		}
 		this.apns = apns;
 		return this;
 	}
-	public KiiPushMessage setGCM(GCMMessage gcm) {
+	public KiiPushMessage setGCM(KiiGCMMessage gcm) {
 		if (gcm != null) {
 			gcm.setEnable(true);
 		}
 		this.gcm = gcm;
 		return this;
 	}
-	public KiiPushMessage setJPush(JPushMessage jpush) {
+	public KiiPushMessage setJPush(KiiJPushMessage jpush) {
 		if (jpush != null) {
 			jpush.setEnable(true);
 		}
 		this.jpush = jpush;
 		return this;
 	}
-	public KiiPushMessage setMqtt(MqttMessage mqtt) {
+	public KiiPushMessage setMqtt(KiiMqttMessage mqtt) {
 		if (mqtt != null) {
 			mqtt.setEnable(true);
 		}
@@ -87,19 +87,19 @@ public class KiiPushMessage {
 		JsonObject result = GsonUtils.clone(this.messageMeta);
 		result.add("data", GsonUtils.clone(this.messageBody));
 		if (this.apns == null) {
-			this.apns = new APNSMessage();
+			this.apns = new KiiAPNSMessage();
 		}
 		result.add("apns", this.apns.toJson());
 		if (this.gcm == null) {
-			this.gcm = new GCMMessage();
+			this.gcm = new KiiGCMMessage();
 		}
 		result.add("gcm", this.gcm.toJson());
 		if (this.jpush == null) {
-			this.jpush = new JPushMessage();
+			this.jpush = new KiiJPushMessage();
 		}
 		result.add("jpush", this.jpush.toJson());
 		if (this.mqtt == null) {
-			this.mqtt = new MqttMessage();
+			this.mqtt = new KiiMqttMessage();
 		}
 		result.add("mqtt", this.mqtt.toJson());
 		return result;

@@ -3,20 +3,20 @@ package com.kii.cloud.rest.client.model.push;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.util.GsonUtils;
 
-public class JPushMessage {
+public class KiiJPushMessage {
 	private final JsonObject messageMeta = new JsonObject();
 	private final JsonObject messageBody;
 	
-	public JPushMessage() {
+	public KiiJPushMessage() {
 		this.messageMeta.addProperty("enabled", false);
 		this.messageBody = new JsonObject();
 	}
-	public JPushMessage(JsonObject messageBody) {
+	public KiiJPushMessage(JsonObject messageBody) {
 		this.messageMeta.addProperty("enabled", true);
 		this.messageBody = messageBody;
 	}
 	
-	public JPushMessage setEnable(boolean enabled) {
+	public KiiJPushMessage setEnable(boolean enabled) {
 		this.messageMeta.addProperty("enabled", enabled);
 		return this;
 	}

@@ -5,50 +5,50 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.kii.cloud.rest.client.util.GsonUtils;
 
-public class APNSMessage {
+public class KiiAPNSMessage {
 	private final JsonObject messageMeta = new JsonObject();
 	private final JsonObject alert = new JsonObject();
 	private final JsonObject messageBody;
 	
-	public APNSMessage() {
+	public KiiAPNSMessage() {
 		this.messageMeta.addProperty("enabled", false);
 		this.messageBody = new JsonObject();
 	}
-	public APNSMessage(JsonObject messageBody) {
+	public KiiAPNSMessage(JsonObject messageBody) {
 		this.messageMeta.addProperty("enabled", true);
 		this.messageBody = messageBody;
 	}
 	
-	public APNSMessage setEnable(boolean enabled) {
+	public KiiAPNSMessage setEnable(boolean enabled) {
 		this.messageMeta.addProperty("enabled", enabled);
 		return this;
 	}
-	public APNSMessage setSound(String sound) {
+	public KiiAPNSMessage setSound(String sound) {
 		this.messageMeta.addProperty("sound", sound);
 		return this;
 	}
 	
-	public APNSMessage setBadge(int badge) {
+	public KiiAPNSMessage setBadge(int badge) {
 		this.messageMeta.addProperty("badge", badge);
 		return this;
 	}
-	public APNSMessage setActionLocKey(String actionLocKey) {
+	public KiiAPNSMessage setActionLocKey(String actionLocKey) {
 		this.messageMeta.addProperty("actionLocKey", actionLocKey);
 		return this;
 	}
-	public APNSMessage setLocKey(String locKey) {
+	public KiiAPNSMessage setLocKey(String locKey) {
 		this.messageMeta.addProperty("locKey", locKey);
 		return this;
 	}
-	public APNSMessage setContentAvailable(int contentAvailable) {
+	public KiiAPNSMessage setContentAvailable(int contentAvailable) {
 		this.messageMeta.addProperty("contentAvailable", contentAvailable);
 		return this;
 	}
-	public APNSMessage setCategory(String category) {
+	public KiiAPNSMessage setCategory(String category) {
 		this.messageMeta.addProperty("category", category);
 		return this;
 	}
-	public APNSMessage setAlertLocArgs(String[] locArgs) {
+	public KiiAPNSMessage setAlertLocArgs(String[] locArgs) {
 		if (locArgs == null || locArgs.length == 0) {
 			throw new IllegalArgumentException("locArgs is null or empty");
 		}
@@ -59,11 +59,11 @@ public class APNSMessage {
 		this.alert.add("locArgs", array);
 		return this;
 	}
-	public APNSMessage setAlertLaunchImage(String launchImage) {
+	public KiiAPNSMessage setAlertLaunchImage(String launchImage) {
 		this.alert.addProperty("launchImage", launchImage);
 		return this;
 	}
-	public APNSMessage setAlertBody(String body) {
+	public KiiAPNSMessage setAlertBody(String body) {
 		this.alert.addProperty("body", body);
 		return this;
 	}
