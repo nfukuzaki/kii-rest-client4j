@@ -18,7 +18,7 @@ import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.exception.KiiNotFoundException;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.servercode.KiiServerCodeVersion;
 import com.kii.cloud.rest.client.util.GsonUtils;
 
@@ -29,7 +29,7 @@ public class KiiServerCodeResourceTest {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		StringBuilder javascript = new StringBuilder();
@@ -50,7 +50,7 @@ public class KiiServerCodeResourceTest {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		StringBuilder javascript1 = new StringBuilder();
@@ -79,7 +79,7 @@ public class KiiServerCodeResourceTest {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		// deploying server code
@@ -123,7 +123,7 @@ public class KiiServerCodeResourceTest {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		String versionID = rest.api().servercode().deploy(new File(getClass().getResource("get_server_time.js").getPath()));

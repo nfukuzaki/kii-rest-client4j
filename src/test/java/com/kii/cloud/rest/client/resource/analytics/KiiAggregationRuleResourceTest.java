@@ -12,8 +12,8 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
 import com.kii.cloud.rest.client.model.KiiScope;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.analytics.FieldType;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationAggregateRule;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationGroupByRule;
@@ -30,7 +30,7 @@ public class KiiAggregationRuleResourceTest {
 	public void test() throws Exception {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		// listing conversion rules

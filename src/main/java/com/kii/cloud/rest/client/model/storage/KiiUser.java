@@ -88,10 +88,6 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public boolean hasPassword() {
 		return PROPERTY_HAS_PASSWORD.get(this.json);
 	}
-	@Override
-	public boolean isAdmin() {
-		return false;
-	}
 	
 	public abstract boolean isPseudo();
 	

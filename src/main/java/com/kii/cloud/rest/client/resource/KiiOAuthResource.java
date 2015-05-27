@@ -6,9 +6,8 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
-import com.kii.cloud.rest.client.model.KiiUserCredentials;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
@@ -35,7 +34,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
 	@AnonymousAPI
-	public KiiUserCredentials getAccessToken(String identifier, String password) throws KiiRestException {
+	public KiiCredentials getAccessToken(String identifier, String password) throws KiiRestException {
 		return this.getAccessToken(identifier, password, null);
 	}
 	/**
@@ -47,7 +46,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
 	@AnonymousAPI
-	public KiiUserCredentials getAccessToken(String identifier, String password, Long expiresAt) throws KiiRestException {
+	public KiiCredentials getAccessToken(String identifier, String password, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("grant_type", "password");
@@ -60,7 +59,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiUserCredentials(responseBody);
+			return new KiiCredentials(responseBody);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -73,7 +72,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/admin-features/
 	 */
 	@AnonymousAPI
-	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret) throws KiiRestException {
+	public KiiCredentials getAdminAccessToken(String clientID, String clientSecret) throws KiiRestException {
 		return this.getAdminAccessToken(clientID, clientSecret, null);
 	}
 	/**
@@ -85,7 +84,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/admin-features/
 	 */
 	@AnonymousAPI
-	public KiiAdminCredentials getAdminAccessToken(String clientID, String clientSecret, Long expiresAt) throws KiiRestException {
+	public KiiCredentials getAdminAccessToken(String clientID, String clientSecret, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("grant_type", "client_credentials");
@@ -98,7 +97,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiAdminCredentials(responseBody);
+			return new KiiCredentials(responseBody);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -110,7 +109,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
 	@AnonymousAPI
-	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials) throws KiiRestException {
+	public KiiCredentials refreshAccessToken(KiiCredentialsContainer credentials) throws KiiRestException {
 		return refreshAccessToken(credentials, null);
 	}
 	/**
@@ -121,11 +120,32 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
 	@AnonymousAPI
-	public KiiCredentialsContainer refreshAccessToken(KiiCredentialsContainer credentials, Long expiresAt) throws KiiRestException {
+	public KiiCredentials refreshAccessToken(KiiCredentialsContainer credentials, Long expiresAt) throws KiiRestException {
+		return refreshAccessToken(credentials.getRefreshToken(), expiresAt);
+	}
+	/**
+	 * @param refreshToken
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
+	 */
+	@AnonymousAPI
+	public KiiCredentials refreshAccessToken(String refreshToken) throws KiiRestException {
+		return this.refreshAccessToken(refreshToken, null);
+	}
+	/**
+	 * @param refreshToken
+	 * @param expiresAt
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
+	 */
+	@AnonymousAPI
+	public KiiCredentials refreshAccessToken(String refreshToken, Long expiresAt) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("grant_type", "refresh_token");
-		requestBody.addProperty("refresh_token", credentials.getRefreshToken());
+		requestBody.addProperty("refresh_token", refreshToken);
 		if (expiresAt != null) {
 			requestBody.addProperty("expires_at", expiresAt);
 		}
@@ -133,11 +153,7 @@ public class KiiOAuthResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			if (credentials.isAdmin()) {
-				return new KiiAdminCredentials(responseBody);
-			} else {
-				return new KiiUserCredentials(responseBody);
-			}
+			return new KiiCredentials(responseBody);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -146,5 +162,4 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	public String getPath() {
 		return BASE_PATH;
 	}
-
 }

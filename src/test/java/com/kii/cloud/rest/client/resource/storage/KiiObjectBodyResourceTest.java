@@ -20,7 +20,7 @@ import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.exception.KiiNotFoundException;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.storage.KiiChunkedDownloadContext;
 import com.kii.cloud.rest.client.model.storage.KiiChunkedUploadContext;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
@@ -173,7 +173,7 @@ public class KiiObjectBodyResourceTest {
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
 		rest.api().users(user).buckets(userBucketName).objects(userObject).body().upload("image/jpg", is);
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		String appBucketName = "moved";
 		
@@ -211,7 +211,7 @@ public class KiiObjectBodyResourceTest {
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
 		rest.api().users(user).buckets(userBucketName).objects(userObject).body().upload("image/jpg", is);
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		String groupBucketName = "moved";
 		
@@ -257,7 +257,7 @@ public class KiiObjectBodyResourceTest {
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
 		rest.api().users(user1).buckets(userBucketName).objects(userObject1).body().upload("image/jpg", is);
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		// creating object (dest)
@@ -307,7 +307,7 @@ public class KiiObjectBodyResourceTest {
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
 		rest.api().things(thing1).buckets(thingBucketName).objects(thingObject1).body().upload("image/jpg", is);
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		// creating object (dest)

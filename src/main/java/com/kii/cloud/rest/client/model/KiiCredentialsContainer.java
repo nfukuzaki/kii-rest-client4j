@@ -5,5 +5,4 @@ public interface KiiCredentialsContainer {
 	public String getAccessToken();
 	public String getRefreshToken();
 	public boolean hasCredentials();
-	public boolean isAdmin();
 }

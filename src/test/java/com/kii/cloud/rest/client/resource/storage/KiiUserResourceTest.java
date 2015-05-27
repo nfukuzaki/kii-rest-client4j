@@ -25,8 +25,7 @@ import com.kii.cloud.rest.client.TestUtils;
 import com.kii.cloud.rest.client.exception.KiiForbiddenException;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.exception.KiiUnauthorizedException;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
-import com.kii.cloud.rest.client.model.KiiUserCredentials;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
@@ -75,7 +74,7 @@ public class KiiUserResourceTest {
 			Assert.fail("KiiRestException should be thrown.");
 		} catch (KiiRestException expected) {
 		}
-		KiiUserCredentials credentials = rest.api().oauth().getAccessToken(username, newPassword);
+		KiiCredentials credentials = rest.api().oauth().getAccessToken(username, newPassword);
 		rest.setCredentials(credentials);
 		// reseting password
 		rest.api().users(user2).resetPassword(NotificationMethod.EMAIL);
@@ -138,7 +137,7 @@ public class KiiUserResourceTest {
 		assertFalse(user.isEmailAddressVerified());
 		
 		// switch admin context
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		String verificationCode = rest.api().users(registeredUser).getEmailVerificationCode();
 		assertNotNull(verificationCode);
@@ -176,7 +175,7 @@ public class KiiUserResourceTest {
 		assertFalse(user.isPhoneNumberVerified());
 		
 		// switch admin context
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		String verificationCode = rest.api().users(registeredUser).getPhoneVerificationCode();
 		assertNotNull(verificationCode);
@@ -214,7 +213,7 @@ public class KiiUserResourceTest {
 		assertFalse(user.isEmailAddressVerified());
 		
 		// switch admin context
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		String verificationCode1 = rest.api().users(registeredUser).getEmailVerificationCode();
 		assertNotNull(verificationCode1);
@@ -247,7 +246,7 @@ public class KiiUserResourceTest {
 		assertFalse(user.isPhoneNumberVerified());
 		
 		// switch admin context
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		String verificationCode1 = rest.api().users(registeredUser).getPhoneVerificationCode();
 		assertNotNull(verificationCode1);
@@ -368,9 +367,7 @@ public class KiiUserResourceTest {
 		KiiObject object = new KiiObject().set("size", 1024);
 		rest.api().users(user).buckets(userBucketName).objects().save(object);
 		
-		JsonObject json = new JsonObject();
-		json.addProperty("access_token", "xxxxxxxxxxxxxxxxxxxxxxxxxx");
-		KiiUserCredentials credentials = new KiiUserCredentials(json);
+		KiiCredentials credentials = new KiiCredentials("xxxxxxxxxxxxxxxxxxxxxxxxxx");
 		rest.setCredentials(credentials);
 		
 		try {

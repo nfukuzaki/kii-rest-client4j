@@ -229,5 +229,38 @@
             {"Sina"           : false},
             {"QQ"             : false}
         ]
+    },
+    {
+        "AppID"            : "89c489e5",
+        "AppKey"           : "65748ae2f17c38f60cbbd97c0b574d4c",
+        "ClientID"         : null,
+        "ClientSecret"     : null,
+        "Site"             : "JP",
+        "Endpoint"         : null,
+        "RefreshToken"     : true,
+        "EmailVerification": false,
+        "PhoneVerification": false,
+        "Privacy"          : true,
+        "EncryptEnabled"   : false,
+        "AggregationRuleID": null,
+        "PushEnabled"      : [
+            {"GCM"   : false},
+            {"APNS"  : false},
+            {"JPush" : false}
+        ],
+        "SNSEnabled"       : [
+            {"Google"         : false},
+            {"Yahoo"          : false},
+            {"Twitter"        : false},
+            {"TwitterNative"  : false},
+            {"Facebook"       : false},
+            {"Live"           : false},
+            {"LinkedIn"       : false},
+            {"DropBox"        : false},
+            {"Box"            : false},
+            {"RenRen"         : false},
+            {"Sina"           : false},
+            {"QQ"             : false}
+        ]
     }
 ]

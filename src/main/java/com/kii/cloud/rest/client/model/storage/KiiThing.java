@@ -78,10 +78,6 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 		PROPERTY_CREATED.set(this.json, created);
 		return this;
 	}
-	@Override
-	public boolean isAdmin() {
-		return false;
-	}
 	
 	public String getThingID() {
 		return PROPERTY_THING_ID.get(this.json);

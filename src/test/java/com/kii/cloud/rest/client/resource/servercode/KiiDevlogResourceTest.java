@@ -19,7 +19,7 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.servercode.KiiDevlog;
 import com.kii.cloud.rest.client.model.servercode.KiiDevlogFilter;
 import com.kii.cloud.rest.client.model.servercode.KiiDevlog.LogLevel;
@@ -35,7 +35,7 @@ public class KiiDevlogResourceTest {
 		final TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		final KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		List<KiiDevlog> logs = rest.logs().cat(
@@ -53,7 +53,7 @@ public class KiiDevlogResourceTest {
 		final TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		final CountDownLatch latch = new CountDownLatch(3);

@@ -11,7 +11,7 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.conf.KiiAppConfigurationParameter;
 
 @RunWith(SkipAcceptableTestRunner.class)
@@ -21,7 +21,7 @@ public class KiiParametersConfigurationResourceTest {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		KiiAppConfigurationParameter parameter = rest.api().configuration().parameters().get();
@@ -45,7 +45,7 @@ public class KiiParametersConfigurationResourceTest {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		KiiAppConfigurationParameter parameter = rest.api().configuration().parameters().get();

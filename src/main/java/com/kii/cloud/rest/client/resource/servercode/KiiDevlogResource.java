@@ -91,7 +91,7 @@ public class KiiDevlogResource {
 		if (this.endpoint == null) {
 			throw new IllegalStateException("Devlog endpoint address not set.");
 		}
-		if (this.credentials == null || !this.credentials.isAdmin()) {
+		if (this.credentials == null) {
 			throw new IllegalStateException("Admin credentials not set.");
 		}
 		final JsonObject requestBody = filter.getJsonObject();
@@ -193,7 +193,7 @@ public class KiiDevlogResource {
 		if (this.endpoint == null) {
 			throw new IllegalStateException("Devlog endpoint address not set.");
 		}
-		if (this.credentials == null || !this.credentials.isAdmin()) {
+		if (this.credentials == null) {
 			throw new IllegalStateException("Admin credentials not set.");
 		}
 		final JsonObject requestBody = filter.getJsonObject();

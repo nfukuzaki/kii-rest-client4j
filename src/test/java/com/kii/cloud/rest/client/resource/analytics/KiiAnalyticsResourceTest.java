@@ -16,7 +16,7 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
-import com.kii.cloud.rest.client.model.KiiAdminCredentials;
+import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
 import com.kii.cloud.rest.client.model.analytics.KiiAnalyticsQuery;
 import com.kii.cloud.rest.client.model.analytics.KiiAnalyticsResult;
@@ -136,7 +136,7 @@ public class KiiAnalyticsResourceTest {
 	public void createTestData() throws Exception {
 		TestApp testApp = TestEnvironments.random(new TestAppFilter().aggregationRuleID(1388L).hasAppAdminCredentials());
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
-		KiiAdminCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
+		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		Long aggregationRuleID = testApp.getAggregationRuleID();
