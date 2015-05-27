@@ -175,7 +175,8 @@ Unit tests sends request to KiiCloud server according `src/test/resources/test_c
 Some test cases need app admin credentials or access token that is issued by SNS, but you must not push the these credentials to the github.  
 You can write these credentials to `src/test/resources/test_admin_credential_config.json` instead of `test_config.json`.  
 `test_admin_credential_config.json` is specified by the .gitignore file.  
-If you don't specify these credentials, some tests will be skipped(ignored).
+If you don't specify these credentials, some tests will be skipped(ignored).  
+For more detail, Please refer to the [TestEnvironments.java](https://github.com/nfukuzaki/kii-rest-client4j/blob/master/src/test/java/com/kii/cloud/rest/client/TestEnvironments.java).
 
 ## Example usage
 ```java
