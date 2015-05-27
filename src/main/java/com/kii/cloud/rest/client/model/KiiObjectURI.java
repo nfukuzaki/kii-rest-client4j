@@ -92,4 +92,41 @@ public class KiiObjectURI extends KiiURI {
 		sb.append(this.objectID);
 		return sb.toString();
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((bucketName == null) ? 0 : bucketName.hashCode());
+		result = prime * result
+				+ ((objectID == null) ? 0 : objectID.hashCode());
+		result = prime * result + ((scopeID == null) ? 0 : scopeID.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KiiObjectURI other = (KiiObjectURI) obj;
+		if (bucketName == null) {
+			if (other.bucketName != null)
+				return false;
+		} else if (!bucketName.equals(other.bucketName))
+			return false;
+		if (objectID == null) {
+			if (other.objectID != null)
+				return false;
+		} else if (!objectID.equals(other.objectID))
+			return false;
+		if (scopeID == null) {
+			if (other.scopeID != null)
+				return false;
+		} else if (!scopeID.equals(other.scopeID))
+			return false;
+		return true;
+	}
 }

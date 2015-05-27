@@ -125,6 +125,37 @@ public class KiiAcl {
 			return this.prefix + ":" + this.identifier;
 		}
 		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ ((identifier == null) ? 0 : identifier.hashCode());
+			result = prime * result
+					+ ((prefix == null) ? 0 : prefix.hashCode());
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Subject other = (Subject) obj;
+			if (identifier == null) {
+				if (other.identifier != null)
+					return false;
+			} else if (!identifier.equals(other.identifier))
+				return false;
+			if (prefix == null) {
+				if (other.prefix != null)
+					return false;
+			} else if (!prefix.equals(other.prefix))
+				return false;
+			return true;
+		}
+		@Override
 		public int compareTo(Subject o) {
 			int c = this.prefix.compareTo(o.prefix);
 			if (c != 0) {

@@ -26,9 +26,8 @@ public class KiiGroupURI extends KiiScopeURI {
 			throw new IllegalArgumentException("'" + str + "' is not Kii Group URI");
 		}
 	}
-
 	public KiiGroupURI(String groupID) {
 		super(KiiScope.GROUP, groupID);
 	}
-
+	
 }

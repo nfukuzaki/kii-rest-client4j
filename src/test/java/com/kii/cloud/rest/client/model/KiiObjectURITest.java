@@ -34,9 +34,12 @@ public class KiiObjectURITest {
 		rest.api().buckets(appBucketName).objects().save(object1);
 		
 		KiiObjectURI uri = KiiURIUtils.createAppScopeObject(appBucketName, object1.getObjectID());
-		assertEquals(String.format("kiicloud://buckets/%s/objects/%s", appBucketName, object1.getObjectID()), uri.toString());
-		KiiObject object2 = rest.api().objects(uri).get();
 		
+		String expectedUriString = String.format("kiicloud://buckets/%s/objects/%s", appBucketName, object1.getObjectID());
+		assertEquals(expectedUriString, uri.toString());
+		assertEquals(KiiURI.parse(expectedUriString), KiiObjectURI.create(expectedUriString));
+		
+		KiiObject object2 = rest.api().objects(uri).get();
 		assertEquals(object1.getObjectID(), object2.getObjectID());
 		assertEquals(object1.getInt("score"), object2.getInt("score"));
 		
@@ -63,9 +66,12 @@ public class KiiObjectURITest {
 		rest.api().groups(group).buckets(groupBucketName).objects().save(object1);
 		
 		KiiObjectURI uri = KiiURIUtils.createGroupScopeObject(group.getGroupID(), groupBucketName, object1.getObjectID());
-		assertEquals(String.format("kiicloud://groups/%s/buckets/%s/objects/%s", group.getGroupID(), groupBucketName, object1.getObjectID()), uri.toString());
-		KiiObject object2 = rest.api().objects(uri).get();
 		
+		String expectedUriString = String.format("kiicloud://groups/%s/buckets/%s/objects/%s", group.getGroupID(), groupBucketName, object1.getObjectID());
+		assertEquals(expectedUriString, uri.toString());
+		assertEquals(KiiURI.parse(expectedUriString), KiiObjectURI.create(expectedUriString));
+		
+		KiiObject object2 = rest.api().objects(uri).get();
 		assertEquals(object1.getObjectID(), object2.getObjectID());
 		assertEquals(object1.getInt("score"), object2.getInt("score"));
 		
@@ -87,9 +93,11 @@ public class KiiObjectURITest {
 		rest.api().users(user).buckets(userBucketName).objects().save(object1);
 		
 		KiiObjectURI uri = KiiURIUtils.createUserScopeObject(user.getUserID(), userBucketName, object1.getObjectID());
-		assertEquals(String.format("kiicloud://users/%s/buckets/%s/objects/%s", user.getUserID(), userBucketName, object1.getObjectID()), uri.toString());
-		KiiObject object2 = rest.api().objects(uri).get();
+		String expectedUriString = String.format("kiicloud://users/%s/buckets/%s/objects/%s", user.getUserID(), userBucketName, object1.getObjectID());
+		assertEquals(expectedUriString, uri.toString());
+		assertEquals(KiiURI.parse(expectedUriString), KiiObjectURI.create(expectedUriString));
 		
+		KiiObject object2 = rest.api().objects(uri).get();
 		assertEquals(object1.getObjectID(), object2.getObjectID());
 		assertEquals(object1.getInt("score"), object2.getInt("score"));
 		
@@ -128,7 +136,9 @@ public class KiiObjectURITest {
 		rest.api().things(thing).buckets(thingBucketName).objects().save(object1);
 		
 		KiiObjectURI uri = KiiURIUtils.createThingScopeObject(thing.getThingID(), thingBucketName, object1.getObjectID());
-		assertEquals(String.format("kiicloud://things/%s/buckets/%s/objects/%s", thing.getThingID(), thingBucketName, object1.getObjectID()), uri.toString());
+		String expectedUriString = String.format("kiicloud://things/%s/buckets/%s/objects/%s", thing.getThingID(), thingBucketName, object1.getObjectID());
+		assertEquals(expectedUriString, uri.toString());
+		assertEquals(KiiURI.parse(expectedUriString), KiiObjectURI.create(expectedUriString));
 		KiiObject object2 = rest.api().objects(uri).get();
 		
 		assertEquals(object1.getObjectID(), object2.getObjectID());

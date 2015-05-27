@@ -22,10 +22,13 @@ import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.TestUtils;
+import com.kii.cloud.rest.client.exception.KiiForbiddenException;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiUnauthorizedException;
 import com.kii.cloud.rest.client.model.KiiAdminCredentials;
 import com.kii.cloud.rest.client.model.KiiUserCredentials;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
+import com.kii.cloud.rest.client.model.storage.KiiObject;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.storage.KiiUserResource.NotificationMethod;
@@ -326,5 +329,54 @@ public class KiiUserResourceTest {
 		assertEquals(new BigDecimal("3.14"), actual.getBigDecimal("bigdecimal_field"));
 		assertEquals(new JsonParser().parse("{\"json\":123}"), actual.getJsonObject("json_field"));
 		assertEquals(new JsonParser().parse("[1,2,3]"), actual.getJsonArray("json_array_field"));
+	}
+	@Test
+	public void unauthorizedExceptionTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		
+		// creating object
+		KiiObject object = new KiiObject().set("size", 1024);
+		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		
+		rest.setCredentials(null);
+		
+		try {
+			rest.api().users(user).buckets(userBucketName).objects(object).get();
+			fail("KiiUnauthorizedException should be thrown");
+		} catch (KiiUnauthorizedException e) {
+		}
+	}
+	@Test
+	public void forbiddenExceptionTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		
+		// creating object
+		KiiObject object = new KiiObject().set("size", 1024);
+		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		
+		JsonObject json = new JsonObject();
+		json.addProperty("access_token", "xxxxxxxxxxxxxxxxxxxxxxxxxx");
+		KiiUserCredentials credentials = new KiiUserCredentials(json);
+		rest.setCredentials(credentials);
+		
+		try {
+			rest.api().users(user).buckets(userBucketName).objects(object).get();
+			fail("KiiForbiddenException should be thrown");
+		} catch (KiiForbiddenException e) {
+		}
 	}
 }

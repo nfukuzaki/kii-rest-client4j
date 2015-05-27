@@ -15,6 +15,9 @@ public class KiiGroup extends KiiJsonModel {
 
 	public KiiGroup() {
 	}
+	public KiiGroup(String name) {
+		PROPERTY_NAME.set(this.json, name);
+	}
 	public KiiGroup(JsonObject json) {
 		super(json);
 	}
