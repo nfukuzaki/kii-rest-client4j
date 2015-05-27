@@ -37,11 +37,10 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 	
 	/**
 	 * @param installation
-	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/push-notification/preparation/
 	 */
-	public KiiPushInstallation register(KiiPushInstallation installation) throws KiiRestException {
+	public void register(KiiPushInstallation installation) throws KiiRestException {
 		if (installation == null) {
 			throw new IllegalArgumentException("installation is null");
 		}
@@ -50,7 +49,8 @@ public class KiiPushInstallationsResource extends KiiRestSubResource {
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiPushInstallation(responseBody);
+			installation.setInstallationID(KiiPushInstallation.PROPERTY_INSTALLATION_ID.get(responseBody));
+			installation.setInstallationRegistrationID(KiiPushInstallation.PROPERTY_INSTALLATION_REGISTRATION_ID.get(responseBody));
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

@@ -11,6 +11,7 @@ import com.kii.cloud.rest.client.model.KiiThingURI;
 import com.kii.cloud.rest.client.model.KiiUserURI;
 import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
+import com.kii.cloud.rest.client.model.push.KiiPushInstallation;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
@@ -42,6 +43,7 @@ import com.kii.cloud.rest.client.resource.storage.KiiThingResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingsResource;
 import com.kii.cloud.rest.client.resource.storage.KiiUserResource;
 import com.kii.cloud.rest.client.resource.storage.KiiUsersResource;
+import com.kii.cloud.rest.client.util.StringUtils;
 
 /**
  * Represents the application resource like following URI:
@@ -174,6 +176,17 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	}
 	public KiiPushInstallationsResource installations() {
 		return new KiiPushInstallationsResource(this);
+	}
+	public KiiPushInstallationResource installations(KiiPushInstallation pushInstallation) {
+		if (pushInstallation == null) {
+			throw new IllegalArgumentException("pushInstallation is null"); 
+		}
+		if (!StringUtils.isEmpty(pushInstallation.getInstallationID())) {
+			return this.installations(pushInstallation.getInstallationID());
+		} else if (!StringUtils.isEmpty(pushInstallation.getInstallationRegistrationID()) && pushInstallation.getInstallationType() != null) {
+			return this.installations(pushInstallation.getInstallationType(), pushInstallation.getInstallationRegistrationID());
+		}
+		throw new IllegalArgumentException("PushInstallation don't have the InstallationID");
 	}
 	public KiiPushInstallationResource installations(String installationID) {
 		return new KiiPushInstallationResource(this.installations(), installationID);

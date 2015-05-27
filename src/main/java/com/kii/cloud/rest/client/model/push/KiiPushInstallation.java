@@ -14,7 +14,7 @@ public class KiiPushInstallation extends KiiJsonModel {
 	
 	public static final KiiJsonProperty<String> PROPERTY_INSTALLATION_ID = new KiiJsonProperty<String>(String.class, "installationID");
 	public static final KiiJsonProperty<String> PROPERTY_INSTALLATION_REGISTRATION_ID = new KiiJsonProperty<String>(String.class, "installationRegistrationID");
-	public static final KiiJsonProperty<String> PROPERTY_INSTALLATION_TYPE = new KiiJsonProperty<String>(String.class, "installationType");
+	public static final KiiJsonProperty<String> PROPERTY_INSTALLATION_TYPE = new KiiJsonProperty<String>(String.class, "installationType", "deviceType");
 	public static final KiiJsonProperty<String> PROPERTY_USER_ID = new KiiJsonProperty<String>(String.class, "userID");
 	public static final KiiJsonProperty<String> PROPERTY_THING_ID = new KiiJsonProperty<String>(String.class, "thingID");
 	public static final KiiJsonProperty<Boolean> PROPERTY_DEVELOPMENT = new KiiJsonProperty<Boolean>(Boolean.class, "development");
@@ -40,7 +40,7 @@ public class KiiPushInstallation extends KiiJsonModel {
 		PROPERTY_INSTALLATION_REGISTRATION_ID.set(this.json, installationRegistrationID);
 		return this;
 	}
-	public InstallationType getEnstallationType() {
+	public InstallationType getInstallationType() {
 		if (PROPERTY_INSTALLATION_TYPE.has(this.json)) {
 			return Enum.valueOf(InstallationType.class, PROPERTY_INSTALLATION_TYPE.get(this.json));
 		}
