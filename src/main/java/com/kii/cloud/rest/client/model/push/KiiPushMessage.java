@@ -19,18 +19,30 @@ public class KiiPushMessage {
 		this.messageBody = messageBody;
 	}
 	public KiiPushMessage setAPNS(APNSMessage apns) {
+		if (apns != null) {
+			apns.setEnable(true);
+		}
 		this.apns = apns;
 		return this;
 	}
 	public KiiPushMessage setGCM(GCMMessage gcm) {
+		if (gcm != null) {
+			gcm.setEnable(true);
+		}
 		this.gcm = gcm;
 		return this;
 	}
 	public KiiPushMessage setJPush(JPushMessage jpush) {
+		if (jpush != null) {
+			jpush.setEnable(true);
+		}
 		this.jpush = jpush;
 		return this;
 	}
 	public KiiPushMessage setMqtt(MqttMessage mqtt) {
+		if (mqtt != null) {
+			mqtt.setEnable(true);
+		}
 		this.mqtt = mqtt;
 		return this;
 	}

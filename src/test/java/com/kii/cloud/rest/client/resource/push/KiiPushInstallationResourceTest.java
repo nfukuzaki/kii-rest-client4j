@@ -91,7 +91,7 @@ public class KiiPushInstallationResourceTest {
 		JsonObject messageBody = new JsonObject();
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
-		message.setMqtt(new MqttMessage().setEnable(true));
+		message.setMqtt(new MqttMessage());
 		rest.api().things(thing).topics("thing-topic").send(message);
 		
 		// deleting push installation
