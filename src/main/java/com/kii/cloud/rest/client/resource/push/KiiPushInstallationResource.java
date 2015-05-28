@@ -109,8 +109,10 @@ public class KiiPushInstallationResource extends KiiRestSubResource {
 						String waitTime = e.getHttpHeaders().get("Retry-After");
 						try {
 							if (waitTime != null) {
+								getLogger().info(String.format("Wait %d minutes to prepare the mqtt-endpoint.", Integer.parseInt(waitTime)));
 								Thread.sleep(1000 * Integer.parseInt(waitTime));
 							} else {
+								getLogger().info("Wait 3 minutes to prepare the mqtt-endpoint.");
 								Thread.sleep(1000 * 3);
 							}
 						} catch (InterruptedException ignore) {
