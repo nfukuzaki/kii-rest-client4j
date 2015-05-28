@@ -2,11 +2,13 @@ package com.kii.cloud.rest.client.exception;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.util.GsonUtils;
+import com.squareup.okhttp.Headers;
 
 public class KiiRestException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private final int status;
 	private final JsonObject body;
+	private final Headers httpHeaders;
 	
 	public KiiRestException(String message) {
 		this(message, null);
@@ -15,17 +17,22 @@ public class KiiRestException extends Exception {
 		super(message, cause);
 		this.status = 0;
 		this.body = null;
+		this.httpHeaders = new Headers.Builder().build();
 	}
-	public KiiRestException(String message, int status, JsonObject body) {
+	public KiiRestException(String message, int status, JsonObject body, Headers httpHeaders) {
 		super(message);
 		this.status = status;
 		this.body = body;
+		this.httpHeaders = httpHeaders;
 	}
 	public int getStatus() {
 		return status;
 	}
 	public JsonObject getBody() {
 		return body;
+	}
+	public Headers getHttpHeaders() {
+		return this.httpHeaders;
 	}
 	public String getErrorCode() {
 		if (this.body == null) {

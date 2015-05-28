@@ -252,21 +252,21 @@ public abstract class KiiRestResource {
 			this.getLogger().info(responseBody);
 			switch (response.code()) {
 				case 400:
-					throw new KiiBadRequestException(request.getCurl(), errorDetail);
+					throw new KiiBadRequestException(request.getCurl(), errorDetail, response.headers());
 				case 401:
-					throw new KiiUnauthorizedException(request.getCurl(), errorDetail);
+					throw new KiiUnauthorizedException(request.getCurl(), errorDetail, response.headers());
 				case 403:
-					throw new KiiForbiddenException(request.getCurl(), errorDetail);
+					throw new KiiForbiddenException(request.getCurl(), errorDetail, response.headers());
 				case 404:
-					throw new KiiNotFoundException(request.getCurl(), errorDetail);
+					throw new KiiNotFoundException(request.getCurl(), errorDetail, response.headers());
 				case 409:
-					throw new KiiConflictException(request.getCurl(), errorDetail);
+					throw new KiiConflictException(request.getCurl(), errorDetail, response.headers());
 				case 500:
-					throw new KiiInternalServerErrorException(request.getCurl(), errorDetail);
+					throw new KiiInternalServerErrorException(request.getCurl(), errorDetail, response.headers());
 				case 503:
-					throw new KiiServiceUnavailableException(request.getCurl(), errorDetail);
+					throw new KiiServiceUnavailableException(request.getCurl(), errorDetail, response.headers());
 				default:
-					throw new KiiRestException(request.getCurl(), response.code(), errorDetail);
+					throw new KiiRestException(request.getCurl(), response.code(), errorDetail, response.headers());
 			}
 		}
 	}

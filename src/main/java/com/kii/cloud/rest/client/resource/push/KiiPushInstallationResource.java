@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
+import com.kii.cloud.rest.client.exception.KiiServiceUnavailableException;
 import com.kii.cloud.rest.client.model.push.KiiMqttEndpoint;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
@@ -85,12 +86,40 @@ public class KiiPushInstallationResource extends KiiRestSubResource {
 	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/push-notification/preparation/
 	 */
 	public KiiMqttEndpoint getMqttEndpoint() throws KiiRestException {
+		return this.getMqttEndpoint(false);
+	}
+	/**
+	 * @param retry
+	 * @return
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/thing/thing-rest/push-notification/preparation/
+	 */
+	public KiiMqttEndpoint getMqttEndpoint(boolean retry) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl("/mqtt-endpoint"), Method.GET, headers);
 		try {
-			Response response = this.execute(request);
-			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiMqttEndpoint(responseBody);
+			while (true) {
+				try {
+					Response response = this.execute(request);
+					JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+					return new KiiMqttEndpoint(responseBody);
+				} catch (KiiServiceUnavailableException e) {
+					if (retry) {
+						retry = false;
+						String waitTime = e.getHttpHeaders().get("Retry-After");
+						try {
+							if (waitTime != null) {
+								Thread.sleep(1000 * Integer.parseInt(waitTime));
+							} else {
+								Thread.sleep(1000 * 3);
+							}
+						} catch (InterruptedException ignore) {
+						}
+					} else {
+						throw e;
+					}
+				}
+			}
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

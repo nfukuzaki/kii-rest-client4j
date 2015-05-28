@@ -27,7 +27,6 @@ import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
 import com.kii.cloud.rest.client.exception.KiiNotFoundException;
-import com.kii.cloud.rest.client.exception.KiiServiceUnavailableException;
 import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.push.KiiMqttEndpoint;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation;
@@ -95,19 +94,8 @@ public class KiiPushInstallationResourceTest {
 		rest.api().things(thing).topics("thing-topic").subscribe(thing);
 		
 		// getting MQTT Endpoint
-		KiiMqttEndpoint mqttEndpoint = null;
-		for (int retry = 5; retry > 0; retry--) {
-			Thread.sleep(3000);
-			try {
-				mqttEndpoint = rest.api().installations(pushInstallation2).getMqttEndpoint();
-				assertEquals(pushInstallation2.getInstallationID(), mqttEndpoint.getInstallationID());
-				break;
-			} catch (KiiServiceUnavailableException e) {
-			}
-		}
-		if (mqttEndpoint == null) {
-			fail("Failed to get KiiMqttEndpoint");
-		}
+		KiiMqttEndpoint mqttEndpoint = rest.api().installations(pushInstallation2).getMqttEndpoint(true);
+		assertEquals(pushInstallation2.getInstallationID(), mqttEndpoint.getInstallationID());
 		
 		// receiving MQTT
 		final CountDownLatch latch = new CountDownLatch(1);
