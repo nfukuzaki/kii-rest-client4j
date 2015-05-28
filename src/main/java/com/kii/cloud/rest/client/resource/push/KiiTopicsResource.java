@@ -46,15 +46,15 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 	 * @return
 	 * @throws KiiRestException
 	 */
-	public KiiListResult<String> list() throws KiiRestException {
-		return this.list(null);
+	public KiiListResult<String> listSubscribable() throws KiiRestException {
+		return this.listSubscribable(null);
 	}
 	/**
 	 * @param paginationKey
 	 * @return
 	 * @throws KiiRestException
 	 */
-	public KiiListResult<String> list(String paginationKey) throws KiiRestException {
+	public KiiListResult<String> listSubscribable(String paginationKey) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		String param = StringUtils.isEmpty(paginationKey) ? "" : "?paginationKey=" + paginationKey;
 		KiiRestRequest request = new KiiRestRequest(getUrl() + param, Method.GET, headers);
