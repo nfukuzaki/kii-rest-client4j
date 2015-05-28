@@ -40,20 +40,20 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	/**
 	 * @param identifier
 	 * @param password
-	 * @param expiresAt
+	 * @param expiresIn The life time of access token in seconds.
 	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
 	@AnonymousAPI
-	public KiiCredentials getAccessToken(String identifier, String password, Long expiresAt) throws KiiRestException {
+	public KiiCredentials getAccessToken(String identifier, String password, Integer expiresIn) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("grant_type", "password");
 		requestBody.addProperty("username", identifier);
 		requestBody.addProperty("password", password);
-		if (expiresAt != null) {
-			requestBody.addProperty("expiresAt", expiresAt);
+		if (expiresIn != null) {
+			requestBody.addProperty("expiresAt", calculateExpiresAt(expiresIn));
 		}
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, requestBody);
 		try {
@@ -78,20 +78,20 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	/**
 	 * @param clientID
 	 * @param clientSecret
-	 * @param expiresAt
+	 * @param expiresIn The life time of access token in seconds.
 	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/admin-features/
 	 */
 	@AnonymousAPI
-	public KiiCredentials getAdminAccessToken(String clientID, String clientSecret, Long expiresAt) throws KiiRestException {
+	public KiiCredentials getAdminAccessToken(String clientID, String clientSecret, Integer expiresIn) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("grant_type", "client_credentials");
 		requestBody.addProperty("client_id", clientID);
 		requestBody.addProperty("client_secret", clientSecret);
-		if (expiresAt != null) {
-			requestBody.addProperty("expiresAt", expiresAt);
+		if (expiresIn != null) {
+			requestBody.addProperty("expiresAt", calculateExpiresAt(expiresIn));
 		}
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, requestBody);
 		try {
@@ -114,14 +114,14 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	}
 	/**
 	 * @param credentials
-	 * @param expiresAt
+	 * @param expiresIn The life time of access token in seconds.
 	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
 	@AnonymousAPI
-	public KiiCredentials refreshAccessToken(KiiCredentialsContainer credentials, Long expiresAt) throws KiiRestException {
-		return refreshAccessToken(credentials.getRefreshToken(), expiresAt);
+	public KiiCredentials refreshAccessToken(KiiCredentialsContainer credentials, Integer expiresIn) throws KiiRestException {
+		return refreshAccessToken(credentials.getRefreshToken(), expiresIn);
 	}
 	/**
 	 * @param refreshToken
@@ -135,19 +135,19 @@ public class KiiOAuthResource extends KiiRestSubResource {
 	}
 	/**
 	 * @param refreshToken
-	 * @param expiresAt
+	 * @param expiresIn The life time of access token in seconds.
 	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-users/sign-in/
 	 */
 	@AnonymousAPI
-	public KiiCredentials refreshAccessToken(String refreshToken, Long expiresAt) throws KiiRestException {
+	public KiiCredentials refreshAccessToken(String refreshToken, Integer expiresIn) throws KiiRestException {
 		Map<String, String> headers = this.newAppHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("grant_type", "refresh_token");
 		requestBody.addProperty("refresh_token", refreshToken);
-		if (expiresAt != null) {
-			requestBody.addProperty("expires_at", expiresAt);
+		if (expiresIn != null) {
+			requestBody.addProperty("expires_at", calculateExpiresAt(expiresIn));
 		}
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, requestBody);
 		try {
@@ -158,6 +158,19 @@ public class KiiOAuthResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	/**
+	 * @param expiresIn The life time of access token in seconds.
+	 * @return
+	 */
+	private Long calculateExpiresAt(Integer expiresIn) {
+		long current = System.currentTimeMillis();
+		long expires = expiresIn == null ? 0L : expiresIn.longValue() * 1000;
+		if (expires > Long.MAX_VALUE - current) {
+			return Long.MAX_VALUE;
+		}
+		return current + expires;
+	}
+	
 	@Override
 	public String getPath() {
 		return BASE_PATH;
