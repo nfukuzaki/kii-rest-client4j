@@ -16,6 +16,7 @@ import com.kii.cloud.rest.client.OkHttpClientFactory;
 import com.kii.cloud.rest.client.exception.KiiBadRequestException;
 import com.kii.cloud.rest.client.exception.KiiConflictException;
 import com.kii.cloud.rest.client.exception.KiiForbiddenException;
+import com.kii.cloud.rest.client.exception.KiiGatewayTimeoutException;
 import com.kii.cloud.rest.client.exception.KiiInternalServerErrorException;
 import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.exception.KiiRestException;
@@ -171,6 +172,16 @@ public abstract class KiiRestResource {
 		}
 		throw new RuntimeException("Unexpected entity type.");
 	}
+	protected void logResponse(KiiRestRequest request, Response response) throws KiiRestException {
+		try {
+			String body = response.body().string();
+			this.getLogger().info(request.getCurl() + "  : " + response.code());
+			logHeader(response);
+			this.getLogger().info(body);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
 	protected void parseResponse(KiiRestRequest request, Response response) throws KiiRestException {
 		try {
 			String body = response.body().string();
@@ -265,6 +276,8 @@ public abstract class KiiRestResource {
 					throw new KiiInternalServerErrorException(request.getCurl(), errorDetail, response.headers());
 				case 503:
 					throw new KiiServiceUnavailableException(request.getCurl(), errorDetail, response.headers());
+				case 504:
+					throw new KiiGatewayTimeoutException(request.getCurl(), errorDetail, response.headers());
 				default:
 					throw new KiiRestException(request.getCurl(), response.code(), errorDetail, response.headers());
 			}

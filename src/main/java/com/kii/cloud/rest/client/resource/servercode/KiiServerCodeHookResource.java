@@ -66,6 +66,7 @@ public class KiiServerCodeHookResource extends KiiRestSubResource {
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.HEAD, headers);
 		try {
 			Response response = this.execute(request);
+			this.logResponse(request, response);
 			return response.isSuccessful();
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);

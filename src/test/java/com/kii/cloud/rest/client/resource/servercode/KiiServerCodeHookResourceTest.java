@@ -19,6 +19,7 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
+import com.kii.cloud.rest.client.KiiRest.Site;
 import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.servercode.KiiScheduleExecutionQuery;
 import com.kii.cloud.rest.client.model.servercode.KiiScheduleExecutionQueryClause;
@@ -58,7 +59,7 @@ public class KiiServerCodeHookResourceTest {
 	}
 	@Test
 	public void scheduleBasedExecutionResultsTest() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials().site(Site.JP));
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());

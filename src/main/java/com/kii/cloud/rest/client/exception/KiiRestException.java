@@ -45,15 +45,15 @@ public class KiiRestException extends Exception {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getMessage() + System.lineSeparator());
 		if (this.status != 0) {
-			sb.append("Status:" + this.status);
+			sb.append(" Status:" + this.status);
 		}
 		if (this.body != null) {
-			sb.append("Body:" + this.body.toString() + System.lineSeparator());
+			sb.append(" Body:" + this.body.toString() + System.lineSeparator());
 		} else {
-			sb.append("Body:" + System.lineSeparator());
+			sb.append(" Body:" + System.lineSeparator());
 		}
 		if (this.getCause() != null) {
-			sb.append("Cause:" + this.getCause().getMessage() + System.lineSeparator());
+			sb.append(" Cause:" + this.getCause().getMessage() + System.lineSeparator());
 		}
 		return sb.toString();
 	}

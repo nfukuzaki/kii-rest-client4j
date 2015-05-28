@@ -103,6 +103,7 @@ public class KiiThingOwnerResource extends KiiRestSubResource {
 		KiiRestRequest request = new KiiRestRequest(getUrl(owner.toString()), Method.HEAD, headers);
 		try {
 			Response response = this.execute(request);
+			this.logResponse(request, response);
 			return response.isSuccessful();
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
