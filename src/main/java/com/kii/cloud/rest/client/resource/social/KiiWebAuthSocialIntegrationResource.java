@@ -5,7 +5,11 @@ import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 
 /**
+ * Represents the server side auth resource like following URI:
  * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/integration/webauth
+ * </ul>
  */
 public class KiiWebAuthSocialIntegrationResource extends KiiRestSubResource {
 	

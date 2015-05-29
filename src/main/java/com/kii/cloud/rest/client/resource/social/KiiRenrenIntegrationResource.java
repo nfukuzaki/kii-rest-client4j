@@ -7,6 +7,13 @@ import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 
+/**
+ * Represents the RenRen integration resource like following URI:
+ * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/integration/renren
+ * </ul>
+ */
 public class KiiRenrenIntegrationResource extends KiiAbstractIntegrationResource {
 	
 	public static final String BASE_PATH = "/renren";

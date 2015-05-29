@@ -22,6 +22,16 @@ import com.kii.cloud.rest.client.util.GsonUtils;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.Response;
 
+/**
+ * Represents the topics resource like following URI:
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/topics
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/topics
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/topics
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/topics
+ * </ul>
+ *
+ */
 public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedResource {
 	public static final String BASE_PATH = "/topics";
 	public KiiTopicsResource(KiiAppResource parent) {

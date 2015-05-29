@@ -4,7 +4,11 @@ import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 
 /**
+ * Represents the application configuration resource like following URI:
  * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/configuration
+ * </ul>
  */
 public class KiiAppConfigurationResource extends KiiRestSubResource {
 	

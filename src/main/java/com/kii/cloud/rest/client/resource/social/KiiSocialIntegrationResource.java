@@ -3,6 +3,13 @@ package com.kii.cloud.rest.client.resource.social;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 
+/**
+ * Represents the social integration resource like following URI:
+ * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/integration
+ * </ul>
+ */
 public class KiiSocialIntegrationResource extends KiiRestSubResource {
 	
 	public static final String BASE_PATH = "/integration";

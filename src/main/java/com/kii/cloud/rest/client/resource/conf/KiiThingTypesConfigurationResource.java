@@ -15,7 +15,11 @@ import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.squareup.okhttp.Response;
 
 /**
+ * Represents the things types configuration resource like following URI:
  * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/configuration/thing-types
+ * </ul>
  */
 public class KiiThingTypesConfigurationResource extends KiiRestSubResource {
 	

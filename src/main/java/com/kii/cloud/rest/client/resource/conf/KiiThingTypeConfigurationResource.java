@@ -15,7 +15,11 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
 /**
+ * Represents the things type configuration resource like following URI:
  * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/configuration/thing-types/{THING_TYPE}
+ * </ul>
  */
 public class KiiThingTypeConfigurationResource extends KiiRestSubResource {
 	

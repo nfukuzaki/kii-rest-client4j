@@ -7,6 +7,13 @@ import com.kii.cloud.rest.client.resource.storage.KiiUserResource;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 
+/**
+ * Represents the integrate Facebook with Kii user resource like following URI:
+ * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/facebook
+ * </ul>
+ */
 public class KiiUserFacebookIntegrationResource extends KiiUserSocialIntegrationResource {
 	
 	public static final String BASE_PATH = "/facebook";

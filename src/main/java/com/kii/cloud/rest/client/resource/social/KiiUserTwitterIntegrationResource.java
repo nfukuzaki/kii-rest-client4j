@@ -7,6 +7,13 @@ import com.kii.cloud.rest.client.resource.storage.KiiUserResource;
 import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 
+/**
+ * Represents the integrate Twitter with Kii user resource like following URI:
+ * 
+ * <ul>
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/twitter
+ * </ul>
+ */
 public class KiiUserTwitterIntegrationResource extends KiiUserSocialIntegrationResource {
 	
 	public static final String BASE_PATH = "/twitter";
