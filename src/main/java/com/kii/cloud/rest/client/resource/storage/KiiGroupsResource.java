@@ -18,6 +18,7 @@ import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
 import com.kii.cloud.rest.client.util.GsonUtils;
+import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -100,7 +101,7 @@ public class KiiGroupsResource extends KiiRestSubResource implements KiiScopedRe
 			throw new IllegalArgumentException("userID is null");
 		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("?owner=" + userID), Method.GET, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("?owner=" + StringUtils.urlEncode(userID)), Method.GET, headers);
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
@@ -136,7 +137,7 @@ public class KiiGroupsResource extends KiiRestSubResource implements KiiScopedRe
 			throw new IllegalArgumentException("userID is null");
 		}
 		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl("?is_member=" + userID), Method.GET, headers);
+		KiiRestRequest request = new KiiRestRequest(getUrl("?is_member=" + StringUtils.urlEncode(userID)), Method.GET, headers);
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);

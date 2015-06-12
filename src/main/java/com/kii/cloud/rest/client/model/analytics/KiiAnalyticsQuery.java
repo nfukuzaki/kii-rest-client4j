@@ -40,18 +40,18 @@ public class KiiAnalyticsQuery {
 	public String toQueryString() {
 		StringBuilder queryString = new StringBuilder();
 		if (!StringUtils.isEmpty(this.groupingKey)) {
-			queryString.append("group=" + this.groupingKey + "&");
+			queryString.append("group=" +StringUtils.urlEncode( this.groupingKey) + "&");
 		}
 		if (this.startDate != null) {
-			queryString.append("startDate=" + this.startDate.toString() + "&");
+			queryString.append("startDate=" + StringUtils.urlEncode(this.startDate.toString()) + "&");
 		}
 		if (this.endDate != null) {
-			queryString.append("endDate=" + this.endDate.toString() + "&");
+			queryString.append("endDate=" + StringUtils.urlEncode(this.endDate.toString()) + "&");
 		}
 		int i = 1;
 		for (Map.Entry<String, String> filter : this.filters.entrySet()) {
-			queryString.append("filter" + i + ".name=" + filter.getKey() + "&");
-			queryString.append("filter" + i + ".value=" + filter.getValue() + "&");
+			queryString.append("filter" + i + ".name=" + StringUtils.urlEncode(filter.getKey()) + "&");
+			queryString.append("filter" + i + ".value=" + StringUtils.urlEncode(filter.getValue()) + "&");
 			i++;
 		}
 		if (this.cumulative) {

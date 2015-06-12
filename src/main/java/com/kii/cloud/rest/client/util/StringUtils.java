@@ -1,5 +1,8 @@
 package com.kii.cloud.rest.client.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class StringUtils {
 	public static boolean isEmpty(final String s) {
 		return (s == null || s.length() == 0);
@@ -39,5 +42,12 @@ public class StringUtils {
 			.append(Character.toTitleCase(firstChar))
 			.append(str.substring(1))
 			.toString();
+	}
+	public static String urlEncode(String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return s;
+		}
 	}
 }

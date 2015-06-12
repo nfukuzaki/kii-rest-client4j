@@ -3,6 +3,7 @@ package com.kii.cloud.rest.client.resource.social;
 import com.kii.cloud.rest.client.model.social.KiiSocialProvider;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
+import com.kii.cloud.rest.client.util.StringUtils;
 
 /**
  * Represents the server side auth resource like following URI:
@@ -30,7 +31,7 @@ public class KiiWebAuthSocialIntegrationResource extends KiiRestSubResource {
 		if (provider == null) {
 			throw new IllegalArgumentException("provider is null");
 		}
-		return this.getUrl("/connect?id=" + provider.getID());
+		return this.getUrl("/connect?id=" + StringUtils.urlEncode(provider.getID()));
 	}
 	
 	
