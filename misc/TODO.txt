@@ -2,8 +2,6 @@ ABTest
 Writing javadoc
 
 Test
-	push
-	refresh token
 	some error case
 	
 
