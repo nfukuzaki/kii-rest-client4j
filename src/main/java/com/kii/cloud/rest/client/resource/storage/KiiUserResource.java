@@ -8,6 +8,7 @@ import com.kii.cloud.rest.client.annotation.AdminAPI;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
+import com.kii.cloud.rest.client.model.storage.KiiAccountType;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
@@ -44,13 +45,25 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 		EMAIL,
 		SMS;
 	}
-	
+	private final KiiAccountType accountType;
 	private final String identifier;
 	public KiiUserResource(KiiUsersResource parent, String identifier) {
 		super(parent);
 		if (StringUtils.isEmpty(identifier)) {
 			throw new IllegalArgumentException("identifier is null or empty");
 		}
+		String[] array = identifier.split(":");
+		if (array.length > 1) {
+			this.accountType = KiiAccountType.fromString(array[0]);
+			this.identifier = array[1];
+		} else {
+			this.accountType = KiiAccountType.parseIdentifier(identifier);
+			this.identifier = identifier;
+		}
+	}
+	public KiiUserResource(KiiUsersResource parent, KiiAccountType accountType, String identifier) {
+		super(parent);
+		this.accountType = accountType;
 		this.identifier = identifier;
 	}
 	
@@ -317,7 +330,7 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	}
 	@Override
 	public String getPath() {
-		return "/" + KiiUser.getAccountType(this.identifier) + this.identifier;
+		return "/" + this.accountType.getFullyQualifiedIdentifier(this.identifier);
 	}
 	@Override
 	public KiiScope getScope() {

@@ -15,7 +15,7 @@ import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.Response;
 
 /**
- * Represents the object resource like following URI:
+ * Represents the object resource like following URIs:
  * <ul>
  * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}
  * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}

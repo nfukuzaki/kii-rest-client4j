@@ -50,4 +50,18 @@ public class StringUtils {
 			return s;
 		}
 	}
+	public static String join(String[] array, String separator) {
+		if (array == null) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		for (String s : array) {
+			if (sb.length() > 0) {
+				sb.append(separator);
+			}
+			sb.append(s);
+		}
+		return sb.toString();
+	 }
+
 }

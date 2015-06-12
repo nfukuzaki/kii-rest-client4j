@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
+import com.kii.cloud.rest.client.model.storage.KiiThingIdentifierType;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
@@ -29,21 +30,27 @@ public class KiiThingResource extends KiiRestSubResource implements KiiScopedRes
 	public static final MediaType MEDIA_TYPE_THING_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.ThingUpdateRequest+json");
 	public static final MediaType MEDIA_TYPE_THING_STATUS_UPDATE_REQUEST = MediaType.parse("application/vnd.kii.ThingStatusUpdateRequest+json");
 	
-	private final String thingID;
-	private final String vendorThingID;
+	private final KiiThingIdentifierType identifierType;
+	private final String identifier;
 	
 	public KiiThingResource(KiiThingsResource parent, String identifier) {
 		super(parent);
 		if (StringUtils.isEmpty(identifier)) {
 			throw new IllegalArgumentException("identifier is null or empty");
 		}
-		if (KiiThing.THING_ID_PATTERN.matcher(identifier).matches()) {
-			this.thingID = identifier;
-			this.vendorThingID = null;
+		String[] array = identifier.split(":");
+		if (array.length > 1) {
+			this.identifierType = KiiThingIdentifierType.fromString(array[0]);
+			this.identifier = array[1];
 		} else {
-			this.thingID = null;
-			this.vendorThingID = identifier;
+			this.identifierType = KiiThingIdentifierType.parseIdentifier(identifier);
+			this.identifier = identifier;
 		}
+	}
+	public KiiThingResource(KiiThingsResource parent, KiiThingIdentifierType identifierType, String identifier) {
+		super(parent);
+		this.identifierType = identifierType;
+		this.identifier = identifier;
 	}
 	public KiiScopeAclResource acl() {
 		return new KiiScopeAclResource(this);
@@ -171,10 +178,7 @@ public class KiiThingResource extends KiiRestSubResource implements KiiScopedRes
 	
 	@Override
 	public String getPath() {
-		if (this.thingID != null) {
-			return "/" + this.thingID;
-		}
-		return "/VENDOR_THING_ID:" + this.vendorThingID;
+		return "/" + this.identifierType.getFullyQualifiedIdentifier(this.identifier);
 	}
 	@Override
 	public KiiScope getScope() {

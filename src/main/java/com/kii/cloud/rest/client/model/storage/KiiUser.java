@@ -111,15 +111,4 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 		}
 		return result;
 	}
-	public static String getAccountType(String identifier) {
-		if (KiiUser.EMAIL_ADDRESS_PATTERN.matcher(identifier).matches()) {
-			return "EMAIL:";
-		} else if (KiiUser.GLOBAL_PHONE_PATTERN.matcher(identifier).matches() || KiiUser.LOCAL_PHONE_PATTERN.matcher(identifier).matches()) {
-			return "PHONE:";
-		} else if (KiiUser.USER_ID_PATTERN.matcher(identifier).matches()) {
-			// FIXME:This code depends on the rule of issuing ID on current implementation.
-			return "";
-		}
-		return "LOGIN_NAME:";
-	}
 }

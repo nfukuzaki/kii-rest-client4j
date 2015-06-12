@@ -12,6 +12,12 @@ import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiBucketURI;
+import com.kii.cloud.rest.client.model.uri.KiiGroupURI;
+import com.kii.cloud.rest.client.model.uri.KiiObjectURI;
+import com.kii.cloud.rest.client.model.uri.KiiThingURI;
+import com.kii.cloud.rest.client.model.uri.KiiTopicURI;
+import com.kii.cloud.rest.client.model.uri.KiiUserURI;
 import com.kii.cloud.rest.client.resource.analytics.KiiAggregationRuleResource;
 import com.kii.cloud.rest.client.resource.analytics.KiiAggregationRulesResource;
 import com.kii.cloud.rest.client.resource.analytics.KiiAnalyticsResource;
@@ -33,6 +39,7 @@ import com.kii.cloud.rest.client.resource.storage.KiiBucketResource;
 import com.kii.cloud.rest.client.resource.storage.KiiEncryptedBucketResource;
 import com.kii.cloud.rest.client.resource.storage.KiiGroupResource;
 import com.kii.cloud.rest.client.resource.storage.KiiGroupsResource;
+import com.kii.cloud.rest.client.resource.storage.KiiObjectResource;
 import com.kii.cloud.rest.client.resource.storage.KiiScopeAclResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingResource;
 import com.kii.cloud.rest.client.resource.storage.KiiThingsResource;
@@ -90,12 +97,12 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	public KiiUserResource users(String identifier) {
 		return new KiiUserResource(this.users(), identifier);
 	}
-//	public KiiUserResource users(KiiUserURI uri) {
-//		if (uri == null) {
-//			throw new IllegalArgumentException("uri is null"); 
-//		}
-//		return new KiiUserResource(this.users(), uri.getScopeID());
-//	}
+	public KiiUserResource users(KiiUserURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
+		return new KiiUserResource(this.users(), uri.getAccountType(), uri.getIdentifier());
+	}
 	public KiiUserResource users(KiiUser user) {
 		if (user == null) {
 			throw new IllegalArgumentException("user is null"); 
@@ -114,12 +121,12 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	public KiiThingResource things(String identifier) {
 		return new KiiThingResource(this.things(), identifier);
 	}
-//	public KiiThingResource things(KiiThingURI uri) {
-//		if (uri == null) {
-//			throw new IllegalArgumentException("uri is null"); 
-//		}
-//		return new KiiThingResource(this.things(), uri.getScopeID());
-//	}
+	public KiiThingResource things(KiiThingURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
+		return new KiiThingResource(this.things(), uri.getIdentifierType(), uri.getIdentifier());
+	}
 	public KiiGroupsResource groups() {
 		return new KiiGroupsResource(this);
 	}
@@ -132,39 +139,71 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	public KiiGroupResource groups(String groupID) {
 		return new KiiGroupResource(this.groups(), groupID);
 	}
-//	public KiiGroupResource groups(KiiGroupURI uri) {
-//		if (uri == null) {
-//			throw new IllegalArgumentException("uri is null"); 
-//		}
-//		return new KiiGroupResource(this.groups(), uri.getScopeID());
-//	}
+	public KiiGroupResource groups(KiiGroupURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
+		return new KiiGroupResource(this.groups(), uri.getGroupID());
+	}
 	public KiiBucketResource buckets(String name) {
 		return new KiiBucketResource(this, name);
 	}
 	public KiiEncryptedBucketResource encryptedBuckets(String name) {
 		return new KiiEncryptedBucketResource(this, name);
 	}
-//	public KiiObjectResource objects(KiiObjectURI uri) {
-//		if (uri == null) {
-//			throw new IllegalArgumentException("uri is null"); 
-//		}
-//		switch (uri.getScope()) {
-//			case APP:
-//				return this.buckets(uri.getBucketName()).objects(uri.getObjectID());
-//			case GROUP:
-//				return this.groups(uri.getScopeID()).buckets(uri.getBucketName()).objects(uri.getObjectID());
-//			case USER:
-//				return this.users(uri.getScopeID()).buckets(uri.getBucketName()).objects(uri.getObjectID());
-//			case THING:
-//				return this.things(uri.getScopeID()).buckets(uri.getBucketName()).objects(uri.getObjectID());
-//		}
-//		throw new AssertionError("KiiObjectURI has unexpected scope.");
-//	}
+	public KiiBucketResource buckets(KiiBucketURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
+		switch (uri.getScope()) {
+			case APP:
+				return this.buckets(uri.getBucketID());
+			case GROUP:
+				return this.groups(uri.getScopeID()).buckets(uri.getBucketID());
+			case USER:
+				return this.users(uri.getScopeID()).buckets(uri.getBucketID());
+			case THING:
+				return this.things(uri.getScopeID()).buckets(uri.getBucketID());
+		}
+		throw new AssertionError("KiiBucketURI has unexpected scope.");
+	}
+	public KiiObjectResource objects(KiiObjectURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
+		switch (uri.getScope()) {
+			case APP:
+				return this.buckets(uri.getBucketID()).objects(uri.getObjectID());
+			case GROUP:
+				return this.groups(uri.getScopeID()).buckets(uri.getBucketID()).objects(uri.getObjectID());
+			case USER:
+				return this.users(uri.getScopeID()).buckets(uri.getBucketID()).objects(uri.getObjectID());
+			case THING:
+				return this.things(uri.getScopeID()).buckets(uri.getBucketID()).objects(uri.getObjectID());
+		}
+		throw new AssertionError("KiiObjectURI has unexpected scope.");
+	}
 	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}
 	public KiiTopicResource topics(String name) {
 		return new KiiTopicResource(this.topics(), name);
+	}
+	public KiiTopicResource topics(KiiTopicURI uri) {
+		if (uri == null) {
+			throw new IllegalArgumentException("uri is null"); 
+		}
+		switch (uri.getScope()) {
+			case APP:
+				return this.topics(uri.getTopicID());
+			case GROUP:
+				return this.groups(uri.getScopeID()).topics(uri.getTopicID());
+			case USER:
+				return this.users(uri.getScopeID()).topics(uri.getTopicID());
+			case THING:
+				return this.things(uri.getScopeID()).topics(uri.getTopicID());
+		}
+		throw new AssertionError("KiiBucketURI has unexpected scope.");
 	}
 	public KiiScopeAclResource acl() {
 		return new KiiScopeAclResource(this);
