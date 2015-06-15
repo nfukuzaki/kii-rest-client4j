@@ -83,4 +83,33 @@ public class KiiTopicURI extends KiiURI {
 	public String toUriString() {
 		return this.parent.toUriString() + "/" + SEGMENT_TOPICS + "/" + this.topicID;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		result = prime * result + ((topicID == null) ? 0 : topicID.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KiiTopicURI other = (KiiTopicURI) obj;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		if (topicID == null) {
+			if (other.topicID != null)
+				return false;
+		} else if (!topicID.equals(other.topicID))
+			return false;
+		return true;
+	}
 }

@@ -25,4 +25,27 @@ public class KiiAppURI extends KiiURI {
 	public String toUriString() {
 		return SCHEME + this.appID;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((appID == null) ? 0 : appID.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KiiAppURI other = (KiiAppURI) obj;
+		if (appID == null) {
+			if (other.appID != null)
+				return false;
+		} else if (!appID.equals(other.appID))
+			return false;
+		return true;
+	}
 }

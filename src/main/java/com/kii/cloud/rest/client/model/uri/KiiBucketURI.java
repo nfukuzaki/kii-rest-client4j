@@ -83,5 +83,34 @@ public class KiiBucketURI extends KiiURI {
 	public String toUriString() {
 		return this.parent.toUriString() + "/" + SEGMENT_BUCKETS + "/" + this.bucketID;
 	}
-
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((bucketID == null) ? 0 : bucketID.hashCode());
+		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KiiBucketURI other = (KiiBucketURI) obj;
+		if (bucketID == null) {
+			if (other.bucketID != null)
+				return false;
+		} else if (!bucketID.equals(other.bucketID))
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		return true;
+	}
 }

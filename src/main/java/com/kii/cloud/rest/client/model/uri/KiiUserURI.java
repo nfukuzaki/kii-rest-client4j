@@ -65,4 +65,38 @@ public class KiiUserURI extends KiiURI {
 	public String toUriString() {
 		return this.parent.toUriString() + "/" + SEGMENT_USERS + "/" + this.accountType.getFullyQualifiedIdentifier(this.identifier);
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((accountType == null) ? 0 : accountType.hashCode());
+		result = prime * result
+				+ ((identifier == null) ? 0 : identifier.hashCode());
+		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KiiUserURI other = (KiiUserURI) obj;
+		if (accountType != other.accountType)
+			return false;
+		if (identifier == null) {
+			if (other.identifier != null)
+				return false;
+		} else if (!identifier.equals(other.identifier))
+			return false;
+		if (parent == null) {
+			if (other.parent != null)
+				return false;
+		} else if (!parent.equals(other.parent))
+			return false;
+		return true;
+	}
 }
