@@ -15,6 +15,22 @@ import com.kii.cloud.rest.client.util.StringUtils;
  */
 public class KiiObjectURI extends KiiURI {
 	
+	public static KiiObjectURI newAppScopeURI(String appID, String bucketID, String objectID) {
+		return new KiiObjectURI(new KiiBucketURI(new KiiAppURI(appID), bucketID), objectID);
+	}
+	public static KiiObjectURI newUserScopeURI(String appID, String userIdentifier, String bucketID, String objectID) {
+		return new KiiObjectURI(new KiiBucketURI(new KiiUserURI(new KiiAppURI(appID), bucketID), userIdentifier), objectID);
+	}
+	public static KiiObjectURI newGroupScopeURI(String appID, String groupID, String bucketID, String objectID) {
+		return new KiiObjectURI(new KiiBucketURI(new KiiGroupURI(new KiiAppURI(appID), bucketID), groupID), objectID);
+	}
+	public static KiiObjectURI newThingScopeURI(String appID, String thingIdentifier, String bucketID, String objectID) {
+		return new KiiObjectURI(new KiiBucketURI(new KiiThingURI(new KiiAppURI(appID), bucketID), thingIdentifier), objectID);
+	}
+	public static KiiObjectURI newURI(KiiBucketURI parent, String objectID) {
+		return new KiiObjectURI(parent, objectID);
+	}
+
 	public static KiiObjectURI parse(String str) {
 		if (StringUtils.isEmpty(str)) {
 			throw new IllegalArgumentException("str is null or empty");

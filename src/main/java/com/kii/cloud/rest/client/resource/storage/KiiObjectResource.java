@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
+import com.kii.cloud.rest.client.model.uri.KiiObjectURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
@@ -17,10 +18,10 @@ import com.squareup.okhttp.Response;
 /**
  * Represents the object resource like following URIs:
  * <ul>
- * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}
- * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}
- * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}
- * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}
  * </ul>
  *
  */
@@ -175,6 +176,9 @@ public class KiiObjectResource extends KiiRestSubResource implements KiiScopedRe
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
+	}
+	public KiiObjectURI getURI() {
+		return KiiObjectURI.newURI(((KiiBucketResource)this.parent).getURI(), this.objectID);
 	}
 	@Override
 	public String getPath() {

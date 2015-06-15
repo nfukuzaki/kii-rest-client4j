@@ -338,16 +338,16 @@ public class KiiUserResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object = new KiiObject().set("size", 1024);
-		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		rest.api().users(user).buckets(userBucketID).objects().save(object);
 		
 		rest.setCredentials(null);
 		
 		try {
-			rest.api().users(user).buckets(userBucketName).objects(object).get();
+			rest.api().users(user).buckets(userBucketID).objects(object).get();
 			fail("KiiUnauthorizedException should be thrown");
 		} catch (KiiUnauthorizedException e) {
 		}
@@ -361,17 +361,17 @@ public class KiiUserResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object = new KiiObject().set("size", 1024);
-		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		rest.api().users(user).buckets(userBucketID).objects().save(object);
 		
 		KiiCredentials credentials = new KiiCredentials("xxxxxxxxxxxxxxxxxxxxxxxxxx");
 		rest.setCredentials(credentials);
 		
 		try {
-			rest.api().users(user).buckets(userBucketName).objects(object).get();
+			rest.api().users(user).buckets(userBucketID).objects(object).get();
 			fail("KiiForbiddenException should be thrown");
 		} catch (KiiForbiddenException e) {
 		}

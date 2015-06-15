@@ -3,6 +3,7 @@ package com.kii.cloud.rest.client.model.storage;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.KiiCustomableJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
+import com.kii.cloud.rest.client.model.uri.KiiObjectURI;
 
 public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 	public static final KiiJsonProperty<String> PROPERTY_OBJECT_ID = new KiiJsonProperty<String>(String.class, "objectID", "_id");
@@ -11,6 +12,8 @@ public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 	public static final KiiJsonProperty<String> PROPERTY_DATA_TYPE = new KiiJsonProperty<String>(String.class, "dataType", "_dataType");
 	public static final KiiJsonProperty<String> PROPERTY_OWNER = new KiiJsonProperty<String>(String.class, "_owner");
 	public static final KiiJsonProperty<String> PROPERTY_VERSION = new KiiJsonProperty<String>(String.class, "_version");
+	
+	private KiiObjectURI uri;
 	
 	public KiiObject() {
 	}
@@ -54,6 +57,13 @@ public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 	}
 	public KiiObject set(String name, KiiGeoPoint value) {
 		this.json.add(name, value.toJson());
+		return this;
+	}
+	public KiiObjectURI getUri() {
+		return this.uri;
+	}
+	public KiiObject setObjectURI(KiiObjectURI uri) {
+		this.uri = uri;
 		return this;
 	}
 }

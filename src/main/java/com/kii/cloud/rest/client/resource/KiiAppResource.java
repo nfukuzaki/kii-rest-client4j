@@ -13,6 +13,7 @@ import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiAppURI;
 import com.kii.cloud.rest.client.model.uri.KiiBucketURI;
 import com.kii.cloud.rest.client.model.uri.KiiGroupURI;
 import com.kii.cloud.rest.client.model.uri.KiiObjectURI;
@@ -72,7 +73,7 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		this.credentials = credentials;
 		this.logger = logger;
 	}
-	
+	@Override
 	public String getAppID() {
 		return this.appID;
 	}
@@ -312,5 +313,8 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	@Override
 	protected KiiLogger getLogger() {
 		return this.logger;
+	}
+	public KiiAppURI getURI() {
+		return KiiAppURI.newURI(this.appID);
 	}
 }

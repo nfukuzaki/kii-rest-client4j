@@ -13,6 +13,7 @@ import com.kii.cloud.rest.client.model.storage.KiiAccountType;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiUserURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
@@ -342,5 +343,11 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	@Override
 	public KiiScope getScope() {
 		return ((KiiUsersResource)this.parent).getScope();
+	}
+	public String getScopeIdentifier() {
+		return this.accountType.getFullyQualifiedIdentifier(this.identifier);
+	}
+	public KiiUserURI getURI() {
+		return KiiUserURI.newURI(this.getAppID(), this.identifier);
 	}
 }

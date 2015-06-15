@@ -9,6 +9,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiPushMessage;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiTopicURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
@@ -278,5 +279,21 @@ public class KiiTopicResource extends KiiRestSubResource implements KiiScopedRes
 	@Override
 	public String getPath() {
 		return "/" + this.topicID;
+	}
+	public KiiTopicURI getURI() {
+		String appID = this.getAppID();
+		String topicID = this.topicID;
+		String scopeIdentifier = ((KiiTopicsResource)this.parent).getScopeIdentifier();
+		switch (this.getScope()) {
+			case APP:
+				return KiiTopicURI.newAppScopeURI(appID, topicID);
+			case USER:
+				return KiiTopicURI.newUserScopeURI(appID, scopeIdentifier, topicID);
+			case GROUP:
+				return KiiTopicURI.newGroupScopeURI(appID, scopeIdentifier, topicID);
+			case THING:
+				return KiiTopicURI.newThingScopeURI(appID, scopeIdentifier, topicID);
+		}
+		throw new AssertionError("This Topic has unexpected scope.");
 	}
 }

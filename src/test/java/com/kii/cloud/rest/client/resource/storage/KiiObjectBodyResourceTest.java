@@ -43,33 +43,33 @@ public class KiiObjectBodyResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		byte[] body = this.createObjectBody(1024);
 		
 		// creating object
 		KiiObject object = new KiiObject().set("size", 1024);
-		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		rest.api().users(user).buckets(userBucketID).objects().save(object);
 		
 		Thread.sleep(1000);
 		
 		// uploading object body
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
-		rest.api().users(user).buckets(userBucketName).objects(object).body().upload("image/jpg", is);
+		rest.api().users(user).buckets(userBucketID).objects(object).body().upload("image/jpg", is);
 		
 		// publishing body
-		String url = rest.api().users(user).buckets(userBucketName).objects(object).body().publish();
+		String url = rest.api().users(user).buckets(userBucketID).objects(object).body().publish();
 		assertTrue(url.startsWith("https://" + testApp.getAppID()));
 		assertArrayEquals(body, getPublishedBody(url));
 		
 		// downloading object body
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		rest.api().users(user).buckets(userBucketName).objects(object).body().download(os);
+		rest.api().users(user).buckets(userBucketID).objects(object).body().download(os);
 		
 		assertArrayEquals(body, os.toByteArray());
 		
 		// deleting object body
-		rest.api().users(user).buckets(userBucketName).objects(object).body().delete();
+		rest.api().users(user).buckets(userBucketID).objects(object).body().delete();
 	}
 	@Test
 	public void chunkedTransferTest() throws Exception {
@@ -80,16 +80,16 @@ public class KiiObjectBodyResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		byte[] body = this.createObjectBody(1024*3);
 		
 		// creating object
 		KiiObject object = new KiiObject().set("size", 1024*3);
-		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		rest.api().users(user).buckets(userBucketID).objects().save(object);
 		
 		// uploading object body by chunk
-		KiiObjectBodyResource bodyResource =rest.api().users(user).buckets(userBucketName).objects(object).body();
+		KiiObjectBodyResource bodyResource =rest.api().users(user).buckets(userBucketID).objects(object).body();
 		KiiChunkedUploadContext uploadContext = bodyResource.beginChunkedUpload("image/jpg", body.length);
 		int offset = 0;
 		int chunkSize = 1024;
@@ -100,7 +100,7 @@ public class KiiObjectBodyResourceTest {
 		bodyResource.commitChunkedUpload(uploadContext);
 		
 		// publishing body
-		String url = rest.api().users(user).buckets(userBucketName).objects(object).body().publish();
+		String url = rest.api().users(user).buckets(userBucketID).objects(object).body().publish();
 		assertTrue(url.startsWith("https://" + testApp.getAppID()));
 		assertArrayEquals(body, getPublishedBody(url));
 		
@@ -113,7 +113,7 @@ public class KiiObjectBodyResourceTest {
 		assertArrayEquals(body, os.toByteArray());
 		
 		// deleting object body
-		rest.api().users(user).buckets(userBucketName).objects(object).body().delete();
+		rest.api().users(user).buckets(userBucketID).objects(object).body().delete();
 	}
 	@Test
 	public void chunkedTransferCancelTest() throws Exception {
@@ -124,16 +124,16 @@ public class KiiObjectBodyResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		byte[] body = this.createObjectBody(1024*3);
 		
 		// creating object
 		KiiObject object = new KiiObject().set("size", 1024*3);
-		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		rest.api().users(user).buckets(userBucketID).objects().save(object);
 		
 		// uploading object body by chunk
-		KiiObjectBodyResource bodyResource =rest.api().users(user).buckets(userBucketName).objects(object).body();
+		KiiObjectBodyResource bodyResource =rest.api().users(user).buckets(userBucketID).objects(object).body();
 		KiiChunkedUploadContext uploadContext = bodyResource.beginChunkedUpload("image/jpg", body.length);
 		int offset = 0;
 		int chunkSize = 1024;
@@ -145,7 +145,7 @@ public class KiiObjectBodyResourceTest {
 		
 		// publishing body
 		try {
-			rest.api().users(user).buckets(userBucketName).objects(object).body().publish();
+			rest.api().users(user).buckets(userBucketID).objects(object).body().publish();
 			fail("KiiNotFoundException should be thrown");
 		} catch (KiiNotFoundException e) {
 		}
@@ -161,32 +161,32 @@ public class KiiObjectBodyResourceTest {
 		
 		byte[] body = this.createObjectBody(1024);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object (source)
 		KiiObject userObject = new KiiObject().set("size", 1024);
-		rest.api().users(user).buckets(userBucketName).objects().save(userObject);
+		rest.api().users(user).buckets(userBucketID).objects().save(userObject);
 		
 		Thread.sleep(1000);
 		
 		// uploading object body
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
-		rest.api().users(user).buckets(userBucketName).objects(userObject).body().upload("image/jpg", is);
+		rest.api().users(user).buckets(userBucketID).objects(userObject).body().upload("image/jpg", is);
 		
 		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
-		String appBucketName = "moved";
+		String appBucketID = "moved";
 		
 		// creating object (dest)
 		KiiObject appObject = new KiiObject().set("size", 1024);
-		rest.api().buckets(appBucketName).objects().save(appObject);
-		rest.api().users(user).buckets(userBucketName).objects(userObject).body().moveToAppScope(appBucketName, appObject.getObjectID());
+		rest.api().buckets(appBucketID).objects().save(appObject);
+		rest.api().users(user).buckets(userBucketID).objects(userObject).body().moveToAppScope(appBucketID, appObject.getObjectID());
 		
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		rest.api().buckets(appBucketName).objects(appObject).body().download(os);
+		rest.api().buckets(appBucketID).objects(appObject).body().download(os);
 		
 		assertArrayEquals(body, os.toByteArray());
-		assertFalse(rest.api().users(user).buckets(userBucketName).objects(userObject).body().exists());
+		assertFalse(rest.api().users(user).buckets(userBucketID).objects(userObject).body().exists());
 	}
 	@Test
 	public void moveToGroupScopeTest() throws Exception {
@@ -199,21 +199,21 @@ public class KiiObjectBodyResourceTest {
 		
 		byte[] body = this.createObjectBody(1024);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object (source)
 		KiiObject userObject = new KiiObject().set("size", 1024);
-		rest.api().users(user).buckets(userBucketName).objects().save(userObject);
+		rest.api().users(user).buckets(userBucketID).objects().save(userObject);
 		
 		Thread.sleep(1000);
 		
 		// uploading object body
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
-		rest.api().users(user).buckets(userBucketName).objects(userObject).body().upload("image/jpg", is);
+		rest.api().users(user).buckets(userBucketID).objects(userObject).body().upload("image/jpg", is);
 		
 		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
-		String groupBucketName = "moved";
+		String groupBucketID = "moved";
 		
 		// creating object (dest)
 		KiiGroup group = new KiiGroup();
@@ -222,14 +222,14 @@ public class KiiObjectBodyResourceTest {
 		rest.api().groups().save(group);
 		
 		KiiObject groupObject = new KiiObject().set("size", 1024);
-		rest.api().groups(group).buckets(groupBucketName).objects().save(groupObject);
-		rest.api().users(user).buckets(userBucketName).objects(userObject).body().moveToGroupScope(group, groupBucketName, groupObject.getObjectID());
+		rest.api().groups(group).buckets(groupBucketID).objects().save(groupObject);
+		rest.api().users(user).buckets(userBucketID).objects(userObject).body().moveToGroupScope(group, groupBucketID, groupObject.getObjectID());
 		
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		rest.api().groups(group).buckets(groupBucketName).objects(groupObject).body().download(os);
+		rest.api().groups(group).buckets(groupBucketID).objects(groupObject).body().download(os);
 		
 		assertArrayEquals(body, os.toByteArray());
-		assertFalse(rest.api().users(user).buckets(userBucketName).objects(userObject).body().exists());
+		assertFalse(rest.api().users(user).buckets(userBucketID).objects(userObject).body().exists());
 	}
 	@Test
 	public void moveToUserScopeTest() throws Exception {
@@ -245,31 +245,31 @@ public class KiiObjectBodyResourceTest {
 		
 		byte[] body = this.createObjectBody(1024);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object (source)
 		KiiObject userObject1 = new KiiObject().set("size", 1024);
-		rest.api().users(user1).buckets(userBucketName).objects().save(userObject1);
+		rest.api().users(user1).buckets(userBucketID).objects().save(userObject1);
 		
 		Thread.sleep(1000);
 		
 		// uploading object body
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
-		rest.api().users(user1).buckets(userBucketName).objects(userObject1).body().upload("image/jpg", is);
+		rest.api().users(user1).buckets(userBucketID).objects(userObject1).body().upload("image/jpg", is);
 		
 		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		// creating object (dest)
 		KiiObject userObject2 = new KiiObject().set("size", 1024);
-		rest.api().users(user2).buckets(userBucketName).objects().save(userObject2);
-		rest.api().users(user1).buckets(userBucketName).objects(userObject1).body().moveToUserScope(user2, userBucketName, userObject2.getObjectID());
+		rest.api().users(user2).buckets(userBucketID).objects().save(userObject2);
+		rest.api().users(user1).buckets(userBucketID).objects(userObject1).body().moveToUserScope(user2, userBucketID, userObject2.getObjectID());
 		
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		rest.api().users(user2).buckets(userBucketName).objects(userObject2).body().download(os);
+		rest.api().users(user2).buckets(userBucketID).objects(userObject2).body().download(os);
 		
 		assertArrayEquals(body, os.toByteArray());
-		assertFalse(rest.api().users(user1).buckets(userBucketName).objects(userObject1).body().exists());
+		assertFalse(rest.api().users(user1).buckets(userBucketID).objects(userObject1).body().exists());
 	}
 	@Test
 	public void moveToThingScopeTest() throws Exception {
@@ -295,31 +295,31 @@ public class KiiObjectBodyResourceTest {
 		
 		byte[] body = this.createObjectBody(1024);
 		
-		String thingBucketName = "thing_bucket" + System.currentTimeMillis();
+		String thingBucketID = "thing_bucket" + System.currentTimeMillis();
 		
 		// creating object (source)
 		KiiObject thingObject1 = new KiiObject().set("size", 1024);
-		rest.api().things(thing1).buckets(thingBucketName).objects().save(thingObject1);
+		rest.api().things(thing1).buckets(thingBucketID).objects().save(thingObject1);
 		
 		Thread.sleep(1000);
 		
 		// uploading object body
 		ByteArrayInputStream is = new ByteArrayInputStream(body);
-		rest.api().things(thing1).buckets(thingBucketName).objects(thingObject1).body().upload("image/jpg", is);
+		rest.api().things(thing1).buckets(thingBucketID).objects(thingObject1).body().upload("image/jpg", is);
 		
 		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
 		// creating object (dest)
 		KiiObject thingObject2 = new KiiObject().set("size", 1024);
-		rest.api().things(thing2).buckets(thingBucketName).objects().save(thingObject2);
-		rest.api().things(thing1).buckets(thingBucketName).objects(thingObject1).body().moveToThingScope(thing2, thingBucketName, thingObject2.getObjectID());
+		rest.api().things(thing2).buckets(thingBucketID).objects().save(thingObject2);
+		rest.api().things(thing1).buckets(thingBucketID).objects(thingObject1).body().moveToThingScope(thing2, thingBucketID, thingObject2.getObjectID());
 		
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		rest.api().things(thing2).buckets(thingBucketName).objects(thingObject2).body().download(os);
+		rest.api().things(thing2).buckets(thingBucketID).objects(thingObject2).body().download(os);
 		
 		assertArrayEquals(body, os.toByteArray());
-		assertFalse(rest.api().things(thing1).buckets(thingBucketName).objects(thingObject1).body().exists());
+		assertFalse(rest.api().things(thing1).buckets(thingBucketID).objects(thingObject1).body().exists());
 	}
 	private byte[] createObjectBody(int length) {
 		byte[] body = new byte[length];

@@ -9,6 +9,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiUserURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
@@ -152,5 +153,11 @@ public class KiiGroupResource extends KiiRestSubResource implements KiiScopedRes
 	@Override
 	public KiiScope getScope() {
 		return ((KiiGroupsResource)this.parent).getScope();
+	}
+	public String getScopeIdentifier() {
+		return this.groupID;
+	}
+	public KiiUserURI getURI() {
+		return KiiUserURI.newURI(this.getAppID(), this.groupID);
 	}
 }

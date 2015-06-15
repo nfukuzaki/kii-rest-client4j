@@ -12,6 +12,9 @@ import com.kii.cloud.rest.client.util.StringUtils;
  */
 public class KiiGroupURI extends KiiURI {
 	
+	public static KiiGroupURI newURI(String appID, String groupID) {
+		return new KiiGroupURI(new KiiAppURI(appID), groupID);
+	}
 	public static KiiGroupURI parse(String str) {
 		if (StringUtils.isEmpty(str)) {
 			throw new IllegalArgumentException("str is null or empty");

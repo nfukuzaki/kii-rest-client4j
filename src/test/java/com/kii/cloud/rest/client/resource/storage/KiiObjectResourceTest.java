@@ -30,38 +30,38 @@ public class KiiObjectResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String appBucketName = "app_bucket" + System.currentTimeMillis();
+		String appBucketID = "app_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object1 = new KiiObject().set("score", 100);
-		rest.api().buckets(appBucketName).objects().save(object1);
+		rest.api().buckets(appBucketID).objects().save(object1);
 		
 		// check object
-		boolean exists = rest.api().buckets(appBucketName).objects(object1.getObjectID()).exists();
+		boolean exists = rest.api().buckets(appBucketID).objects(object1.getObjectID()).exists();
 		assertTrue(exists);
 		
 		// updating object
 		object1.set("score", 200);
-		rest.api().buckets(appBucketName).objects(object1).update(object1);
+		rest.api().buckets(appBucketID).objects(object1).update(object1);
 		
 		// getting object
-		KiiObject object2 = rest.api().buckets(appBucketName).objects(object1).get();
+		KiiObject object2 = rest.api().buckets(appBucketID).objects(object1).get();
 		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().buckets(appBucketName).objects(object2).partialUpdate(object3);
+		rest.api().buckets(appBucketID).objects(object2).partialUpdate(object3);
 		
 		// getting object
-		KiiObject object4 = rest.api().buckets(appBucketName).objects(object1).get();
+		KiiObject object4 = rest.api().buckets(appBucketID).objects(object1).get();
 		assertEquals(200, (int)object4.getInt("score"));
 		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
-		rest.api().buckets(appBucketName).objects(object4).delete();
+		rest.api().buckets(appBucketID).objects(object4).delete();
 		
 		// deleting bucket
-		rest.api().buckets(appBucketName).delete();
+		rest.api().buckets(appBucketID).delete();
 	}
 	@Test
 	public void groupScopeTest() throws Exception {
@@ -77,38 +77,38 @@ public class KiiObjectResourceTest {
 		group.setOwner(user.getUserID());
 		rest.api().groups().save(group, null);
 		
-		String groupBucketName = "group_bucket" + System.currentTimeMillis();
+		String groupBucketID = "group_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object1 = new KiiObject().set("score", 100);
-		rest.api().groups(group).buckets(groupBucketName).objects().save(object1);
+		rest.api().groups(group).buckets(groupBucketID).objects().save(object1);
 		
 		// check object
-		boolean exists = rest.api().groups(group).buckets(groupBucketName).objects(object1.getObjectID()).exists();
+		boolean exists = rest.api().groups(group).buckets(groupBucketID).objects(object1.getObjectID()).exists();
 		assertTrue(exists);
 		
 		// updating object
 		object1.set("score", 200);
-		rest.api().groups(group).buckets(groupBucketName).objects(object1).update(object1);
+		rest.api().groups(group).buckets(groupBucketID).objects(object1).update(object1);
 		
 		// getting object
-		KiiObject object2 = rest.api().groups(group).buckets(groupBucketName).objects(object1).get();
+		KiiObject object2 = rest.api().groups(group).buckets(groupBucketID).objects(object1).get();
 		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().groups(group).buckets(groupBucketName).objects(object2).partialUpdate(object3);
+		rest.api().groups(group).buckets(groupBucketID).objects(object2).partialUpdate(object3);
 		
 		// getting object
-		KiiObject object4 = rest.api().groups(group).buckets(groupBucketName).objects(object1).get();
+		KiiObject object4 = rest.api().groups(group).buckets(groupBucketID).objects(object1).get();
 		assertEquals(200, (int)object4.getInt("score"));
 		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
-		rest.api().groups(group).buckets(groupBucketName).objects(object4).delete();
+		rest.api().groups(group).buckets(groupBucketID).objects(object4).delete();
 		
 		// deleting bucket
-		rest.api().groups(group).buckets(groupBucketName).delete();
+		rest.api().groups(group).buckets(groupBucketID).delete();
 	}
 	@Test
 	public void userScopeTest() throws Exception {
@@ -119,38 +119,38 @@ public class KiiObjectResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object1 = new KiiObject().set("score", 100);
-		rest.api().users(user).buckets(userBucketName).objects().save(object1);
+		rest.api().users(user).buckets(userBucketID).objects().save(object1);
 		
 		// check object
-		boolean exists = rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).exists();
+		boolean exists = rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).exists();
 		assertTrue(exists);
 		
 		// updating object
 		object1.set("score", 200);
-		rest.api().users(user).buckets(userBucketName).objects(object1).update(object1);
+		rest.api().users(user).buckets(userBucketID).objects(object1).update(object1);
 		
 		// getting object
-		KiiObject object2 = rest.api().users(user).buckets(userBucketName).objects(object1).get();
+		KiiObject object2 = rest.api().users(user).buckets(userBucketID).objects(object1).get();
 		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().users(user).buckets(userBucketName).objects(object2).partialUpdate(object3);
+		rest.api().users(user).buckets(userBucketID).objects(object2).partialUpdate(object3);
 		
 		// getting object
-		KiiObject object4 = rest.api().users(user).buckets(userBucketName).objects(object1).get();
+		KiiObject object4 = rest.api().users(user).buckets(userBucketID).objects(object1).get();
 		assertEquals(200, (int)object4.getInt("score"));
 		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
-		rest.api().users(user).buckets(userBucketName).objects(object4).delete();
+		rest.api().users(user).buckets(userBucketID).objects(object4).delete();
 		
 		// deleting bucket
-		rest.api().users(user).buckets(userBucketName).delete();
+		rest.api().users(user).buckets(userBucketID).delete();
 	}
 	@Test
 	public void thingScopeTest() throws Exception {
@@ -178,38 +178,38 @@ public class KiiObjectResourceTest {
 		// adding owner
 		rest.api().things(thingID).owner().add(KiiThingOwner.user(user));
 
-		String thingBucketName = "thing_bucket" + System.currentTimeMillis();
+		String thingBucketID = "thing_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object1 = new KiiObject().set("score", 100);
-		rest.api().things(thing).buckets(thingBucketName).objects().save(object1);
+		rest.api().things(thing).buckets(thingBucketID).objects().save(object1);
 		
 		// check object
-		boolean exists = rest.api().things(thing).buckets(thingBucketName).objects(object1.getObjectID()).exists();
+		boolean exists = rest.api().things(thing).buckets(thingBucketID).objects(object1.getObjectID()).exists();
 		assertTrue(exists);
 		
 		// updating object
 		object1.set("score", 200);
-		rest.api().things(thing).buckets(thingBucketName).objects(object1).update(object1);
+		rest.api().things(thing).buckets(thingBucketID).objects(object1).update(object1);
 		
 		// getting object
-		KiiObject object2 = rest.api().things(thing).buckets(thingBucketName).objects(object1).get();
+		KiiObject object2 = rest.api().things(thing).buckets(thingBucketID).objects(object1).get();
 		assertEquals(200, (int)object2.getInt("score"));
 		
 		// partial updating
 		KiiObject object3 = new KiiObject().set("level", 1);
-		rest.api().things(thing).buckets(thingBucketName).objects(object2).partialUpdate(object3);
+		rest.api().things(thing).buckets(thingBucketID).objects(object2).partialUpdate(object3);
 		
 		// getting object
-		KiiObject object4 = rest.api().things(thing).buckets(thingBucketName).objects(object1).get();
+		KiiObject object4 = rest.api().things(thing).buckets(thingBucketID).objects(object1).get();
 		assertEquals(200, (int)object4.getInt("score"));
 		assertEquals(1, (int)object4.getInt("level"));
 		
 		// deleting object
-		rest.api().things(thing).buckets(thingBucketName).objects(object4).delete();
+		rest.api().things(thing).buckets(thingBucketID).objects(object4).delete();
 		
 		// deleting bucket
-		rest.api().things(thing).buckets(thingBucketName).delete();
+		rest.api().things(thing).buckets(thingBucketID).delete();
 	}
 	@Test
 	public void updateWithOptimisticLockTest() throws Exception {
@@ -220,25 +220,25 @@ public class KiiObjectResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object1 = new KiiObject().set("score", 100);
-		rest.api().users(user).buckets(userBucketName).objects().save(object1);
+		rest.api().users(user).buckets(userBucketID).objects().save(object1);
 		
 		// partial updating
 		KiiObject partialObject = new KiiObject().set("level", 2);
-		rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdate(partialObject);
+		rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).partialUpdate(partialObject);
 		
 		// updating object with optimistic lock
 		try {
-			rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).updateWithOptimisticLock(object1);
+			rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).updateWithOptimisticLock(object1);
 			fail("KiiConflictException should be thrown");
 		} catch (KiiConflictException e) {
 		}
 		
 		// getting object
-		KiiObject object2 = rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).get();
+		KiiObject object2 = rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).get();
 		
 		assertEquals(100, (int)object2.getInt("score"));
 		assertEquals(2, (int)object2.getInt("level"));
@@ -246,10 +246,10 @@ public class KiiObjectResourceTest {
 		// updating object with optimistic lock
 		object2.set("score", 200);
 		object2.set("level", 3);
-		rest.api().users(user).buckets(userBucketName).objects(object2.getObjectID()).updateWithOptimisticLock(object2);
+		rest.api().users(user).buckets(userBucketID).objects(object2.getObjectID()).updateWithOptimisticLock(object2);
 		
 		// getting object
-		KiiObject object3 = rest.api().users(user).buckets(userBucketName).objects(object2.getObjectID()).get();
+		KiiObject object3 = rest.api().users(user).buckets(userBucketID).objects(object2.getObjectID()).get();
 		
 		assertEquals(200, (int)object3.getInt("score"));
 		assertEquals(3, (int)object3.getInt("level"));
@@ -263,37 +263,37 @@ public class KiiObjectResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating object
 		KiiObject object1 = new KiiObject().set("score", 100);
-		rest.api().users(user).buckets(userBucketName).objects().save(object1);
+		rest.api().users(user).buckets(userBucketID).objects().save(object1);
 		String version = object1.getVersion();
 		
 		// updating object
 		object1.set("level", 1);
-		rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdate(object1);
+		rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).partialUpdate(object1);
 		
 		// partial updating object with optimistic lock
 		try {
 			KiiObject partialObject = new KiiObject().set("level", 2).setVersion(version);
-			rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdateWithOptimisticLock(partialObject);
+			rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).partialUpdateWithOptimisticLock(partialObject);
 			fail("KiiConflictException should be thrown");
 		} catch (KiiConflictException e) {
 		}
 		
 		// getting object
-		KiiObject object2 = rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).get();
+		KiiObject object2 = rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).get();
 		
 		assertEquals(100, (int)object2.getInt("score"));
 		assertEquals(1, (int)object2.getInt("level"));
 		
 		// partial updating object with optimistic lock
 		KiiObject partialObject = new KiiObject().set("level", 3).setVersion(object2.getVersion());
-		rest.api().users(user).buckets(userBucketName).objects(object1.getObjectID()).partialUpdateWithOptimisticLock(partialObject);
+		rest.api().users(user).buckets(userBucketID).objects(object1.getObjectID()).partialUpdateWithOptimisticLock(partialObject);
 		
 		// getting object
-		KiiObject object3 = rest.api().users(user).buckets(userBucketName).objects(object2.getObjectID()).get();
+		KiiObject object3 = rest.api().users(user).buckets(userBucketID).objects(object2.getObjectID()).get();
 		
 		assertEquals(100, (int)object3.getInt("score"));
 		assertEquals(3, (int)object3.getInt("level"));

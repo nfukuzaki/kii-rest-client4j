@@ -38,35 +38,35 @@ public class KiiBucketResourceTest {
 		rest.setCredentials(user);
 		
 		// creating bucket
-		String appBucketName = "app_bucket" + System.currentTimeMillis();
-		rest.api().buckets(appBucketName).create();
+		String appBucketID = "app_bucket" + System.currentTimeMillis();
+		rest.api().buckets(appBucketID).create();
 		
-		KiiBucket bucket = rest.api().buckets(appBucketName).get();
+		KiiBucket bucket = rest.api().buckets(appBucketID).get();
 		assertEquals("rw", bucket.getBucketType());
 		assertEquals(0, bucket.getSize());
 		
 		// creating objects
-		KiiObjectsResource objectsResource = rest.api().buckets(appBucketName).objects();
+		KiiObjectsResource objectsResource = rest.api().buckets(appBucketID).objects();
 		for (int i = 0; i < 15; i++) {
 			KiiObject obj = new KiiObject().set("score", i);
 			objectsResource.save(obj);
 		}
 		
 		// counting object
-		int count  = rest.api().buckets(appBucketName).count();
+		int count  = rest.api().buckets(appBucketID).count();
 		assertEquals(15, count);
 		
 		// querying object
 		KiiQuery query = new KiiQuery(KiiQueryClause.lt("score", 9));
 		query.setLimit(5);
-		KiiQueryResult queryResult = rest.api().buckets(appBucketName).query(query);
+		KiiQueryResult queryResult = rest.api().buckets(appBucketID).query(query);
 		List<KiiObject> results = queryResult.getResults();
 		assertEquals(5, results.size());
 		for (KiiObject obj : results) {
 			assertTrue(obj.getInt("score") < 9);
 		}
 		assertTrue(queryResult.hasNext());
-		queryResult = rest.api().buckets(appBucketName).query(queryResult.getNextQuery());
+		queryResult = rest.api().buckets(appBucketID).query(queryResult.getNextQuery());
 		results = queryResult.getResults();
 		assertEquals(4, results.size());
 		for (KiiObject obj : results) {
@@ -75,14 +75,14 @@ public class KiiBucketResourceTest {
 		assertFalse(queryResult.hasNext());
 		
 		// counting object
-		count  = rest.api().buckets(appBucketName).count(query);
+		count  = rest.api().buckets(appBucketID).count(query);
 		assertEquals(9, count);
 		
 		// deleting bucket
-		rest.api().buckets(appBucketName).delete();
+		rest.api().buckets(appBucketID).delete();
 		
 		try {
-			rest.api().buckets(appBucketName).get();
+			rest.api().buckets(appBucketID).get();
 			fail("KiiRestException must be thrown.");
 		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
@@ -98,35 +98,35 @@ public class KiiBucketResourceTest {
 		rest.setCredentials(user);
 		
 		// creating bucket
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
-		rest.api().users(user).buckets(userBucketName).create();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
+		rest.api().users(user).buckets(userBucketID).create();
 		
-		KiiBucket bucket = rest.api().users(user).buckets(userBucketName).get();
+		KiiBucket bucket = rest.api().users(user).buckets(userBucketID).get();
 		assertEquals("rw", bucket.getBucketType());
 		assertEquals(0, bucket.getSize());
 		
 		// creating objects
-		KiiObjectsResource objectsResource = rest.api().users(user).buckets(userBucketName).objects();
+		KiiObjectsResource objectsResource = rest.api().users(user).buckets(userBucketID).objects();
 		for (int i = 0; i < 15; i++) {
 			KiiObject obj = new KiiObject().set("score", i);
 			objectsResource.save(obj);
 		}
 		
 		// counting object
-		int count  = rest.api().users(user).buckets(userBucketName).count();
+		int count  = rest.api().users(user).buckets(userBucketID).count();
 		assertEquals(15, count);
 		
 		// querying object
 		KiiQuery query = new KiiQuery(KiiQueryClause.lt("score", 9));
 		query.setLimit(5);
-		KiiQueryResult queryResult = rest.api().users(user).buckets(userBucketName).query(query);
+		KiiQueryResult queryResult = rest.api().users(user).buckets(userBucketID).query(query);
 		List<KiiObject> results = queryResult.getResults();
 		assertEquals(5, results.size());
 		for (KiiObject obj : results) {
 			assertTrue(obj.getInt("score") < 9);
 		}
 		assertTrue(queryResult.hasNext());
-		queryResult = rest.api().users(user).buckets(userBucketName).query(queryResult.getNextQuery());
+		queryResult = rest.api().users(user).buckets(userBucketID).query(queryResult.getNextQuery());
 		results = queryResult.getResults();
 		assertEquals(4, results.size());
 		for (KiiObject obj : results) {
@@ -135,14 +135,14 @@ public class KiiBucketResourceTest {
 		assertFalse(queryResult.hasNext());
 		
 		// counting object
-		count  = rest.api().users(user).buckets(userBucketName).count(query);
+		count  = rest.api().users(user).buckets(userBucketID).count(query);
 		assertEquals(9, count);
 		
 		// deleting bucket
-		rest.api().users(user).buckets(userBucketName).delete();
+		rest.api().users(user).buckets(userBucketID).delete();
 		
 		try {
-			rest.api().users(user).buckets(userBucketName).get();
+			rest.api().users(user).buckets(userBucketID).get();
 			fail("KiiRestException must be thrown.");
 		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
@@ -163,35 +163,35 @@ public class KiiBucketResourceTest {
 		rest.api().groups().save(group);
 		
 		// creating bucket
-		String groupBucketName = "group_bucket" + System.currentTimeMillis();
-		rest.api().groups(group).buckets(groupBucketName).create();
+		String groupBucketID = "group_bucket" + System.currentTimeMillis();
+		rest.api().groups(group).buckets(groupBucketID).create();
 		
-		KiiBucket bucket = rest.api().groups(group).buckets(groupBucketName).get();
+		KiiBucket bucket = rest.api().groups(group).buckets(groupBucketID).get();
 		assertEquals("rw", bucket.getBucketType());
 		assertEquals(0, bucket.getSize());
 		
 		// creating objects
-		KiiObjectsResource objectsResource = rest.api().groups(group).buckets(groupBucketName).objects();
+		KiiObjectsResource objectsResource = rest.api().groups(group).buckets(groupBucketID).objects();
 		for (int i = 0; i < 15; i++) {
 			KiiObject obj = new KiiObject().set("score", i);
 			objectsResource.save(obj);
 		}
 		
 		// counting object
-		int count  = rest.api().groups(group).buckets(groupBucketName).count();
+		int count  = rest.api().groups(group).buckets(groupBucketID).count();
 		assertEquals(15, count);
 		
 		// querying object
 		KiiQuery query = new KiiQuery(KiiQueryClause.lt("score", 9));
 		query.setLimit(5);
-		KiiQueryResult queryResult = rest.api().groups(group).buckets(groupBucketName).query(query);
+		KiiQueryResult queryResult = rest.api().groups(group).buckets(groupBucketID).query(query);
 		List<KiiObject> results = queryResult.getResults();
 		assertEquals(5, results.size());
 		for (KiiObject obj : results) {
 			assertTrue(obj.getInt("score") < 9);
 		}
 		assertTrue(queryResult.hasNext());
-		queryResult = rest.api().groups(group).buckets(groupBucketName).query(queryResult.getNextQuery());
+		queryResult = rest.api().groups(group).buckets(groupBucketID).query(queryResult.getNextQuery());
 		results = queryResult.getResults();
 		assertEquals(4, results.size());
 		for (KiiObject obj : results) {
@@ -200,14 +200,14 @@ public class KiiBucketResourceTest {
 		assertFalse(queryResult.hasNext());
 		
 		// counting object
-		count  = rest.api().groups(group).buckets(groupBucketName).count(query);
+		count  = rest.api().groups(group).buckets(groupBucketID).count(query);
 		assertEquals(9, count);
 		
 		// deleting bucket
-		rest.api().groups(group).buckets(groupBucketName).delete();
+		rest.api().groups(group).buckets(groupBucketID).delete();
 		
 		try {
-			rest.api().groups(group).buckets(groupBucketName).get();
+			rest.api().groups(group).buckets(groupBucketID).get();
 			fail("KiiRestException must be thrown.");
 		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
@@ -239,35 +239,35 @@ public class KiiBucketResourceTest {
 		rest.api().things(thingID).owner().add(KiiThingOwner.user(user));
 		
 		// creating bucket
-		String thingBucketName = "thing_bucket" + System.currentTimeMillis();
-		rest.api().things(thingID).buckets(thingBucketName).create();
+		String thingBucketID = "thing_bucket" + System.currentTimeMillis();
+		rest.api().things(thingID).buckets(thingBucketID).create();
 		
-		KiiBucket bucket = rest.api().things(thingID).buckets(thingBucketName).get();
+		KiiBucket bucket = rest.api().things(thingID).buckets(thingBucketID).get();
 		assertEquals("rw", bucket.getBucketType());
 		assertEquals(0, bucket.getSize());
 		
 		// creating objects
-		KiiObjectsResource objectsResource = rest.api().things(thingID).buckets(thingBucketName).objects();
+		KiiObjectsResource objectsResource = rest.api().things(thingID).buckets(thingBucketID).objects();
 		for (int i = 0; i < 15; i++) {
 			KiiObject obj = new KiiObject().set("score", i);
 			objectsResource.save(obj);
 		}
 		
 		// counting object
-		int count  = rest.api().things(thingID).buckets(thingBucketName).count();
+		int count  = rest.api().things(thingID).buckets(thingBucketID).count();
 		assertEquals(15, count);
 		
 		// querying object
 		KiiQuery query = new KiiQuery(KiiQueryClause.lt("score", 9));
 		query.setLimit(5);
-		KiiQueryResult queryResult = rest.api().things(thingID).buckets(thingBucketName).query(query);
+		KiiQueryResult queryResult = rest.api().things(thingID).buckets(thingBucketID).query(query);
 		List<KiiObject> results = queryResult.getResults();
 		assertEquals(5, results.size());
 		for (KiiObject obj : results) {
 			assertTrue(obj.getInt("score") < 9);
 		}
 		assertTrue(queryResult.hasNext());
-		queryResult = rest.api().things(thingID).buckets(thingBucketName).query(queryResult.getNextQuery());
+		queryResult = rest.api().things(thingID).buckets(thingBucketID).query(queryResult.getNextQuery());
 		results = queryResult.getResults();
 		assertEquals(4, results.size());
 		for (KiiObject obj : results) {
@@ -276,14 +276,14 @@ public class KiiBucketResourceTest {
 		assertFalse(queryResult.hasNext());
 		
 		// counting object
-		count  = rest.api().things(thingID).buckets(thingBucketName).count(query);
+		count  = rest.api().things(thingID).buckets(thingBucketID).count(query);
 		assertEquals(9, count);
 		
 		// deleting bucket
-		rest.api().things(thingID).buckets(thingBucketName).delete();
+		rest.api().things(thingID).buckets(thingBucketID).delete();
 		
 		try {
-			rest.api().things(thingID).buckets(thingBucketName).get();
+			rest.api().things(thingID).buckets(thingBucketID).get();
 			fail("KiiRestException must be thrown.");
 		} catch (KiiNotFoundException e) {
 			assertEquals(404, e.getStatus());
@@ -299,19 +299,19 @@ public class KiiBucketResourceTest {
 		rest.setCredentials(user);
 		
 		// creating bucket
-		String appBucketName = "app_bucket" + System.currentTimeMillis();
-		rest.api().buckets(appBucketName).create();
+		String appBucketID = "app_bucket" + System.currentTimeMillis();
+		rest.api().buckets(appBucketID).create();
 		
-		KiiBucket bucket = rest.api().buckets(appBucketName).get();
+		KiiBucket bucket = rest.api().buckets(appBucketID).get();
 		assertEquals("rw", bucket.getBucketType());
 		assertEquals(0, bucket.getSize());
 		
 		// subscribe/unsubscribe
-		assertFalse(rest.api().buckets(appBucketName).isSubscribed(user));
-		rest.api().buckets(appBucketName).subscribe(user);
-		assertTrue(rest.api().buckets(appBucketName).isSubscribed(user));
-		rest.api().buckets(appBucketName).unsubscribe(user);
-		assertFalse(rest.api().buckets(appBucketName).isSubscribed(user));
+		assertFalse(rest.api().buckets(appBucketID).isSubscribed(user));
+		rest.api().buckets(appBucketID).subscribe(user);
+		assertTrue(rest.api().buckets(appBucketID).isSubscribed(user));
+		rest.api().buckets(appBucketID).unsubscribe(user);
+		assertFalse(rest.api().buckets(appBucketID).isSubscribed(user));
 	}
 
 }

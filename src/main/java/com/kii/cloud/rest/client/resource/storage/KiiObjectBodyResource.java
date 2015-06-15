@@ -29,10 +29,10 @@ import com.squareup.okhttp.Response;
 /**
  * Represents the object body resource like following URI:
  * <ul>
- * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}/body
- * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}/body
- * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}/body
- * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_NAME}/objects/{OBJECT_ID}/body
+ * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}/body
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}/body
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}/body
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_ID}/objects/{OBJECT_ID}/body
  * </ul>
  *
  */
@@ -57,39 +57,39 @@ public class KiiObjectBodyResource extends KiiRestSubResource implements KiiScop
 		return BASE_PATH;
 	}
 	/**
-	 * @param bucketName
+	 * @param bucketID
 	 * @param objectID
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
 	 */
 	@AdminAPI
-	public void moveToAppScope(String bucketName, String objectID) throws KiiRestException {
+	public void moveToAppScope(String bucketID, String objectID) throws KiiRestException {
 		JsonObject targetObjectScope = new JsonObject();
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("type", "APP");
-		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+		this.moveObjectBody(targetObjectScope, bucketID, objectID);
 	}
 	/**
 	 * @param user
-	 * @param bucketName
+	 * @param bucketID
 	 * @param objectID
 	 * @throws KiiRestException
 	 */
-	public void moveToUserScope(KiiUser user, String bucketName, String objectID) throws KiiRestException {
+	public void moveToUserScope(KiiUser user, String bucketID, String objectID) throws KiiRestException {
 		if (user == null) {
 			throw new IllegalArgumentException("user is null");
 		}
-		this.moveToUserScope(user.getUserID(), bucketName, objectID);
+		this.moveToUserScope(user.getUserID(), bucketID, objectID);
 	}
 	/**
 	 * @param userID
-	 * @param bucketName
+	 * @param bucketID
 	 * @param objectID
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
 	 */
 	@AdminAPI
-	public void moveToUserScope(String userID, String bucketName, String objectID) throws KiiRestException {
+	public void moveToUserScope(String userID, String bucketID, String objectID) throws KiiRestException {
 		if (userID == null) {
 			throw new IllegalArgumentException("userID is null");
 		}
@@ -97,30 +97,30 @@ public class KiiObjectBodyResource extends KiiRestSubResource implements KiiScop
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("userID", userID);
 		targetObjectScope.addProperty("type", "APP_AND_USER");
-		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+		this.moveObjectBody(targetObjectScope, bucketID, objectID);
 	}
 	/**
 	 * @param group
-	 * @param bucketName
+	 * @param bucketID
 	 * @param objectID
 	 * @throws KiiRestException
 	 */
 	@AdminAPI
-	public void moveToGroupScope(KiiGroup group, String bucketName, String objectID) throws KiiRestException {
+	public void moveToGroupScope(KiiGroup group, String bucketID, String objectID) throws KiiRestException {
 		if (group == null) {
 			throw new IllegalArgumentException("group is null");
 		}
-		this.moveToGroupScope(group.getGroupID(), bucketName, objectID);
+		this.moveToGroupScope(group.getGroupID(), bucketID, objectID);
 	}
 	/**
 	 * @param groupID
-	 * @param bucketName
+	 * @param bucketID
 	 * @param objectID
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
 	 */
 	@AdminAPI
-	public void moveToGroupScope(String groupID, String bucketName, String objectID) throws KiiRestException {
+	public void moveToGroupScope(String groupID, String bucketID, String objectID) throws KiiRestException {
 		if (groupID == null) {
 			throw new IllegalArgumentException("groupID is null");
 		}
@@ -128,29 +128,29 @@ public class KiiObjectBodyResource extends KiiRestSubResource implements KiiScop
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("groupID", groupID);
 		targetObjectScope.addProperty("type", "APP_AND_GROUP");
-		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+		this.moveObjectBody(targetObjectScope, bucketID, objectID);
 	}
 	/**
 	 * @param thing
-	 * @param bucketName
+	 * @param bucketID
 	 * @param objectID
 	 * @throws KiiRestException
 	 */
-	public void moveToThingScope(KiiThing thing, String bucketName, String objectID) throws KiiRestException {
+	public void moveToThingScope(KiiThing thing, String bucketID, String objectID) throws KiiRestException {
 		if (thing == null) {
 			throw new IllegalArgumentException("thing is null");
 		}
-		this.moveToThingScope(thing.getThingID(), bucketName, objectID);
+		this.moveToThingScope(thing.getThingID(), bucketID, objectID);
 	}
 	/**
 	 * @param thingID
-	 * @param bucketName
+	 * @param bucketID
 	 * @param objectID
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-data/object-storages/movingbody/
 	 */
 	@AdminAPI
-	public void moveToThingScope(String thingID, String bucketName, String objectID) throws KiiRestException {
+	public void moveToThingScope(String thingID, String bucketID, String objectID) throws KiiRestException {
 		if (thingID == null) {
 			throw new IllegalArgumentException("thingID is null");
 		}
@@ -158,11 +158,11 @@ public class KiiObjectBodyResource extends KiiRestSubResource implements KiiScop
 		targetObjectScope.addProperty("appID", getRootResource().getAppID());
 		targetObjectScope.addProperty("thingID", thingID);
 		targetObjectScope.addProperty("type", "APP_AND_THING");
-		this.moveObjectBody(targetObjectScope, bucketName, objectID);
+		this.moveObjectBody(targetObjectScope, bucketID, objectID);
 	}
-	private void moveObjectBody(JsonObject targetObjectScope, String bucketName, String objectID) throws KiiRestException {
-		if (bucketName == null) {
-			throw new IllegalArgumentException("bucketName is null");
+	private void moveObjectBody(JsonObject targetObjectScope, String bucketID, String objectID) throws KiiRestException {
+		if (bucketID == null) {
+			throw new IllegalArgumentException("bucketID is null");
 		}
 		if (objectID == null) {
 			throw new IllegalArgumentException("objectID is null");
@@ -170,7 +170,7 @@ public class KiiObjectBodyResource extends KiiRestSubResource implements KiiScop
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.add("targetObjectScope", targetObjectScope);
-		requestBody.addProperty("targetBucketID", bucketName);
+		requestBody.addProperty("targetBucketID", bucketID);
 		requestBody.addProperty("targetObjectID", objectID);
 		
 		KiiRestRequest request = new KiiRestRequest(getUrl("/move"), Method.POST, headers, MEDIA_TYPE_OBJECT_BODY_MOVE_REQUEST, requestBody);

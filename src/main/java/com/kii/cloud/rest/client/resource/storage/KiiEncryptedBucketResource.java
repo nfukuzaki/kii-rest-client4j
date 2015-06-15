@@ -5,10 +5,10 @@ import com.kii.cloud.rest.client.resource.KiiAppResource;
 /**
  * Represents the bucket resource like following URI:
  * <ul>
- * <li>https://hostname/api/apps/{APP_ID}/buckets/CRYPTO:{BUCKET_NAME}
- * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/CRYPTO:{BUCKET_NAME}
- * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/CRYPTO:{BUCKET_NAME}
- * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/CRYPTO:{BUCKET_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/buckets/CRYPTO:{BUCKET_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/CRYPTO:{BUCKET_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/CRYPTO:{BUCKET_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/CRYPTO:{BUCKET_ID}
  * </ul>
  *
  */
@@ -31,7 +31,7 @@ public class KiiEncryptedBucketResource extends KiiBucketResource {
 	}
 	@Override
 	public String getPath() {
-		return BASE_PATH + "/CRYPTO:" + this.name;
+		return BASE_PATH + "/CRYPTO:" + this.bucketID;
 	}
 
 }

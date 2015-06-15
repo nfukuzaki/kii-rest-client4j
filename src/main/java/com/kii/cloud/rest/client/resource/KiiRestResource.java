@@ -105,6 +105,9 @@ public abstract class KiiRestResource {
 			getParent().setAuthorizationHeader(headers);
 		}
 	}
+	protected String getAppID() {
+		return getParent().getAppID();
+	}
 	protected Response execute(KiiRestRequest restRequest) throws IOException {
 		Builder builder = new Request.Builder();
 		builder.url(restRequest.getUrl());

@@ -13,6 +13,7 @@ import com.kii.cloud.rest.client.model.storage.KiiQuery;
 import com.kii.cloud.rest.client.model.storage.KiiQueryResult;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiBucketURI;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
@@ -26,10 +27,10 @@ import com.squareup.okhttp.Response;
 /**
  * Represents the bucket resource like following URI:
  * <ul>
- * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_NAME}
- * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_NAME}
- * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_NAME}
- * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_NAME}
+ * <li>https://hostname/api/apps/{APP_ID}/buckets/{BUCKET_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/users/{USER_IDENTIFIER}/buckets/{BUCKET_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/groups/{GROUP_ID}/buckets/{BUCKET_ID}
+ * <li>https://hostname/api/apps/{APP_ID}/things/{THING_ID}/buckets/{BUCKET_ID}
  * </ul>
  *
  */
@@ -40,39 +41,56 @@ public class KiiBucketResource extends KiiRestSubResource implements KiiScopedRe
 	
 	public static final String BASE_PATH = "/buckets";
 	
-	protected final String name;
+	protected final String bucketID;
 	
-	public KiiBucketResource(KiiAppResource parent, String name) {
+	public KiiBucketResource(KiiAppResource parent, String bucketID) {
 		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
+		if (StringUtils.isEmpty(bucketID)) {
+			throw new IllegalArgumentException("bucketID is null or empty");
 		}
-		this.name = name;
+		this.bucketID = bucketID;
 	}
-	public KiiBucketResource(KiiUserResource parent, String name) {
+	public KiiBucketResource(KiiUserResource parent, String bucketID) {
 		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
+		if (StringUtils.isEmpty(bucketID)) {
+			throw new IllegalArgumentException("bucketID is null or empty");
 		}
-		this.name = name;
+		this.bucketID = bucketID;
 	}
-	public KiiBucketResource(KiiGroupResource parent, String name) {
+	public KiiBucketResource(KiiGroupResource parent, String bucketID) {
 		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
+		if (StringUtils.isEmpty(bucketID)) {
+			throw new IllegalArgumentException("bucketID is null or empty");
 		}
-		this.name = name;
+		this.bucketID = bucketID;
 	}
-	public KiiBucketResource(KiiThingResource parent, String name) {
+	public KiiBucketResource(KiiThingResource parent, String bucketID) {
 		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
+		if (StringUtils.isEmpty(bucketID)) {
+			throw new IllegalArgumentException("bucketID is null or empty");
 		}
-		this.name = name;
+		this.bucketID = bucketID;
+	}
+	
+	public String getBucketID() {
+		return this.bucketID;
 	}
 	@Override
 	public KiiScope getScope() {
 		return ((KiiScopedResource)this.parent).getScope();
+	}
+	public String getScopeIdentifier() {
+		switch (this.getScope()) {
+			case APP:
+				return null;
+			case USER:
+				return ((KiiUserResource)this.parent).getScopeIdentifier();
+			case GROUP:
+				return ((KiiGroupResource)this.parent).getScopeIdentifier();
+			case THING:
+				return ((KiiThingResource)this.parent).getScopeIdentifier();
+		}
+		throw new AssertionError("This Bucket has unexpected scope.");
 	}
 	public KiiBucketAclResource acl() {
 		return new KiiBucketAclResource(this);
@@ -355,6 +373,23 @@ public class KiiBucketResource extends KiiRestSubResource implements KiiScopedRe
 	}
 	@Override
 	public String getPath() {
-		return BASE_PATH + "/" + this.name;
+		return BASE_PATH + "/" + this.bucketID;
 	}
+	public KiiBucketURI getURI() {
+		String appID = this.getAppID();
+		String bucketID = this.bucketID;
+		String scopeIdentifier = this.getScopeIdentifier();
+		switch (this.getScope()) {
+			case APP:
+				return KiiBucketURI.newAppScopeURI(appID, bucketID);
+			case USER:
+				return KiiBucketURI.newUserScopeURI(appID, scopeIdentifier, bucketID);
+			case GROUP:
+				return KiiBucketURI.newGroupScopeURI(appID, scopeIdentifier, bucketID);
+			case THING:
+				return KiiBucketURI.newThingScopeURI(appID, scopeIdentifier, bucketID);
+		}
+		throw new AssertionError("This Bucket has unexpected scope.");
+	}
+
 }

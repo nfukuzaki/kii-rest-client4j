@@ -11,6 +11,10 @@ import com.kii.cloud.rest.client.model.KiiScope;
 public class KiiAppURI extends KiiURI {
 	private final String appID;
 	
+	public static KiiAppURI newURI(String appID) {
+		return new KiiAppURI(appID);
+	}
+	
 	protected KiiAppURI(String appID) {
 		this.appID = appID;
 	}

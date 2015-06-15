@@ -73,50 +73,50 @@ public class KiiServerHookConfiguration {
 	public static class Path {
 		protected static final String PREFIX = "kiicloud://";
 		private final String scope;
-		private final String bucketName;
+		private final String bucketID;
 		private Path(String scope) {
 			this.scope = scope;
-			this.bucketName = null;
+			this.bucketID = null;
 		}
-		private Path(String scope, String bucketName) {
+		private Path(String scope, String bucketID) {
 			this.scope = scope;
-			this.bucketName = bucketName;
+			this.bucketID = bucketID;
 		}
 		@Override
 		public String toString() {
-			if (this.bucketName == null) {
+			if (this.bucketID == null) {
 				return PREFIX + this.scope;
 			} else {
 				if (this.scope == null) {
-					return PREFIX + "buckets/" + this.bucketName;
+					return PREFIX + "buckets/" + this.bucketID;
 				} else {
-					return PREFIX + this.scope + "/*/buckets/" + this.bucketName;
+					return PREFIX + this.scope + "/*/buckets/" + this.bucketID;
 				}
 			}
 		}
 		public static Path Installation() {
 			return new Path("installations");
 		}
-		public static Path app(String bucketName) {
-			return new Path(null, bucketName);
+		public static Path app(String bucketID) {
+			return new Path(null, bucketID);
 		}
 		public static Path group() {
 			return new Path("groups");
 		}
-		public static Path group(String bucketName) {
-			return new Path("groups", bucketName);
+		public static Path group(String bucketID) {
+			return new Path("groups", bucketID);
 		}
 		public static Path user() {
 			return new Path("users");
 		}
-		public static Path user(String bucketName) {
-			return new Path("users", bucketName);
+		public static Path user(String bucketID) {
+			return new Path("users", bucketID);
 		}
 		public static Path thing() {
 			return new Path("things");
 		}
-		public static Path thing(String bucketName) {
-			return new Path("things", bucketName);
+		public static Path thing(String bucketID) {
+			return new Path("things", bucketID);
 		}
 		public static Path parse(String path) {
 			String p = path.replace(PREFIX, "");

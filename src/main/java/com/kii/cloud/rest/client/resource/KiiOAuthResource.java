@@ -23,7 +23,7 @@ import com.squareup.okhttp.Response;
  */
 public class KiiOAuthResource extends KiiRestSubResource {
 	public static final String BASE_PATH = "/oauth2/token";
-	public KiiOAuthResource(KiiRestResource parent) {
+	public KiiOAuthResource(KiiAppResource parent) {
 		super(parent);
 	}
 	/**

@@ -41,13 +41,13 @@ public class KiiAclResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		
 		// creating bucket
-		rest.api().users(user).buckets(userBucketName).create();
+		rest.api().users(user).buckets(userBucketID).create();
 		
 		// listing ACL
-		Map<Action,List<Subject>> ACLs = rest.api().users(user).buckets(userBucketName).acl().list();
+		Map<Action,List<Subject>> ACLs = rest.api().users(user).buckets(userBucketID).acl().list();
 		// verify default ACLs
 		assertEquals(3, ACLs.size());
 		assertEquals(user.getUserID(), ACLs.get(BucketAction.CREATE_OBJECTS_IN_BUCKET).get(0).getID());
@@ -55,13 +55,13 @@ public class KiiAclResourceTest {
 		assertEquals(user.getUserID(), ACLs.get(BucketAction.DROP_BUCKET_WITH_ALL_CONTENT).get(0).getID());
 		
 		// granting ACL
-		rest.api().users(user).buckets(userBucketName).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANONYMOUS_USER);
-		rest.api().users(user).buckets(userBucketName).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANY_AUTHENTICATED_USER);
-		rest.api().users(user).buckets(userBucketName).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectUser);
-		rest.api().users(user).buckets(userBucketName).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectGroup);
-		rest.api().users(user).buckets(userBucketName).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectThing);
+		rest.api().users(user).buckets(userBucketID).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANONYMOUS_USER);
+		rest.api().users(user).buckets(userBucketID).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANY_AUTHENTICATED_USER);
+		rest.api().users(user).buckets(userBucketID).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectUser);
+		rest.api().users(user).buckets(userBucketID).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectGroup);
+		rest.api().users(user).buckets(userBucketID).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectThing);
 		// verify ACLs
-		ACLs = rest.api().users(user).buckets(userBucketName).acl().list();
+		ACLs = rest.api().users(user).buckets(userBucketID).acl().list();
 		assertEquals(3, ACLs.size());
 		Subject[] expectedSubjects = new Subject[]{
 				Subject.user(user),
@@ -75,18 +75,18 @@ public class KiiAclResourceTest {
 		assertEquals(user.getUserID(), ACLs.get(BucketAction.DROP_BUCKET_WITH_ALL_CONTENT).get(0).getID());
 		
 		// listing subject by action
-		List<Subject> subjectCreateObjectsInBucket = rest.api().users(user).buckets(userBucketName).acl().list(BucketAction.CREATE_OBJECTS_IN_BUCKET);
+		List<Subject> subjectCreateObjectsInBucket = rest.api().users(user).buckets(userBucketID).acl().list(BucketAction.CREATE_OBJECTS_IN_BUCKET);
 		AssertUtils.assertEqualsIgnoreOrder(expectedSubjects, subjectCreateObjectsInBucket);
 		// get subject
-		Subject subject = rest.api().users(user).buckets(userBucketName).acl().get(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANONYMOUS_USER);
+		Subject subject = rest.api().users(user).buckets(userBucketID).acl().get(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANONYMOUS_USER);
 		assertEquals("ANONYMOUS_USER", subject.getID());
 		
 		// revoking ACL
-		rest.api().users(user).buckets(userBucketName).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANY_AUTHENTICATED_USER);
-		rest.api().users(user).buckets(userBucketName).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectUser);
-		rest.api().users(user).buckets(userBucketName).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectGroup);
-		rest.api().users(user).buckets(userBucketName).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectThing);
-		subjectCreateObjectsInBucket = rest.api().users(user).buckets(userBucketName).acl().list(BucketAction.CREATE_OBJECTS_IN_BUCKET);
+		rest.api().users(user).buckets(userBucketID).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANY_AUTHENTICATED_USER);
+		rest.api().users(user).buckets(userBucketID).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectUser);
+		rest.api().users(user).buckets(userBucketID).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectGroup);
+		rest.api().users(user).buckets(userBucketID).acl().revok(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectThing);
+		subjectCreateObjectsInBucket = rest.api().users(user).buckets(userBucketID).acl().list(BucketAction.CREATE_OBJECTS_IN_BUCKET);
 		
 		expectedSubjects = new Subject[]{
 				Subject.user(user),
@@ -103,26 +103,26 @@ public class KiiAclResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userBucketName = "user_bucket" + System.currentTimeMillis();
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
 		KiiObject object = new KiiObject().set("name", "TestObject");
-		rest.api().users(user).buckets(userBucketName).objects().save(object);
+		rest.api().users(user).buckets(userBucketID).objects().save(object);
 		
 		// listing ACL
-		Map<Action,List<Subject>> ACLs = rest.api().users(user).buckets(userBucketName).objects(object).acl().list();
+		Map<Action,List<Subject>> ACLs = rest.api().users(user).buckets(userBucketID).objects(object).acl().list();
 		// verify default ACLs
 		assertEquals(2, ACLs.size());
 		assertEquals(user.getUserID(), ACLs.get(ObjectAction.READ_EXISTING_OBJECT).get(0).getID());
 		assertEquals(user.getUserID(), ACLs.get(ObjectAction.WRITE_EXISTING_OBJECT).get(0).getID());
 		
 		// granting ACL
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, Subject.ANONYMOUS_USER);
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, Subject.ANY_AUTHENTICATED_USER);
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, this.subjectUser);
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, this.subjectGroup);
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, this.subjectThing);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, Subject.ANONYMOUS_USER);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, Subject.ANY_AUTHENTICATED_USER);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, this.subjectUser);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, this.subjectGroup);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().grant(ObjectAction.READ_EXISTING_OBJECT, this.subjectThing);
 		
 		// verify ACLs
-		ACLs = rest.api().users(user).buckets(userBucketName).objects(object).acl().list();
+		ACLs = rest.api().users(user).buckets(userBucketID).objects(object).acl().list();
 		assertEquals(2, ACLs.size());
 		Subject[] expectedSubjects = new Subject[]{
 				Subject.user(user),
@@ -135,18 +135,18 @@ public class KiiAclResourceTest {
 		assertEquals(user.getUserID(), ACLs.get(ObjectAction.WRITE_EXISTING_OBJECT).get(0).getID());
 		
 		// listing subject by action
-		List<Subject> subjectReadExistingObject = rest.api().users(user).buckets(userBucketName).objects(object).acl().list(ObjectAction.READ_EXISTING_OBJECT);
+		List<Subject> subjectReadExistingObject = rest.api().users(user).buckets(userBucketID).objects(object).acl().list(ObjectAction.READ_EXISTING_OBJECT);
 		AssertUtils.assertEqualsIgnoreOrder(expectedSubjects, subjectReadExistingObject);
 		// get subject
-		Subject subject = rest.api().users(user).buckets(userBucketName).objects(object).acl().get(ObjectAction.READ_EXISTING_OBJECT, Subject.ANONYMOUS_USER);
+		Subject subject = rest.api().users(user).buckets(userBucketID).objects(object).acl().get(ObjectAction.READ_EXISTING_OBJECT, Subject.ANONYMOUS_USER);
 		assertEquals("ANONYMOUS_USER", subject.getID());
 		
 		// revoking ACL
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, Subject.ANY_AUTHENTICATED_USER);
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, this.subjectUser);
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, this.subjectGroup);
-		rest.api().users(user).buckets(userBucketName).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, this.subjectThing);
-		subjectReadExistingObject = rest.api().users(user).buckets(userBucketName).objects(object).acl().list(ObjectAction.READ_EXISTING_OBJECT);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, Subject.ANY_AUTHENTICATED_USER);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, this.subjectUser);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, this.subjectGroup);
+		rest.api().users(user).buckets(userBucketID).objects(object).acl().revok(ObjectAction.READ_EXISTING_OBJECT, this.subjectThing);
+		subjectReadExistingObject = rest.api().users(user).buckets(userBucketID).objects(object).acl().list(ObjectAction.READ_EXISTING_OBJECT);
 		assertEquals(2, subjectReadExistingObject.size());
 		expectedSubjects = new Subject[]{
 				Subject.user(user),

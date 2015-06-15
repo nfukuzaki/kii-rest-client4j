@@ -9,6 +9,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiThingIdentifierType;
+import com.kii.cloud.rest.client.model.uri.KiiUserURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
@@ -190,5 +191,11 @@ public class KiiThingResource extends KiiRestSubResource implements KiiScopedRes
 	@Override
 	public KiiScope getScope() {
 		return ((KiiThingsResource)this.parent).getScope();
+	}
+	public String getScopeIdentifier() {
+		return this.identifierType.getFullyQualifiedIdentifier(this.identifier);
+	}
+	public KiiUserURI getURI() {
+		return KiiUserURI.newURI(this.getAppID(), this.identifier);
 	}
 }

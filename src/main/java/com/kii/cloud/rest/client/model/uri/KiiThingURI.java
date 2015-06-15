@@ -14,6 +14,9 @@ import com.kii.cloud.rest.client.util.StringUtils;
  */
 public class KiiThingURI extends KiiURI {
 	
+	public static KiiThingURI newURI(String appID, String identifier) {
+		return new KiiThingURI(new KiiAppURI(appID), identifier);
+	}
 	public static KiiThingURI parse(String str) {
 		if (StringUtils.isEmpty(str)) {
 			throw new IllegalArgumentException("str is null or empty");

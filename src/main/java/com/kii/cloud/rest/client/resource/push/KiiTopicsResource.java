@@ -51,6 +51,19 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 	public KiiScope getScope() {
 		return ((KiiScopedResource)this.parent).getScope();
 	}
+	public String getScopeIdentifier() {
+		switch (this.getScope()) {
+			case APP:
+				return null;
+			case USER:
+				return ((KiiUserResource)this.parent).getScopeIdentifier();
+			case GROUP:
+				return ((KiiGroupResource)this.parent).getScopeIdentifier();
+			case THING:
+				return ((KiiThingResource)this.parent).getScopeIdentifier();
+		}
+		throw new AssertionError("This Topics has unexpected scope.");
+	}
 	/**
 	 * @param topic
 	 * @throws KiiRestException

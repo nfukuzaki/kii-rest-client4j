@@ -15,6 +15,19 @@ import com.kii.cloud.rest.client.util.StringUtils;
  */
 public class KiiTopicURI extends KiiURI {
 	
+	public static KiiTopicURI newAppScopeURI(String appID, String topicID) {
+		return new KiiTopicURI(new KiiAppURI(appID), topicID);
+	}
+	public static KiiTopicURI newUserScopeURI(String appID, String userIdentifier, String topicID) {
+		return new KiiTopicURI(new KiiUserURI(new KiiAppURI(appID), userIdentifier), topicID);
+	}
+	public static KiiTopicURI newGroupScopeURI(String appID, String groupID, String topicID) {
+		return new KiiTopicURI(new KiiGroupURI(new KiiAppURI(appID), groupID), topicID);
+	}
+	public static KiiTopicURI newThingScopeURI(String appID, String thingIdentifier, String topicID) {
+		return new KiiTopicURI(new KiiThingURI(new KiiAppURI(appID), thingIdentifier), topicID);
+	}
+
 	public static KiiTopicURI parse(String str) {
 		if (StringUtils.isEmpty(str)) {
 			throw new IllegalArgumentException("str is null or empty");
