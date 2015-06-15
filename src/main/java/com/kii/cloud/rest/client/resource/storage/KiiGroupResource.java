@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
+import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
@@ -135,8 +136,14 @@ public class KiiGroupResource extends KiiRestSubResource implements KiiScopedRes
 	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}
-	public KiiTopicResource topics(String name) {
-		return new KiiTopicResource(this.topics(), name);
+	public KiiTopicResource topics(KiiTopic topic) {
+		if (topic == null) {
+			throw new IllegalArgumentException("topic is null"); 
+		}
+		return new KiiTopicResource(this.topics(), topic.getTopicID());
+	}
+	public KiiTopicResource topics(String topicID) {
+		return new KiiTopicResource(this.topics(), topicID);
 	}
 	@Override
 	public String getPath() {

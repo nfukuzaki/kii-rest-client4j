@@ -32,31 +32,17 @@ public class KiiTopicResource extends KiiRestSubResource implements KiiScopedRes
 	
 	public static final MediaType MEDIA_SEND_PUSH_MESSAGE_REQUEST = MediaType.parse("application/vnd.kii.SendPushMessageRequest+json");
 	
-	private final String name;
-	public KiiTopicResource(KiiTopicsResource parent, String name) {
+	private final String topicID;
+	public KiiTopicResource(KiiTopicsResource parent, String topicID) {
 		super(parent);
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException("name is null or empty");
+		if (StringUtils.isEmpty(topicID)) {
+			throw new IllegalArgumentException("name is null or topicID");
 		}
-		this.name = name;
+		this.topicID = topicID;
 	}
 	@Override
 	public KiiScope getScope() {
 		return ((KiiTopicsResource)this.parent).getScope();
-	}
-	/**
-	 * @throws KiiRestException
-	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/creating-topic/
-	 */
-	public void create() throws KiiRestException {
-		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers);
-		try {
-			Response response = this.execute(request);
-			this.parseResponse(request, response);
-		} catch (IOException e) {
-			throw new KiiRestException(request.getCurl(), e);
-		}
 	}
 	/**
 	 * NOTE:This feature has not documented yet.
@@ -291,6 +277,6 @@ public class KiiTopicResource extends KiiRestSubResource implements KiiScopedRes
 	}
 	@Override
 	public String getPath() {
-		return "/" + this.name;
+		return "/" + this.topicID;
 	}
 }

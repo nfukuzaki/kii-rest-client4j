@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,6 +19,7 @@ import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.KiiListResult;
 import com.kii.cloud.rest.client.model.push.KiiGCMMessage;
 import com.kii.cloud.rest.client.model.push.KiiPushMessage;
+import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
@@ -34,26 +37,26 @@ public class KiiTopicResourceTest {
 		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());
 		rest.setCredentials(cred);
 		
-		String appTopicName = "app_topic" + System.currentTimeMillis();
+		String appTopicID = "app_topic" + System.currentTimeMillis();
 		
 		// listing topics
-		KiiListResult<String> existingTopicNames = rest.api().topics().list();
+		KiiListResult<KiiTopic> existingTopics = rest.api().topics().list();
 		
 		// creating topic
-		rest.api().topics(appTopicName).create();
+		rest.api().topics().create(appTopicID);
 		// checking topic
-		boolean exists = rest.api().topics(appTopicName).exists();
+		boolean exists = rest.api().topics(appTopicID).exists();
 		assertTrue(exists);
 		
 		// listing topics
-		KiiListResult<String> topicNames = rest.api().topics().list();
-		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
-		assertTrue(topicNames.getResult().contains(appTopicName));
+		KiiListResult<KiiTopic> topics = rest.api().topics().list();
+		assertTrue(topics.size() - existingTopics.size() == 1);
+		assertTrue(containsKiiTopic(topics.getResult(), appTopicID));
 		
 		// subscribing topic
-		rest.api().topics(appTopicName).subscribe(user);
+		rest.api().topics(appTopicID).subscribe(user);
 		// checking subscription status
-		boolean isSubscribed = rest.api().topics(appTopicName).isSubscribed(user);
+		boolean isSubscribed = rest.api().topics(appTopicID).isSubscribed(user);
 		assertTrue(isSubscribed);
 		
 		// Sending message
@@ -61,17 +64,17 @@ public class KiiTopicResourceTest {
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
 		message.setGCM(new KiiGCMMessage(new JsonObject()));
-		String pushMessageID = rest.api().topics(appTopicName).send(message);
+		String pushMessageID = rest.api().topics(appTopicID).send(message);
 		assertNotNull(pushMessageID);
 		
 		// unsubscribing topic
-		rest.api().topics(appTopicName).unsubscribe(user);
+		rest.api().topics(appTopicID).unsubscribe(user);
 		// checking subscription status
-		isSubscribed = rest.api().topics(appTopicName).isSubscribed(user);
+		isSubscribed = rest.api().topics(appTopicID).isSubscribed(user);
 		assertFalse(isSubscribed);
 		
 		// deleting topic
-		rest.api().topics(appTopicName).delete();
+		rest.api().topics(appTopicID).delete();
 	}
 	@Test
 	public void userScopeTest() throws Exception {
@@ -82,26 +85,26 @@ public class KiiTopicResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userTopicName = "user_topic" + System.currentTimeMillis();
+		String userTopicID = "user_topic" + System.currentTimeMillis();
 		
 		// listing topics
-		KiiListResult<String> existingTopicNames = rest.api().users(user).topics().list();
+		KiiListResult<KiiTopic> existingTopics = rest.api().users(user).topics().list();
 		
 		// creating topic
-		rest.api().users(user).topics(userTopicName).create();
+		rest.api().users(user).topics().create(userTopicID);
 		// checking topic
-		boolean exists = rest.api().users(user).topics(userTopicName).exists();
+		boolean exists = rest.api().users(user).topics(userTopicID).exists();
 		assertTrue(exists);
 		
 		// listing topics
-		KiiListResult<String> topicNames = rest.api().users(user).topics().list();
-		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
-		assertTrue(topicNames.getResult().contains(userTopicName));
+		KiiListResult<KiiTopic> topics = rest.api().users(user).topics().list();
+		assertTrue(topics.size() - existingTopics.size() == 1);
+		assertTrue(containsKiiTopic(topics.getResult(), userTopicID));
 		
 		// subscribing topic
-		rest.api().users(user).topics(userTopicName).subscribe(user);
+		rest.api().users(user).topics(userTopicID).subscribe(user);
 		// checking subscription status
-		boolean isSubscribed = rest.api().users(user).topics(userTopicName).isSubscribed(user);
+		boolean isSubscribed = rest.api().users(user).topics(userTopicID).isSubscribed(user);
 		assertTrue(isSubscribed);
 		
 		// Sending message
@@ -109,17 +112,17 @@ public class KiiTopicResourceTest {
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
 		message.setGCM(new KiiGCMMessage(new JsonObject()));
-		String pushMessageID = rest.api().users(user).topics(userTopicName).send(message);
+		String pushMessageID = rest.api().users(user).topics(userTopicID).send(message);
 		assertNotNull(pushMessageID);
 		
 		// unsubscribing topic
-		rest.api().users(user).topics(userTopicName).unsubscribe(user);
+		rest.api().users(user).topics(userTopicID).unsubscribe(user);
 		// checking subscription status
-		isSubscribed = rest.api().users(user).topics(userTopicName).isSubscribed(user);
+		isSubscribed = rest.api().users(user).topics(userTopicID).isSubscribed(user);
 		assertFalse(isSubscribed);
 		
 		// deleting topic
-		rest.api().users(user).topics(userTopicName).delete();
+		rest.api().users(user).topics(userTopicID).delete();
 	}
 	@Test
 	public void groupScopeTest() throws Exception {
@@ -135,26 +138,26 @@ public class KiiTopicResourceTest {
 		group.setOwner(user.getUserID());
 		rest.api().groups().save(group, null);
 		
-		String groupTopicName = "group_topic" + System.currentTimeMillis();
+		String groupTopicID = "group_topic" + System.currentTimeMillis();
 		
 		// listing topics
-		KiiListResult<String> existingTopicNames = rest.api().groups(group).topics().list();
+		KiiListResult<KiiTopic> existingTopics = rest.api().groups(group).topics().list();
 		
 		// creating topic
-		rest.api().groups(group).topics(groupTopicName).create();
+		rest.api().groups(group).topics().create(groupTopicID);
 		// checking topic
-		boolean exists = rest.api().groups(group).topics(groupTopicName).exists();
+		boolean exists = rest.api().groups(group).topics(groupTopicID).exists();
 		assertTrue(exists);
 		
 		// listing topics
-		KiiListResult<String> topicNames = rest.api().groups(group).topics().list();
-		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
-		assertTrue(topicNames.getResult().contains(groupTopicName));
+		KiiListResult<KiiTopic> topics = rest.api().groups(group).topics().list();
+		assertTrue(topics.size() - existingTopics.size() == 1);
+		assertTrue(containsKiiTopic(topics.getResult(), groupTopicID));
 		
 		// subscribing topic
-		rest.api().groups(group).topics(groupTopicName).subscribeByUser(user.getUserID());
+		rest.api().groups(group).topics(groupTopicID).subscribeByUser(user.getUserID());
 		// checking subscription status
-		boolean isSubscribed = rest.api().groups(group).topics(groupTopicName).isSubscribedByUser(user.getUserID());
+		boolean isSubscribed = rest.api().groups(group).topics(groupTopicID).isSubscribedByUser(user.getUserID());
 		assertTrue(isSubscribed);
 		
 		// Sending message
@@ -162,17 +165,17 @@ public class KiiTopicResourceTest {
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
 		message.setGCM(new KiiGCMMessage(new JsonObject()));
-		String pushMessageID = rest.api().groups(group).topics(groupTopicName).send(message);
+		String pushMessageID = rest.api().groups(group).topics(groupTopicID).send(message);
 		assertNotNull(pushMessageID);
 		
 		// unsubscribing topic
-		rest.api().groups(group).topics(groupTopicName).unsubscribeByUser(user.getUserID());
+		rest.api().groups(group).topics(groupTopicID).unsubscribeByUser(user.getUserID());
 		// checking subscription status
-		isSubscribed = rest.api().groups(group).topics(groupTopicName).isSubscribedByUser(user.getUserID());
+		isSubscribed = rest.api().groups(group).topics(groupTopicID).isSubscribedByUser(user.getUserID());
 		assertFalse(isSubscribed);
 		
 		// deleting topic
-		rest.api().groups(group).topics(groupTopicName).delete();
+		rest.api().groups(group).topics(groupTopicID).delete();
 	}
 	
 	@Test
@@ -192,42 +195,49 @@ public class KiiTopicResourceTest {
 		String thingID = thing.getThingID();
 		rest.setCredentials(thing);
 		
-		String thingTopicName = "thing_topic" + System.currentTimeMillis();
+		String thingTopicID = "thing_topic" + System.currentTimeMillis();
 		
 		// listing topics
-		KiiListResult<String> existingTopicNames = rest.api().things(thingID).topics().list();
+		KiiListResult<KiiTopic> existingTopics = rest.api().things(thingID).topics().list();
 		
 		// creating topic
-		rest.api().things(thingID).topics(thingTopicName).create();
+		rest.api().things(thingID).topics().create(thingTopicID);
 		// checking topic
-		boolean exists = rest.api().things(thingID).topics(thingTopicName).exists();
+		boolean exists = rest.api().things(thingID).topics(thingTopicID).exists();
 		assertTrue(exists);
 		
 		// listing topics
-		KiiListResult<String> topicNames = rest.api().things(thingID).topics().list();
-		assertTrue(topicNames.size() - existingTopicNames.size() == 1);
-		assertTrue(topicNames.getResult().contains(thingTopicName));
+		KiiListResult<KiiTopic> topics = rest.api().things(thingID).topics().list();
+		assertTrue(topics.size() - existingTopics.size() == 1);
+		assertTrue(containsKiiTopic(topics.getResult(), thingTopicID));
 		
 		// subscribing topic
-		rest.api().things(thingID).topics(thingTopicName).subscribe(thing);
+		rest.api().things(thingID).topics(thingTopicID).subscribe(thing);
 		// checking subscription status
-		assertTrue(rest.api().things(thingID).topics(thingTopicName).isSubscribed(thing));
+		assertTrue(rest.api().things(thingID).topics(thingTopicID).isSubscribed(thing));
 		
 		// Sending message
 		JsonObject messageBody = new JsonObject();
 		messageBody.addProperty("msg", "test");
 		KiiPushMessage message = new KiiPushMessage(messageBody);
 		message.setGCM(new KiiGCMMessage(new JsonObject()));
-		String pushMessageID = rest.api().things(thingID).topics(thingTopicName).send(message);
+		String pushMessageID = rest.api().things(thingID).topics(thingTopicID).send(message);
 		assertNotNull(pushMessageID);
 		
 		// unsubscribing topic
-		rest.api().things(thingID).topics(thingTopicName).unsubscribe(thing);
+		rest.api().things(thingID).topics(thingTopicID).unsubscribe(thing);
 		// checking subscription status
-		assertFalse(rest.api().things(thingID).topics(thingTopicName).isSubscribed(thing));
+		assertFalse(rest.api().things(thingID).topics(thingTopicID).isSubscribed(thing));
 		
 		// deleting topic
-		rest.api().things(thingID).topics(thingTopicName).delete();
+		rest.api().things(thingID).topics(thingTopicID).delete();
 	}
-
+	private boolean containsKiiTopic(List<KiiTopic> topics, String topicID) {
+		for (KiiTopic topic : topics) {
+			if (topic.getTopicID().equals(topicID)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -8,6 +8,7 @@ import com.kii.cloud.rest.client.annotation.AdminAPI;
 import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
+import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiAccountType;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
@@ -310,8 +311,14 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}
-	public KiiTopicResource topics(String name) {
-		return new KiiTopicResource(this.topics(), name);
+	public KiiTopicResource topics(KiiTopic topic) {
+		if (topic == null) {
+			throw new IllegalArgumentException("topic is null"); 
+		}
+		return new KiiTopicResource(this.topics(), topic.getTopicID());
+	}
+	public KiiTopicResource topics(String topicID) {
+		return new KiiTopicResource(this.topics(), topicID);
 	}
 	public KiiUserFacebookIntegrationResource facebook() {
 		return new KiiUserFacebookIntegrationResource(this);

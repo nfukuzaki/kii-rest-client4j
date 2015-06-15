@@ -9,6 +9,7 @@ import com.kii.cloud.rest.client.model.analytics.KiiAggregationRule;
 import com.kii.cloud.rest.client.model.analytics.KiiConversionRule;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation;
 import com.kii.cloud.rest.client.model.push.KiiPushInstallation.InstallationType;
+import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
@@ -186,8 +187,14 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 	public KiiTopicsResource topics() {
 		return new KiiTopicsResource(this);
 	}
-	public KiiTopicResource topics(String name) {
-		return new KiiTopicResource(this.topics(), name);
+	public KiiTopicResource topics(KiiTopic topic) {
+		if (topic == null) {
+			throw new IllegalArgumentException("topic is null"); 
+		}
+		return new KiiTopicResource(this.topics(), topic.getTopicID());
+	}
+	public KiiTopicResource topics(String topicID) {
+		return new KiiTopicResource(this.topics(), topicID);
 	}
 	public KiiTopicResource topics(KiiTopicURI uri) {
 		if (uri == null) {

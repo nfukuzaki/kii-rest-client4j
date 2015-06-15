@@ -163,25 +163,25 @@ public class KiiAclResourceTest {
 		user = rest.api().users().register(user, "password");
 		rest.setCredentials(user);
 		
-		String userTopicName = "user_topic" + System.currentTimeMillis();
+		String userTopicID = "user_topic" + System.currentTimeMillis();
 		
 		// creating topic
-		rest.api().users(user).topics(userTopicName).create();
+		rest.api().users(user).topics().create(userTopicID);
 		
 		// listing ACL
-		Map<Action,List<Subject>> ACLs = rest.api().users(user).topics(userTopicName).acl().list();
+		Map<Action,List<Subject>> ACLs = rest.api().users(user).topics(userTopicID).acl().list();
 		// verify default ACLs
 		assertEquals(2, ACLs.size());
 		assertEquals(user.getUserID(), ACLs.get(TopicAction.SUBSCRIBE_TO_TOPIC).get(0).getID());
 		assertEquals(user.getUserID(), ACLs.get(TopicAction.SEND_MESSAGE_TO_TOPIC).get(0).getID());
 		
 		// granting ACL
-		rest.api().users(user).topics(userTopicName).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, Subject.ANY_AUTHENTICATED_USER);
-		rest.api().users(user).topics(userTopicName).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectUser);
-		rest.api().users(user).topics(userTopicName).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectGroup);
-		rest.api().users(user).topics(userTopicName).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectThing);
+		rest.api().users(user).topics(userTopicID).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, Subject.ANY_AUTHENTICATED_USER);
+		rest.api().users(user).topics(userTopicID).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectUser);
+		rest.api().users(user).topics(userTopicID).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectGroup);
+		rest.api().users(user).topics(userTopicID).acl().grant(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectThing);
 		// verify ACLs
-		ACLs = rest.api().users(user).topics(userTopicName).acl().list();
+		ACLs = rest.api().users(user).topics(userTopicID).acl().list();
 		assertEquals(2, ACLs.size());
 		Subject[] expectedSubjects = new Subject[]{
 				Subject.user(user),
@@ -193,19 +193,19 @@ public class KiiAclResourceTest {
 		assertEquals(user.getUserID(), ACLs.get(TopicAction.SEND_MESSAGE_TO_TOPIC).get(0).getID());
 		
 		// listing subject by action
-		List<Subject> subjectSubscribeToTopic = rest.api().users(user).topics(userTopicName).acl().list(TopicAction.SUBSCRIBE_TO_TOPIC);
+		List<Subject> subjectSubscribeToTopic = rest.api().users(user).topics(userTopicID).acl().list(TopicAction.SUBSCRIBE_TO_TOPIC);
 		AssertUtils.assertEqualsIgnoreOrder(expectedSubjects, subjectSubscribeToTopic);
 		// get subject
-		Subject subject = rest.api().users(user).topics(userTopicName).acl().get(TopicAction.SUBSCRIBE_TO_TOPIC, Subject.ANY_AUTHENTICATED_USER);
+		Subject subject = rest.api().users(user).topics(userTopicID).acl().get(TopicAction.SUBSCRIBE_TO_TOPIC, Subject.ANY_AUTHENTICATED_USER);
 		assertEquals("ANY_AUTHENTICATED_USER", subject.getID());
 		
 		// revoking ACL
-		rest.api().users(user).topics(userTopicName).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, Subject.ANY_AUTHENTICATED_USER);
-		rest.api().users(user).topics(userTopicName).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectUser);
-		rest.api().users(user).topics(userTopicName).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectGroup);
-		rest.api().users(user).topics(userTopicName).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectThing);
+		rest.api().users(user).topics(userTopicID).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, Subject.ANY_AUTHENTICATED_USER);
+		rest.api().users(user).topics(userTopicID).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectUser);
+		rest.api().users(user).topics(userTopicID).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectGroup);
+		rest.api().users(user).topics(userTopicID).acl().revok(TopicAction.SUBSCRIBE_TO_TOPIC, this.subjectThing);
 		// listing subject by action
-		subjectSubscribeToTopic = rest.api().users(user).topics(userTopicName).acl().list(TopicAction.SUBSCRIBE_TO_TOPIC);
+		subjectSubscribeToTopic = rest.api().users(user).topics(userTopicID).acl().list(TopicAction.SUBSCRIBE_TO_TOPIC);
 		assertEquals(1, subjectSubscribeToTopic.size());
 		expectedSubjects = new Subject[]{Subject.user(user)};
 		AssertUtils.assertEqualsIgnoreOrder(expectedSubjects, subjectSubscribeToTopic);

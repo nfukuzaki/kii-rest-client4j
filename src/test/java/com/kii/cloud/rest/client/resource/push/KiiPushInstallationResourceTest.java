@@ -90,7 +90,7 @@ public class KiiPushInstallationResourceTest {
 		
 		// creating and subscribing a topic
 		rest.setCredentials(thing);
-		rest.api().things(thing).topics("thing-topic").create();
+		rest.api().things(thing).topics().create("thing-topic");
 		rest.api().things(thing).topics("thing-topic").subscribe(thing);
 		
 		// getting MQTT Endpoint

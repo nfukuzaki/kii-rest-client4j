@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiListResult;
 import com.kii.cloud.rest.client.model.KiiScope;
+import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
@@ -51,12 +52,35 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 		return ((KiiScopedResource)this.parent).getScope();
 	}
 	/**
-	 * Gets list of topic names.
+	 * @param topic
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/creating-topic/
+	 */
+	public void create(KiiTopic topic) throws KiiRestException {
+		this.create(topic.getTopicID());
+	}
+	/**
+	 * @param topicID
+	 * @throws KiiRestException
+	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/creating-topic/
+	 */
+	public void create(String topicID) throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl() + "/" + topicID, Method.PUT, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	/**
+	 * Gets list of topics.
 	 * 
 	 * @return
 	 * @throws KiiRestException
 	 */
-	public KiiListResult<String> list() throws KiiRestException {
+	public KiiListResult<KiiTopic> list() throws KiiRestException {
 		return this.list(null);
 	}
 	/**
@@ -64,20 +88,20 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 	 * @return
 	 * @throws KiiRestException
 	 */
-	public KiiListResult<String> list(String paginationKey) throws KiiRestException {
+	public KiiListResult<KiiTopic> list(String paginationKey) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		String param = StringUtils.isEmpty(paginationKey) ? "" : "?paginationKey=" + StringUtils.urlEncode(paginationKey);
 		KiiRestRequest request = new KiiRestRequest(getUrl() + param, Method.GET, headers);
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			List<String> result = new ArrayList<String>();
+			List<KiiTopic> result = new ArrayList<KiiTopic>();
 			JsonArray topics = GsonUtils.getJsonArray(responseBody, "topics");
 			for (int i = 0; i < topics.size(); i++) {
-				result.add(GsonUtils.getString(topics.get(i).getAsJsonObject(), "topicID"));
+				result.add(new KiiTopic(topics.get(i).getAsJsonObject()));
 			}
 			String newPaginationKey = GsonUtils.getString(responseBody, "paginationKey");
-			return new KiiListResult<String>(result, newPaginationKey);
+			return new KiiListResult<KiiTopic>(result, newPaginationKey);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
