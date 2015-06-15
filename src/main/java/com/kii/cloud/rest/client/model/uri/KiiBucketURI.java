@@ -1,6 +1,7 @@
 package com.kii.cloud.rest.client.model.uri;
 
 import com.kii.cloud.rest.client.model.KiiScope;
+import com.kii.cloud.rest.client.util.StringUtils;
 
 /**
  * Represents the XXXX URI like following URIs:
@@ -13,6 +14,32 @@ import com.kii.cloud.rest.client.model.KiiScope;
  * </ul>
  */
 public class KiiBucketURI extends KiiURI {
+	
+	public static KiiBucketURI parse(String str) {
+		if (StringUtils.isEmpty(str)) {
+			throw new IllegalArgumentException("str is null or empty");
+		}
+		if (!str.startsWith(SCHEME)) {
+			throw new IllegalArgumentException("URI should start with 'kiicloud://'");
+		}
+		String[] segments = str.replace(SCHEME, "").split("/");
+		if (segments.length == 3) {
+			if (StringUtils.equals(SEGMENT_BUCKETS, segments[1])) {
+				return new KiiBucketURI(new KiiAppURI(segments[0]), segments[2]);
+			}
+		} else if (segments.length == 5) {
+			if (StringUtils.equals(SEGMENT_BUCKETS, segments[3])) {
+				if (StringUtils.equals(SEGMENT_USERS, segments[1])) {
+					return new KiiBucketURI(new KiiUserURI(new KiiAppURI(segments[0]), segments[2]), segments[4]);
+				} else if (StringUtils.equals(SEGMENT_GROUPS, segments[1])) {
+					return new KiiBucketURI(new KiiGroupURI(new KiiAppURI(segments[0]), segments[2]), segments[4]);
+				} else if (StringUtils.equals(SEGMENT_THINGS, segments[1])) {
+					return new KiiBucketURI(new KiiThingURI(new KiiAppURI(segments[0]), segments[2]), segments[4]);
+				}
+			}
+		}
+		throw new IllegalArgumentException("invalid URI : " + str);
+	}
 	
 	private final KiiURI parent;
 	private final String bucketID;

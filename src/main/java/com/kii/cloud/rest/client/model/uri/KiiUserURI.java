@@ -2,6 +2,7 @@ package com.kii.cloud.rest.client.model.uri;
 
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiAccountType;
+import com.kii.cloud.rest.client.util.StringUtils;
 
 /**
  * Represents the XXXX URI like following URIs:
@@ -14,6 +15,26 @@ import com.kii.cloud.rest.client.model.storage.KiiAccountType;
  * </ul>
  */
 public class KiiUserURI extends KiiURI {
+	
+	public static KiiUserURI parse(String str) {
+		if (StringUtils.isEmpty(str)) {
+			throw new IllegalArgumentException("str is null or empty");
+		}
+		if (!str.startsWith(SCHEME)) {
+			throw new IllegalArgumentException("URI should start with 'kiicloud://'");
+		}
+		String[] segments = str.replace(SCHEME, "").split("/");
+		if (segments.length == 2) {
+			if (StringUtils.equals(SEGMENT_USERS, segments[0])) {
+				return new KiiUserURI(new KiiAppURI(UNKNOWN_APP_ID), segments[1]);
+			}
+		} else if (segments.length == 3) {
+			if (StringUtils.equals(SEGMENT_USERS, segments[1])) {
+				return new KiiUserURI(new KiiAppURI(segments[0]), segments[2]);
+			}
+		}
+		throw new IllegalArgumentException("invalid URI : " + str);
+	}
 	
 	private final KiiAppURI parent;
 	private final KiiAccountType accountType;
