@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.model.KiiCustomableJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
+import com.kii.cloud.rest.client.model.uri.KiiThingURI;
 import com.kii.cloud.rest.client.model.validation.RegularExpressionValidator;
 import com.kii.cloud.rest.client.util.StringUtils;
 
@@ -40,6 +41,7 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 	public static final KiiJsonProperty<Boolean> PROPERTY_DISABLED = new KiiJsonProperty<Boolean>(Boolean.class, "_disabled");
 
 	protected final JsonObject credentials = new JsonObject();
+	private KiiThingURI uri;
 	
 	public KiiThing() {
 	}
@@ -214,5 +216,12 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 			return this.getVendorThingID();
 		}
 		return null;
+	}
+	public KiiThingURI getURI() {
+		return this.uri;
+	}
+	public KiiThing setURI(KiiThingURI uri) {
+		this.uri = uri;
+		return this;
 	}
 }

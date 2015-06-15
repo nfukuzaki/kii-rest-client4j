@@ -133,7 +133,9 @@ public class KiiBucketResource extends KiiRestSubResource implements KiiScopedRe
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiBucket(responseBody);
+			KiiBucket bucket = new KiiBucket(responseBody);
+			bucket.setBucketID(this.bucketID).setURI(this.getURI());
+			return bucket;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -182,7 +184,7 @@ public class KiiBucketResource extends KiiRestSubResource implements KiiScopedRe
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiQueryResult(query, responseBody);
+			return new KiiQueryResult(query, responseBody, this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

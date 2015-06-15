@@ -8,6 +8,7 @@ import com.kii.cloud.rest.client.annotation.AnonymousAPI;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
+import com.kii.cloud.rest.client.model.uri.KiiThingURI;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
@@ -55,6 +56,7 @@ public class KiiThingsResource extends KiiRestSubResource implements KiiScopedRe
 			KiiThing registeredThing = new KiiThing(responseBody);
 			registeredThing.setAccessToken(accessToken);
 			registeredThing.setRefreshToken(refreshToken);
+			registeredThing.setURI(KiiThingURI.newURI(this.getAppID(), registeredThing.getThingID()));
 			return registeredThing;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);

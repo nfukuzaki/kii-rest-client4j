@@ -85,9 +85,9 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			if (KiiUser.PROPERTY_HAS_PASSWORD.get(responseBody)) {
-				return new KiiNormalUser(responseBody);
+				return new KiiNormalUser(responseBody).setURI(this.getURI());
 			} else {
-				return new KiiPseudoUser(responseBody);
+				return new KiiPseudoUser(responseBody).setURI(this.getURI());
 			}
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
@@ -107,6 +107,7 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
+			user.setURI(this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -146,6 +147,7 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
+			user.setURI(this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -315,6 +317,9 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	public KiiTopicResource topics(KiiTopic topic) {
 		if (topic == null) {
 			throw new IllegalArgumentException("topic is null"); 
+		}
+		if (topic.getURI() != null && topic.getURI().getScope() != KiiScope.USER) {
+			throw new IllegalArgumentException("topic scope is not User");
 		}
 		return new KiiTopicResource(this.topics(), topic.getTopicID());
 	}

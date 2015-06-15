@@ -73,7 +73,7 @@ public class KiiObjectResource extends KiiRestSubResource implements KiiScopedRe
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiObject(responseBody);
+			return new KiiObject(responseBody).setURI(this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -109,7 +109,7 @@ public class KiiObjectResource extends KiiRestSubResource implements KiiScopedRe
 			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.get(responseBody);
-			object.setModifiedAt(modifiedAt).setVersion(version);
+			object.setModifiedAt(modifiedAt).setVersion(version).setURI(this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -131,7 +131,7 @@ public class KiiObjectResource extends KiiRestSubResource implements KiiScopedRe
 			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			Long modifiedAt = KiiObject.PROPERTY_MODIFIED_AT.get(responseBody);
-			object.setModifiedAt(modifiedAt).setVersion(version);
+			object.setModifiedAt(modifiedAt).setVersion(version).setURI(this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -151,6 +151,7 @@ public class KiiObjectResource extends KiiRestSubResource implements KiiScopedRe
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			object.setURI(this.getURI());
 			object.setJsonObject(responseBody);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
@@ -172,6 +173,7 @@ public class KiiObjectResource extends KiiRestSubResource implements KiiScopedRe
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			object.setURI(this.getURI());
 			object.setJsonObject(responseBody);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);

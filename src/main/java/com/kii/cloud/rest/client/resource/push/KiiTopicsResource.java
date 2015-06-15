@@ -11,6 +11,7 @@ import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiListResult;
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiTopic;
+import com.kii.cloud.rest.client.model.uri.KiiTopicURI;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
@@ -66,23 +67,26 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 	}
 	/**
 	 * @param topic
+	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/creating-topic/
 	 */
-	public void create(KiiTopic topic) throws KiiRestException {
-		this.create(topic.getTopicID());
+	public KiiTopic create(KiiTopic topic) throws KiiRestException {
+		return this.create(topic.getTopicID());
 	}
 	/**
 	 * @param topicID
+	 * @return
 	 * @throws KiiRestException
 	 * @see http://documentation.kii.com/en/guides/rest/managing-push-notification/push-to-user/creating-topic/
 	 */
-	public void create(String topicID) throws KiiRestException {
+	public KiiTopic create(String topicID) throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		KiiRestRequest request = new KiiRestRequest(getUrl() + "/" + topicID, Method.PUT, headers);
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
+			return new KiiTopic(topicID).setURI(this.createTopicURI(topicID));
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -111,13 +115,28 @@ public class KiiTopicsResource extends KiiRestSubResource implements KiiScopedRe
 			List<KiiTopic> result = new ArrayList<KiiTopic>();
 			JsonArray topics = GsonUtils.getJsonArray(responseBody, "topics");
 			for (int i = 0; i < topics.size(); i++) {
-				result.add(new KiiTopic(topics.get(i).getAsJsonObject()));
+				KiiTopic topic = new KiiTopic(GsonUtils.getString(topics.get(i).getAsJsonObject(), "topicID"));
+				topic.setURI(this.createTopicURI(topic.getTopicID()));
+				result.add(topic);
 			}
 			String newPaginationKey = GsonUtils.getString(responseBody, "paginationKey");
 			return new KiiListResult<KiiTopic>(result, newPaginationKey);
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
+	}
+	private KiiTopicURI createTopicURI(String topicID) {
+		switch (this.getScope()) {
+			case APP:
+				return KiiTopicURI.newAppScopeURI(this.getAppID(), topicID);
+			case USER:
+				return KiiTopicURI.newUserScopeURI(this.getAppID(), ((KiiUserResource)this.parent).getScopeIdentifier(), topicID);
+			case GROUP:
+				return KiiTopicURI.newGroupScopeURI(this.getAppID(), ((KiiGroupResource)this.parent).getScopeIdentifier(), topicID);
+			case THING:
+				return KiiTopicURI.newThingScopeURI(this.getAppID(), ((KiiThingResource)this.parent).getScopeIdentifier(), topicID);
+		}
+		throw new AssertionError("This Topic has unexpected scope.");
 	}
 	@Override
 	public String getPath() {

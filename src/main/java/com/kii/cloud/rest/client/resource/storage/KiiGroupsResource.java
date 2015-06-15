@@ -12,6 +12,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiGroupMembers;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiGroupURI;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
@@ -68,6 +69,7 @@ public class KiiGroupsResource extends KiiRestSubResource implements KiiScopedRe
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			String groupID = KiiGroup.PROPERTY_GROUP_ID.get(responseBody);
 			group.setGroupID(groupID);
+			group.setURI(KiiGroupURI.newURI(getAppID(), groupID));
 			List<String> notFoundusers = new ArrayList<String>();
 			JsonArray array = KiiGroup.PROPERTY_NOT_FOUND_USERS.get(responseBody);
 			for (int i = 0; i < array.size(); i++) {
@@ -108,7 +110,9 @@ public class KiiGroupsResource extends KiiRestSubResource implements KiiScopedRe
 			JsonArray array = responseBody.getAsJsonArray("groups");
 			List<KiiGroup> groups = new ArrayList<KiiGroup>();
 			for (int i = 0; i < array.size(); i++) {
-				groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+				KiiGroup group = new KiiGroup(array.get(i).getAsJsonObject());
+				group.setURI(KiiGroupURI.newURI(this.getAppID(), group.getGroupID()));
+				groups.add(group);
 			}
 			return groups;
 		} catch (IOException e) {
@@ -144,7 +148,9 @@ public class KiiGroupsResource extends KiiRestSubResource implements KiiScopedRe
 			JsonArray array = responseBody.getAsJsonArray("groups");
 			List<KiiGroup> groups = new ArrayList<KiiGroup>();
 			for (int i = 0; i < array.size(); i++) {
-				groups.add(new KiiGroup(array.get(i).getAsJsonObject()));
+				KiiGroup group = new KiiGroup(array.get(i).getAsJsonObject());
+				group.setURI(KiiGroupURI.newURI(this.getAppID(), group.getGroupID()));
+				groups.add(group);
 			}
 			return groups;
 		} catch (IOException e) {

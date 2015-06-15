@@ -192,6 +192,9 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		if (topic == null) {
 			throw new IllegalArgumentException("topic is null"); 
 		}
+		if (topic.getURI() != null && topic.getURI().getScope() != KiiScope.APP) {
+			throw new IllegalArgumentException("topic scope is not App");
+		}
 		return new KiiTopicResource(this.topics(), topic.getTopicID());
 	}
 	public KiiTopicResource topics(String topicID) {

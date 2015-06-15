@@ -11,6 +11,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiPseudoUser;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
+import com.kii.cloud.rest.client.model.uri.KiiUserURI;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
@@ -64,6 +65,7 @@ public class KiiUsersResource extends KiiRestSubResource implements KiiScopedRes
 			KiiNormalUser registeredUser = new KiiNormalUser(responseBody);
 			registeredUser.setAccessToken(accessToken);
 			registeredUser.setRefreshToken(refreshToken);
+			registeredUser.setURI(KiiUserURI.newURI(getAppID(), registeredUser.getID()));
 			return registeredUser;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
@@ -89,6 +91,7 @@ public class KiiUsersResource extends KiiRestSubResource implements KiiScopedRes
 			responseBody.remove(KiiUser.PROPERTY_ACCESS_TOKEN.getName());
 			KiiPseudoUser registeredUser = new KiiPseudoUser(responseBody);
 			registeredUser.setAccessToken(accessToken);
+			registeredUser.setURI(KiiUserURI.newURI(getAppID(), registeredUser.getID()));
 			return registeredUser;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);

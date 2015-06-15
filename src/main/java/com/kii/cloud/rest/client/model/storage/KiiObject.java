@@ -59,10 +59,10 @@ public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 		this.json.add(name, value.toJson());
 		return this;
 	}
-	public KiiObjectURI getUri() {
+	public KiiObjectURI getURI() {
 		return this.uri;
 	}
-	public KiiObject setObjectURI(KiiObjectURI uri) {
+	public KiiObject setURI(KiiObjectURI uri) {
 		this.uri = uri;
 		return this;
 	}

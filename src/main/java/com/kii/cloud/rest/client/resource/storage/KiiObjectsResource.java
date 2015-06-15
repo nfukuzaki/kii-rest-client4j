@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
+import com.kii.cloud.rest.client.model.uri.KiiObjectURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
@@ -61,7 +62,9 @@ public class KiiObjectsResource extends KiiRestSubResource implements KiiScopedR
 			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			String objectID = KiiObject.PROPERTY_OBJECT_ID.get(responseBody);
-			return object.setObjectID(objectID).setVersion(version);
+			return object.setObjectID(objectID)
+					.setVersion(version)
+					.setURI(KiiObjectURI.newURI(((KiiBucketResource)parent).getURI(), objectID));
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}

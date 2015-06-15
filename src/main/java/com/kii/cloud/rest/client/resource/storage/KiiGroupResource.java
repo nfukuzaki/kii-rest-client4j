@@ -9,7 +9,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiGroup;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
-import com.kii.cloud.rest.client.model.uri.KiiUserURI;
+import com.kii.cloud.rest.client.model.uri.KiiGroupURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
@@ -61,7 +61,9 @@ public class KiiGroupResource extends KiiRestSubResource implements KiiScopedRes
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiGroup(responseBody);
+			KiiGroup group = new KiiGroup(responseBody);
+			group.setURI(this.getURI());
+			return group;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -141,6 +143,9 @@ public class KiiGroupResource extends KiiRestSubResource implements KiiScopedRes
 		if (topic == null) {
 			throw new IllegalArgumentException("topic is null"); 
 		}
+		if (topic.getURI() != null && topic.getURI().getScope() != KiiScope.GROUP) {
+			throw new IllegalArgumentException("topic scope is not Group");
+		}
 		return new KiiTopicResource(this.topics(), topic.getTopicID());
 	}
 	public KiiTopicResource topics(String topicID) {
@@ -157,7 +162,7 @@ public class KiiGroupResource extends KiiRestSubResource implements KiiScopedRes
 	public String getScopeIdentifier() {
 		return this.groupID;
 	}
-	public KiiUserURI getURI() {
-		return KiiUserURI.newURI(this.getAppID(), this.groupID);
+	public KiiGroupURI getURI() {
+		return KiiGroupURI.newURI(this.getAppID(), this.groupID);
 	}
 }

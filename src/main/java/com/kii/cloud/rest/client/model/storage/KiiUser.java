@@ -11,6 +11,7 @@ import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.model.KiiCustomableJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
 import com.kii.cloud.rest.client.model.social.KiiSocialAccountInfo;
+import com.kii.cloud.rest.client.model.uri.KiiUserURI;
 import com.kii.cloud.rest.client.model.validation.RangeLengthValidator;
 import com.kii.cloud.rest.client.model.validation.RegularExpressionValidator;
 import com.kii.cloud.rest.client.util.StringUtils;
@@ -51,6 +52,7 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	public static final String ME = "me";
 	
 	protected final JsonObject credentials = new JsonObject();
+	private KiiUserURI uri;
 	
 	public KiiUser() {
 	}
@@ -100,6 +102,14 @@ public abstract class KiiUser extends KiiCustomableJsonModel<KiiUser> implements
 	}
 	public boolean isDisabled() {
 		return PROPERTY_DISABLED.get(this.json);
+	}
+	
+	public KiiUserURI getURI() {
+		return this.uri;
+	}
+	public KiiUser setURI(KiiUserURI uri) {
+		this.uri = uri;
+		return this;
 	}
 	public List<KiiSocialAccountInfo> getThirdPartyAccounts() {
 		List<KiiSocialAccountInfo> result = new ArrayList<KiiSocialAccountInfo>();

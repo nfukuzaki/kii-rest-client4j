@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.model.KiiJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
+import com.kii.cloud.rest.client.model.uri.KiiGroupURI;
 
 public class KiiGroup extends KiiJsonModel {
 	public static final KiiJsonProperty<String> PROPERTY_GROUP_ID = new KiiJsonProperty<String>(String.class, "groupID");
@@ -12,7 +13,9 @@ public class KiiGroup extends KiiJsonModel {
 	public static final KiiJsonProperty<JsonArray> PROPERTY_NOT_FOUND_USERS = new KiiJsonProperty<JsonArray>(JsonArray.class, "notFoundUsers");
 	public static final KiiJsonProperty<Long> PROPERTY_CREATED_AT = new KiiJsonProperty<Long>(Long.class, "createdAt");
 	public static final KiiJsonProperty<Long> PROPERTY_MODIFIED_AT = new KiiJsonProperty<Long>(Long.class, "modifiedAt");
-
+	
+	private KiiGroupURI uri;
+	
 	public KiiGroup() {
 	}
 	public KiiGroup(String name) {
@@ -44,6 +47,13 @@ public class KiiGroup extends KiiJsonModel {
 	}
 	public KiiGroup setOwner(String userID) {
 		PROPERTY_OWNER.set(this.json, userID);
+		return this;
+	}
+	public KiiGroupURI getURI() {
+		return this.uri;
+	}
+	public KiiGroup setURI(KiiGroupURI uri) {
+		this.uri = uri;
 		return this;
 	}
 }

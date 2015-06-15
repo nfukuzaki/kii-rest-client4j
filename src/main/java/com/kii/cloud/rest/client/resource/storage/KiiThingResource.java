@@ -9,7 +9,7 @@ import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiThingIdentifierType;
-import com.kii.cloud.rest.client.model.uri.KiiUserURI;
+import com.kii.cloud.rest.client.model.uri.KiiThingURI;
 import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
@@ -70,6 +70,9 @@ public class KiiThingResource extends KiiRestSubResource implements KiiScopedRes
 		if (topic == null) {
 			throw new IllegalArgumentException("topic is null"); 
 		}
+		if (topic.getURI() != null && topic.getURI().getScope() != KiiScope.THING) {
+			throw new IllegalArgumentException("topic scope is not Thing");
+		}
 		return new KiiTopicResource(this.topics(), topic.getTopicID());
 	}
 	public KiiTopicResource topics(String topicID) {
@@ -103,7 +106,7 @@ public class KiiThingResource extends KiiRestSubResource implements KiiScopedRes
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			return new KiiThing(responseBody);
+			return new KiiThing(responseBody).setURI(this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -123,6 +126,7 @@ public class KiiThingResource extends KiiRestSubResource implements KiiScopedRes
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
+			thing.setURI(this.getURI());
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -195,7 +199,7 @@ public class KiiThingResource extends KiiRestSubResource implements KiiScopedRes
 	public String getScopeIdentifier() {
 		return this.identifierType.getFullyQualifiedIdentifier(this.identifier);
 	}
-	public KiiUserURI getURI() {
-		return KiiUserURI.newURI(this.getAppID(), this.identifier);
+	public KiiThingURI getURI() {
+		return KiiThingURI.newURI(this.getAppID(), this.identifier);
 	}
 }
