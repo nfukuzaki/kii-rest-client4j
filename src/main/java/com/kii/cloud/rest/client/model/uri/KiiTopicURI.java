@@ -97,6 +97,10 @@ public class KiiTopicURI extends KiiURI {
 		return this.parent.toUriString() + "/" + SEGMENT_TOPICS + "/" + this.topicID;
 	}
 	@Override
+	public String toString() {
+		return this.toUriString();
+	}
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

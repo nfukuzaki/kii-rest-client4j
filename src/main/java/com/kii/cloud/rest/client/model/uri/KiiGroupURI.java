@@ -54,6 +54,10 @@ public class KiiGroupURI extends KiiURI {
 		return this.parent.toUriString() + "/" + SEGMENT_GROUPS + "/" + this.groupID;
 	}
 	@Override
+	public String toString() {
+		return this.toUriString();
+	}
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
