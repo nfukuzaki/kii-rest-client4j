@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.exception.KiiRestException;
 import com.kii.cloud.rest.client.model.KiiScope;
 import com.kii.cloud.rest.client.model.push.KiiPushMessage;
+import com.kii.cloud.rest.client.model.push.KiiTopic;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiUser;
 import com.kii.cloud.rest.client.model.uri.KiiTopicURI;
@@ -44,6 +45,28 @@ public class KiiTopicResource extends KiiRestSubResource implements KiiScopedRes
 	@Override
 	public KiiScope getScope() {
 		return ((KiiTopicsResource)this.parent).getScope();
+	}
+	/**
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public KiiTopic create() throws KiiRestException {
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.PUT, headers);
+		try {
+			Response response = this.execute(request);
+			this.parseResponse(request, response);
+			return new KiiTopic(this.topicID).setURI(this.getURI());
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+	public KiiTopic get() throws KiiRestException {
+		if (this.exists()) {
+			return new KiiTopic(this.topicID).setURI(this.getURI());
+		} else {
+			return null;
+		}
 	}
 	/**
 	 * NOTE:This feature has not documented yet.

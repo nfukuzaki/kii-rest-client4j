@@ -108,9 +108,10 @@ public class KiiBucketResource extends KiiRestSubResource implements KiiScopedRe
 	/**
 	 * 
 	 * NOTE:This feature has not documented yet.
+	 * @return
 	 * @throws KiiRestException
 	 */
-	public void create() throws KiiRestException {
+	public KiiBucket create() throws KiiRestException {
 		Map<String, String> headers = this.newAuthorizedHeaders();
 		JsonObject requestBody = new JsonObject();
 		requestBody.addProperty("bucketType", this.getBucketType());
@@ -118,6 +119,9 @@ public class KiiBucketResource extends KiiRestSubResource implements KiiScopedRe
 		try {
 			Response response = this.execute(request);
 			this.parseResponse(request, response);
+			KiiBucket bucket = new KiiBucket();
+			bucket.setBucketID(this.bucketID).setURI(this.getURI());
+			return bucket;
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
@@ -125,6 +129,7 @@ public class KiiBucketResource extends KiiRestSubResource implements KiiScopedRe
 	/**
 	 * 
 	 * NOTE:This feature has not documented yet.
+	 * @return
 	 * @throws KiiRestException
 	 */
 	public KiiBucket get() throws KiiRestException {

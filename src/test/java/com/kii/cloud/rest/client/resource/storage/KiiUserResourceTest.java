@@ -42,7 +42,7 @@ public class KiiUserResourceTest {
 		String currentTime = String.valueOf(System.currentTimeMillis());
 		String username = "test-" + currentTime;
 		String email = username + "@example.com";
-		String phone = TestUtils.getRandomGlobalJpPhoneNumber();
+		String phone = TestUtils.randomGlobalJpPhoneNumber();
 		String displayname =  username.toUpperCase();
 		String country = "JP";
 		String password = "pa$$word";
@@ -159,7 +159,7 @@ public class KiiUserResourceTest {
 		
 		String currentTime = String.valueOf(System.currentTimeMillis());
 		String username = "test-" + currentTime;
-		String phone = TestUtils.getRandomGlobalJpPhoneNumber();
+		String phone = TestUtils.randomGlobalJpPhoneNumber();
 		String password = "pa$$word";
 		
 		KiiNormalUser user = new KiiNormalUser()
@@ -230,7 +230,7 @@ public class KiiUserResourceTest {
 		
 		String currentTime = String.valueOf(System.currentTimeMillis());
 		String username = "test-" + currentTime;
-		String phone = TestUtils.getRandomGlobalJpPhoneNumber();
+		String phone = TestUtils.randomGlobalJpPhoneNumber();
 		String password = "pa$$word";
 		
 		KiiNormalUser user = new KiiNormalUser()
@@ -286,7 +286,7 @@ public class KiiUserResourceTest {
 		String currentTime = String.valueOf(System.currentTimeMillis());
 		String username = "test-" + currentTime;
 		String email = username + "@example.com";
-		String phone = TestUtils.getRandomGlobalJpPhoneNumber();
+		String phone = TestUtils.randomGlobalJpPhoneNumber();
 		String displayname =  username.toUpperCase();
 		String country = "JP";
 		String password = "pa$$word";
