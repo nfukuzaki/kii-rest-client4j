@@ -6,11 +6,14 @@ import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.kii.cloud.rest.client.util.GsonUtils;
 
 public class KiiServerHookConfiguration {
 	
+	private String versionID;
+	private Boolean current;
 	private final List<TriggerConfiguration> triggerConfigurations = new ArrayList<TriggerConfiguration>();
 	private final List<SchedulerConfiguration> schedulerConfigurations = new ArrayList<SchedulerConfiguration>();
 	
@@ -35,6 +38,23 @@ public class KiiServerHookConfiguration {
 		this.schedulerConfigurations.add(schedulerConfiguration);
 		return this;
 	}
+	@Override
+	public String toString() {
+		JsonObject json = new JsonObject();
+		
+		if (this.versionID == null) {
+			json.add("versionID", JsonNull.INSTANCE);
+		} else {
+			json.addProperty("versionID", this.versionID);
+		}
+		if (this.current == null) {
+			json.add("current", JsonNull.INSTANCE);
+		} else {
+			json.addProperty("current", this.current);
+		}
+		json.add("hook", this.toJson());
+		return json.toString();
+	}
 	public JsonObject toJson() {
 		JsonObject json = new JsonObject();
 		for (TriggerConfiguration triggerConfiguration : this.triggerConfigurations) {
@@ -48,6 +68,18 @@ public class KiiServerHookConfiguration {
 			json.add("kiicloud://scheduler", scheduler);
 		}
 		return json;
+	}
+	public String getVersionID() {
+		return versionID;
+	}
+	public void setVersionID(String versionID) {
+		this.versionID = versionID;
+	}
+	public Boolean getCurrent() {
+		return current;
+	}
+	public void setCurrent(Boolean current) {
+		this.current = current;
 	}
 	public enum When {
 		DATA_OBJECT_CREATED,

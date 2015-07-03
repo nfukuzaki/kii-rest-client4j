@@ -1,5 +1,12 @@
 package com.kii.cloud.rest.client.resource.servercode;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.kii.cloud.rest.client.annotation.AdminAPI;
+import com.kii.cloud.rest.client.exception.KiiNotFoundException;
+import com.kii.cloud.rest.client.model.servercode.KiiServerCodeVersion;
+import com.kii.cloud.rest.client.model.servercode.KiiServerHookConfiguration;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 
@@ -19,7 +26,22 @@ public class KiiServerCodeHooksResource extends KiiRestSubResource {
 	public KiiServerCodeHookExecutionsResource executions() {
 		return new KiiServerCodeHookExecutionsResource(this);
 	}
-	
+	@AdminAPI
+	public List<KiiServerHookConfiguration> list() throws Exception {
+		KiiAppResource rest = ((KiiAppResource)this.parent);
+		List<KiiServerHookConfiguration> hooks = new ArrayList<KiiServerHookConfiguration>();
+		List<KiiServerCodeVersion> versions = rest.servercode().list();
+		for (KiiServerCodeVersion version : versions) {
+			try {
+				KiiServerHookConfiguration hook = rest.hooks(version.getVersionID()).get();
+				hook.setCurrent(version.isCurrent());
+				hook.setVersionID(version.getVersionID());
+				hooks.add(hook);
+			} catch (KiiNotFoundException e) {
+			}
+		}
+		return hooks;
+	}
 	@Override
 	public String getPath() {
 		return BASE_PATH;
