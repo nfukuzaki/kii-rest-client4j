@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kii.cloud.rest.client.annotation.AdminAPI;
+import com.kii.cloud.rest.client.annotation.MultipleAPICalls;
 import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.model.servercode.KiiServerCodeVersion;
 import com.kii.cloud.rest.client.model.servercode.KiiServerHookConfiguration;
@@ -27,6 +28,7 @@ public class KiiServerCodeHooksResource extends KiiRestSubResource {
 		return new KiiServerCodeHookExecutionsResource(this);
 	}
 	@AdminAPI
+	@MultipleAPICalls
 	public List<KiiServerHookConfiguration> list() throws Exception {
 		KiiAppResource rest = ((KiiAppResource)this.parent);
 		List<KiiServerHookConfiguration> hooks = new ArrayList<KiiServerHookConfiguration>();
