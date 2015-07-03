@@ -37,8 +37,7 @@ public class KiiThingTypesConfigurationResource extends KiiRestSubResource {
 		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.GET, headers);
 		try {
 			Response response = this.execute(request);
-			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			JsonArray thingTypes = responseBody.getAsJsonArray("thingTypes");
+			JsonArray thingTypes = this.parseResponseAsJsonArray(request, response);
 			List<KiiThingTypeConfiguration> result = new ArrayList<KiiThingTypeConfiguration>();
 			for (int i = 0; i < thingTypes.size(); i++) {
 				result.add(new KiiThingTypeConfiguration(thingTypes.get(i).getAsJsonObject()));
