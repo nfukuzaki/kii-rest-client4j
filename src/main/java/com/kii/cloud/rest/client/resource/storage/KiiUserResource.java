@@ -84,7 +84,8 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			if (KiiUser.PROPERTY_HAS_PASSWORD.get(responseBody)) {
+			// Cannot access has_password field if 'Expose Full User Data To Others'=false by other users.
+			if (KiiUser.PROPERTY_HAS_PASSWORD.get(responseBody) == null || KiiUser.PROPERTY_HAS_PASSWORD.get(responseBody)) {
 				return new KiiNormalUser(responseBody).setURI(this.getURI());
 			} else {
 				return new KiiPseudoUser(responseBody).setURI(this.getURI());
