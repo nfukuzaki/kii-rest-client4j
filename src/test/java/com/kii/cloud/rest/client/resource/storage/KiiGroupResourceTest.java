@@ -2,6 +2,7 @@ package com.kii.cloud.rest.client.resource.storage;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -96,5 +97,32 @@ public class KiiGroupResourceTest {
 		rest.setCredentials(user2);
 		
 		rest.api().groups(group1Renamed.getGroupID()).delete();
+	}
+	@Test
+	@Ignore
+	public void specifiedGroupIdTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiPseudoUser user1 = new KiiPseudoUser();
+		KiiPseudoUser user2 = new KiiPseudoUser();
+		KiiNormalUser user3 = new KiiNormalUser().setUsername("test1-" + System.currentTimeMillis());
+		
+		user1 = rest.api().users().register(user1);
+		user2 = rest.api().users().register(user2);
+		user3 = rest.api().users().register(user3, "password");
+		
+		rest.setCredentials(user1);
+		
+		// creating new group
+		KiiGroup group1 = new KiiGroup();
+		group1.setName("MyGroup1");
+		group1.setGroupID("group-id-" + System.currentTimeMillis());
+		group1.setOwner(user1.getUserID());
+		
+		KiiGroupMembers members = new KiiGroupMembers();
+		members.addMember(user2.getUserID());
+		members.addMember(user3.getUserID());
+		rest.api().groups().save(group1, members);
 	}
 }

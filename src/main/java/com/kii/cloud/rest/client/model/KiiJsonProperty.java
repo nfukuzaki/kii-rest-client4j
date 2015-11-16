@@ -89,6 +89,12 @@ public class KiiJsonProperty<T> {
 			throw new RuntimeException("Unexpected type of property.");
 		}
 	}
+	public void remove(JsonObject json) {
+		if (json == null) {
+			return;
+		}
+		json.remove(this.getName());
+	}
 	private String getString(JsonObject json) {
 		if (json.has(this.name)) {
 			return GsonUtils.getString(json, this.name);

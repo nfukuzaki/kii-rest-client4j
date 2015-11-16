@@ -63,7 +63,13 @@ public class KiiGroupsResource extends KiiRestSubResource implements KiiScopedRe
 		if (members != null) {
 			KiiGroupMembers.PROPERTY_MEMBERS.set(requestBody, members.toJsonArrayAsRequest());
 		}
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_GROUP_CREATION_REQUEST, requestBody);
+		KiiRestRequest request = null;
+		if (StringUtils.isEmpty(group.getGroupID())) {
+			request = new KiiRestRequest(getUrl(), Method.POST, headers, MEDIA_TYPE_GROUP_CREATION_REQUEST, requestBody);
+		} else {
+			KiiGroup.PROPERTY_GROUP_ID.remove(requestBody);
+			request = new KiiRestRequest(getUrl() + "/" + group.getGroupID(), Method.PUT, headers, MEDIA_TYPE_GROUP_CREATION_REQUEST, requestBody);
+		}
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
