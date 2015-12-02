@@ -111,6 +111,12 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 		}
 		return new KiiUserResource(this.users(), user.getUserID());
 	}
+	public KiiUserResource currentUser() {
+		if (this.getCredentials() == null || !(this.getCredentials() instanceof KiiUser)) {
+			throw new IllegalStateException("current user is not KiiUser");
+		}
+		return new KiiUserResource(this.users(), this.getCredentials().getID());
+	}
 	public KiiThingsResource things() {
 		return new KiiThingsResource(this);
 	}
@@ -128,6 +134,12 @@ public class KiiAppResource extends KiiRestResource implements KiiScopedResource
 			throw new IllegalArgumentException("uri is null"); 
 		}
 		return new KiiThingResource(this.things(), uri.getIdentifierType(), uri.getIdentifier());
+	}
+	public KiiThingResource currentThing() {
+		if (this.getCredentials() == null || !(this.getCredentials() instanceof KiiThing)) {
+			throw new IllegalStateException("current user is not KiiThing");
+		}
+		return new KiiThingResource(this.things(), this.getCredentials().getID());
 	}
 	public KiiGroupsResource groups() {
 		return new KiiGroupsResource(this);
