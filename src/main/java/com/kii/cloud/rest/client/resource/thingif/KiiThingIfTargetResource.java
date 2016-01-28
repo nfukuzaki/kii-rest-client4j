@@ -13,6 +13,11 @@ public class KiiThingIfTargetResource extends KiiRestSubResource {
 		super(parent);
 		this.targetID = targetID;
 	}
+	
+	public KiiThingIfTargetStatesResource states() {
+		return new KiiThingIfTargetStatesResource(this);
+	}
+	
 	@Override
 	public String getPath() {
 		return BASE_PATH + this.targetID;
