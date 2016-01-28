@@ -26,6 +26,7 @@ import com.kii.cloud.rest.client.SkipAcceptableTestRunner;
 import com.kii.cloud.rest.client.TestApp;
 import com.kii.cloud.rest.client.TestAppFilter;
 import com.kii.cloud.rest.client.TestEnvironments;
+import com.kii.cloud.rest.client.KiiRest.Site;
 import com.kii.cloud.rest.client.exception.KiiNotFoundException;
 import com.kii.cloud.rest.client.model.KiiCredentials;
 import com.kii.cloud.rest.client.model.push.KiiMqttEndpoint;
@@ -41,7 +42,7 @@ import com.kii.cloud.rest.client.model.storage.KiiThingOwner;
 public class KiiPushInstallationResourceTest {
 	@Test
 	public void mqttTest() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials().site(Site.JP));
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiCredentials adminCredentials = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());

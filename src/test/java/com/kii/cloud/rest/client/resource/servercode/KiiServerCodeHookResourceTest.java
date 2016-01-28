@@ -38,7 +38,7 @@ import com.kii.cloud.rest.client.util.GsonUtils;
 public class KiiServerCodeHookResourceTest {
 	@Test
 	public void deployTest() throws Exception {
-		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials());
+		TestApp testApp = TestEnvironments.random(new TestAppFilter().hasAppAdminCredentials().site(Site.JP));
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
 		
 		KiiCredentials cred = rest.api().oauth().getAdminAccessToken(testApp.getClientID(), testApp.getClientSecret());

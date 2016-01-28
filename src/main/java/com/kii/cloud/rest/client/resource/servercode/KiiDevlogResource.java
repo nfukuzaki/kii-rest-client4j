@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import okio.Buffer;
-import okio.BufferedSource;
+import okio.BufferedSink;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -20,11 +20,13 @@ import com.kii.cloud.rest.client.logging.KiiLogger;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.model.servercode.KiiDevlog;
 import com.kii.cloud.rest.client.model.servercode.KiiDevlogFilter;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.ws.WebSocket;
-import com.squareup.okhttp.ws.WebSocket.PayloadType;
 import com.squareup.okhttp.ws.WebSocketCall;
 import com.squareup.okhttp.ws.WebSocketListener;
 
@@ -117,14 +119,20 @@ public class KiiDevlogResource {
 				new Thread() {
 					@Override
 					public void run() {
-						Buffer buffer = new Buffer();
 						try {
-							buffer.writeUtf8(requestBody.toString());
-							webSocket.sendMessage(PayloadType.TEXT, buffer);
+							webSocket.sendMessage(new RequestBody() {
+								@Override
+								public void writeTo(BufferedSink sink) throws IOException {
+									sink.write(requestBody.toString().getBytes());
+								}
+								
+								@Override
+								public MediaType contentType() {
+									return WebSocket.TEXT;
+								}
+							});
 						} catch (IOException e) {
 							e.printStackTrace();
-						} finally {
-							buffer.close();
 						}
 					}
 				}.start();
@@ -135,21 +143,21 @@ public class KiiDevlogResource {
 				latch.countDown();
 			}
 			@Override
-			public void onFailure(IOException e, Response response) {
-				logger.error("WebSocketListener.onFailure", e);
-				exception.set(e);
-				latch.countDown();
-			}
-			@Override
-			public void onMessage(BufferedSource payload, PayloadType type) throws IOException {
+			public void onMessage(ResponseBody message) throws IOException {
 				try {
-					logs.set((JsonArray)new JsonParser().parse(payload.readUtf8()));;
-					payload.close();
+					logs.set((JsonArray)new JsonParser().parse(message.string()));
+					message.close();
 				} catch (Exception e) {
 					exception.set(e);
 				} finally {
 					latch.countDown();
 				}
+			}
+			@Override
+			public void onFailure(IOException e, Response response) {
+				logger.error("WebSocketListener.onFailure", e);
+				exception.set(e);
+				latch.countDown();
 			}
 			@Override
 			public void onPong(Buffer payload) {
@@ -217,8 +225,18 @@ public class KiiDevlogResource {
 					public void run() {
 						Buffer buffer = new Buffer();
 						try {
-							buffer.writeUtf8(requestBody.toString());
-							webSocket.sendMessage(PayloadType.TEXT, buffer);
+							webSocket.sendMessage(new RequestBody() {
+								@Override
+								public void writeTo(BufferedSink sink) throws IOException {
+									// TODO Auto-generated method stub
+									sink.write(requestBody.toString().getBytes());
+								}
+								
+								@Override
+								public MediaType contentType() {
+									return WebSocket.TEXT;
+								}
+							});
 						} catch (IOException e) {
 							e.printStackTrace();
 						} finally {
@@ -237,10 +255,10 @@ public class KiiDevlogResource {
 				listener.onFailure(e);
 			}
 			@Override
-			public void onMessage(BufferedSource payload, PayloadType type) throws IOException {
+			public void onMessage(ResponseBody message) throws IOException {
 				try {
-					JsonArray logs = (JsonArray)new JsonParser().parse(payload.readUtf8());
-					payload.close();
+					JsonArray logs = (JsonArray)new JsonParser().parse(message.string());
+					message.close();
 					List<KiiDevlog> results = new ArrayList<KiiDevlog>();
 					for (int i = 0; i < logs.size(); i++) {
 						results.add(new KiiDevlog(logs.get(i).getAsJsonObject()));
