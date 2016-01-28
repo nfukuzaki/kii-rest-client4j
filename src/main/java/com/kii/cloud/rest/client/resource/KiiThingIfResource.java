@@ -148,6 +148,17 @@ public class KiiThingIfResource extends KiiRestResource {
 		return this.endpoint + BASE_PATH + "/" + this.appID;
 	}
 	@Override
+	protected void setAppHeader(Map<String, String> headers) {
+		headers.put("X-Kii-AppID", this.appID);
+		headers.put("X-Kii-AppKey", this.appKey);
+	}
+	@Override
+	protected void setAuthorizationHeader(Map<String, String> headers) {
+		if (this.credentials != null) {
+			headers.put("Authorization", "Bearer " + this.credentials.getAccessToken());
+		}
+	}
+	@Override
 	protected KiiLogger getLogger() {
 		return this.logger;
 	}
