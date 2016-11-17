@@ -1,6 +1,8 @@
 package com.kii.cloud.rest.client.model.storage;
 
 import com.google.gson.JsonObject;
+import com.kii.cloud.rest.client.util.GsonUtils;
+import com.kii.cloud.rest.client.util.StringUtils;
 
 public class KiiGeoPoint {
 	private final double latitude;
@@ -31,5 +33,15 @@ public class KiiGeoPoint {
 	}
 	private boolean inRange(double min, double max, double number) {
 		return (!Double.isNaN(number) && number > min && number < max) ? true : false;
+	}
+	public static KiiGeoPoint fromJson(JsonObject json) {
+		if (StringUtils.equals("point", GsonUtils.getString(json, "_type"))) {
+			Double lat = GsonUtils.getDouble(json, "lat");
+			Double lon = GsonUtils.getDouble(json, "lon");
+			if (lat != null && lon != null) {
+				return new KiiGeoPoint(lat, lon);
+			}
+		}
+		return null;
 	}
 }

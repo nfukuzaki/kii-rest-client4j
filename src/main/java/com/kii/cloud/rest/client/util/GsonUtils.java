@@ -59,6 +59,15 @@ public class GsonUtils {
 		}
 		return null;
 	}
+	public static Double getDouble(JsonObject json, String name) {
+		if (json == null || json.isJsonNull()) {
+			return null;
+		}
+		if (json.has(name) && !json.get(name).isJsonNull()) {
+			return json.get(name).getAsDouble();
+		}
+		return null;
+	}
 	public static JsonObject getJsonObject(JsonObject json, String name) {
 		if (json == null || json.isJsonNull()) {
 			return null;

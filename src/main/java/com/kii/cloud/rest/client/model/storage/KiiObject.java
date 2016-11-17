@@ -1,9 +1,11 @@
 package com.kii.cloud.rest.client.model.storage;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kii.cloud.rest.client.model.KiiCustomableJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
 import com.kii.cloud.rest.client.model.uri.KiiObjectURI;
+import com.kii.cloud.rest.client.util.GsonUtils;
 
 public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 	public static final KiiJsonProperty<String> PROPERTY_OBJECT_ID = new KiiJsonProperty<String>(String.class, "objectID", "_id");
@@ -58,6 +60,10 @@ public class KiiObject extends KiiCustomableJsonModel<KiiObject> {
 	public KiiObject set(String name, KiiGeoPoint value) {
 		this.json.add(name, value.toJson());
 		return this;
+	}
+	public KiiGeoPoint getGeoPoint(String name) {
+		JsonObject geo = GsonUtils.getJsonObject(this.json, name);
+		return KiiGeoPoint.fromJson(geo);
 	}
 	public KiiObjectURI getURI() {
 		return this.uri;
