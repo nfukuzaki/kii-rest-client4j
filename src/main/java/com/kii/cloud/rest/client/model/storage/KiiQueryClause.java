@@ -84,6 +84,31 @@ public class KiiQueryClause {
 		clause.json.add("clause", eq(key, value).getJson());
 		return clause;
 	}
+	public static KiiQueryClause not(KiiQueryClause inner) {
+		KiiQueryClause clause = new KiiQueryClause();
+		clause.json.addProperty("type", "not");
+		clause.json.add("clause", inner.getJson());
+		return clause;
+	}
+	public static KiiQueryClause hasStringField(String key) {
+		return hasField(key, "STRING");
+	}
+	public static KiiQueryClause hasBooleanField(String key) {
+		return hasField(key, "BOOLEAN");
+	}
+	public static KiiQueryClause hasDecimalField(String key) {
+		return hasField(key, "DECIMAL");
+	}
+	public static KiiQueryClause hasIntegerField(String key) {
+		return hasField(key, "INTEGER");
+	}
+	private static KiiQueryClause hasField(String key, String type) {
+		KiiQueryClause clause = new KiiQueryClause();
+		clause.json.addProperty("type", "hasField");
+		clause.json.addProperty("field", key);
+		clause.json.addProperty("fieldType", type);
+		return clause;
+	}
 	public static KiiQueryClause or(KiiQueryClause first, KiiQueryClause second, KiiQueryClause... another) {
 		KiiQueryClause clause = new KiiQueryClause();
 		clause.json.addProperty("type", "or");
