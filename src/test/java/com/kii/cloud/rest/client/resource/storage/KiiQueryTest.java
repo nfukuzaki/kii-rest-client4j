@@ -48,6 +48,32 @@ public class KiiQueryTest {
 		assertEquals("hoge", results.get(1).getString("name"));
 	}
 	@Test
+	public void notNotEqualsTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
+		
+		// creating object
+		KiiObject object1 = new KiiObject().set("name", "foo");
+		rest.api().users(user).buckets(userBucketID).objects().save(object1);
+		KiiObject object2 = new KiiObject().set("name", "bar");
+		rest.api().users(user).buckets(userBucketID).objects().save(object2);
+		KiiObject object3 = new KiiObject().set("name", "hoge");
+		rest.api().users(user).buckets(userBucketID).objects().save(object3);
+		
+		KiiQuery query = new KiiQuery(KiiQueryClause.not(KiiQueryClause.neq("name", "foo")));
+		KiiQueryResult queryResult = rest.api().users(user).buckets(userBucketID).query(query);
+		List<KiiObject> results = queryResult.getResults();
+		
+		assertEquals(1, results.size());
+		assertEquals("foo", results.get(0).getString("name"));
+	}
+	@Test
 	public void notPrefixTest() throws Exception {
 		TestApp testApp = TestEnvironments.random();
 		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
@@ -200,5 +226,56 @@ public class KiiQueryTest {
 		
 		assertEquals(1, results.size());
 		assertEquals("TDL", results.get(0).getString("name"));
+	}
+	@Test
+	public void notOrTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
+		
+		// creating object
+		KiiObject object1 = new KiiObject().set("name", "foo");
+		rest.api().users(user).buckets(userBucketID).objects().save(object1);
+		KiiObject object2 = new KiiObject().set("name", "bar");
+		rest.api().users(user).buckets(userBucketID).objects().save(object2);
+		KiiObject object3 = new KiiObject().set("name", "hoge");
+		rest.api().users(user).buckets(userBucketID).objects().save(object3);
+		
+		KiiQuery query = new KiiQuery(KiiQueryClause.not(KiiQueryClause.or(KiiQueryClause.eq("name", "foo"), KiiQueryClause.eq("name", "bar"))));
+		KiiQueryResult queryResult = rest.api().users(user).buckets(userBucketID).query(query);
+		List<KiiObject> results = queryResult.getResults();
+		
+		assertEquals(1, results.size());
+		assertEquals("hoge", results.get(0).getString("name"));
+	}
+	@Test
+	public void notAndTest() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+		
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+		
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
+		
+		// creating object
+		KiiObject object1 = new KiiObject().set("name", "foo").set("age", 30);
+		rest.api().users(user).buckets(userBucketID).objects().save(object1);
+		KiiObject object2 = new KiiObject().set("name", "foo").set("age", 20);
+		rest.api().users(user).buckets(userBucketID).objects().save(object2);
+		
+		KiiQuery query = new KiiQuery(KiiQueryClause.not(KiiQueryClause.and(KiiQueryClause.eq("name", "foo"), KiiQueryClause.gt("age", 25))));
+		KiiQueryResult queryResult = rest.api().users(user).buckets(userBucketID).query(query);
+		List<KiiObject> results = queryResult.getResults();
+		
+		assertEquals(1, results.size());
+		assertEquals("foo", results.get(0).getString("name"));
+		assertEquals(20, (int)results.get(0).getInt("age"));
 	}
 }
