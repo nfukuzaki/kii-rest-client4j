@@ -70,4 +70,8 @@ public class TestApp {
 	public void setTwitterAccessTokenSecret(String accessTokenSecret) {
 		this.json.addProperty("TwitterAccessTokenSecret", accessTokenSecret);
 	}
+	public boolean isEnableTrait(String name) {
+		return GsonUtils.getBoolean(this.json, "TraitEnabled") == null? false :
+				GsonUtils.getBoolean(this.json, "TraitEnabled");
+	}
 }

@@ -30,6 +30,7 @@ public class TestAppFilter {
 	private Boolean hasTwitterAccessToken = null;
 	private Boolean hasTwitterAccessTokenSecret = null;
 	private Long aggregationRuleID = null;
+	private Boolean enableTrait = null;
 	
 	public TestAppFilter site(Site site) {
 		this.site = site;
@@ -77,6 +78,11 @@ public class TestAppFilter {
 	}
 	public TestAppFilter disableBucketEncryption() {
 		this.enableBucketEncryption = false;
+		return this;
+	}
+
+	public TestAppFilter disableTrait() {
+		this.enableTrait = false;
 		return this;
 	}
 	public TestAppFilter aggregationRuleID(Long aggregationRuleID) {
@@ -141,6 +147,11 @@ public class TestAppFilter {
 	}
 	public TestAppFilter enableQQ() {
 		this.enableQQ = true;
+		return this;
+	}
+
+	public TestAppFilter enableTrait() {
+		this.enableTrait = true;
 		return this;
 	}
 	public TestAppFilter hasTwitterAccessToken() {
@@ -225,6 +236,10 @@ public class TestAppFilter {
 			return false;
 		}
 		if (this.hasTwitterAccessTokenSecret == Boolean.TRUE && StringUtils.isEmpty(app.getTwitterAccessTokenSecret())) {
+			return false;
+		}
+
+		if (!this.accept(this.enableTrait, app.isEnableTrait("TraitEnabled"))) {
 			return false;
 		}
 		return true;
@@ -312,6 +327,10 @@ public class TestAppFilter {
 		}
 		if (this.aggregationRuleID != null) {
 			sb.append("aggregationRuleID=" + aggregationRuleID + " ");
+		}
+
+		if (this.enableTrait != null) {
+			sb.append("enableTrait="+enableTrait+" ");
 		}
 		return sb.toString();
 	}
