@@ -49,10 +49,11 @@ public class KiiAclResourceTest {
 		// listing ACL
 		Map<Action,List<Subject>> ACLs = rest.api().users(user).buckets(userBucketID).acl().list();
 		// verify default ACLs
-		assertEquals(3, ACLs.size());
+		assertEquals(4, ACLs.size());
 		assertEquals(user.getUserID(), ACLs.get(BucketAction.CREATE_OBJECTS_IN_BUCKET).get(0).getID());
 		assertEquals(user.getUserID(), ACLs.get(BucketAction.QUERY_OBJECTS_IN_BUCKET).get(0).getID());
 		assertEquals(user.getUserID(), ACLs.get(BucketAction.DROP_BUCKET_WITH_ALL_CONTENT).get(0).getID());
+		assertEquals(user.getUserID(), ACLs.get(BucketAction.READ_OBJECTS_IN_BUCKET).get(0).getID());
 		
 		// granting ACL
 		rest.api().users(user).buckets(userBucketID).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, Subject.ANONYMOUS_USER);
@@ -62,7 +63,7 @@ public class KiiAclResourceTest {
 		rest.api().users(user).buckets(userBucketID).acl().grant(BucketAction.CREATE_OBJECTS_IN_BUCKET, this.subjectThing);
 		// verify ACLs
 		ACLs = rest.api().users(user).buckets(userBucketID).acl().list();
-		assertEquals(3, ACLs.size());
+		assertEquals(4, ACLs.size());
 		Subject[] expectedSubjects = new Subject[]{
 				Subject.user(user),
 				Subject.ANONYMOUS_USER,

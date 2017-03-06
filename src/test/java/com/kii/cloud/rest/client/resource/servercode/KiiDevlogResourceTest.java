@@ -92,7 +92,7 @@ public class KiiDevlogResourceTest {
 		th.start();
 		
 		try {
-			if (!latch.await(60, TimeUnit.SECONDS)) {
+			if (!latch.await(120, TimeUnit.SECONDS)) {
 				fail("Test timeouts");
 			}
 			assertTrue(results.size() > 10);

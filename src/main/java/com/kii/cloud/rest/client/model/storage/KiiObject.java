@@ -1,7 +1,6 @@
 package com.kii.cloud.rest.client.model.storage;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.kii.cloud.rest.client.model.KiiCustomableJsonModel;
 import com.kii.cloud.rest.client.model.KiiJsonProperty;
 import com.kii.cloud.rest.client.model.uri.KiiObjectURI;

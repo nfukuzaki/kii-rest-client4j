@@ -45,6 +45,7 @@ public class KiiAcl {
 	public enum BucketAction implements Action {
 		QUERY_OBJECTS_IN_BUCKET,
 		CREATE_OBJECTS_IN_BUCKET,
+		READ_OBJECTS_IN_BUCKET,
 		DROP_BUCKET_WITH_ALL_CONTENT
 	}
 	public enum ObjectAction implements Action {

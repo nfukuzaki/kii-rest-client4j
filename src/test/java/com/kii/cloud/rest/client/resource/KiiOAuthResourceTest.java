@@ -66,7 +66,7 @@ public class KiiOAuthResourceTest {
 		rest.api().users(user).get();
 		
 		KiiCredentials newCredentials = rest.api().oauth().refreshAccessToken(refreshToken);
-		
+		Thread.sleep(3000);
 		try {
 			rest.api().users(user).get();
 			fail("KiiForbiddenException should be thrown");

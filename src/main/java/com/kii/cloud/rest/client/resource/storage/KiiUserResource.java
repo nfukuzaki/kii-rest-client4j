@@ -171,7 +171,7 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	 * @param oldPassword
 	 * @param newPassword
 	 * @throws KiiRestException
-	 * @see http://documentation.kii.com/en/guides/rest/managing-users/passwords/
+	 * @see http://docs.kii.com/en/guides/cloudsdk/rest/managing-users/password-change/
 	 */
 	public void changePassword(String oldPassword, String newPassword) throws KiiRestException {
 		if (oldPassword == null) {
@@ -195,7 +195,7 @@ public class KiiUserResource extends KiiRestSubResource implements KiiScopedReso
 	/**
 	 * @param notificationMethod
 	 * @throws KiiRestException
-	 * @see http://documentation.kii.com/en/guides/rest/managing-users/passwords/
+	 * @see http://docs.kii.com/en/guides/cloudsdk/rest/managing-users/password-reset/
 	 */
 	@AnonymousAPI
 	public void resetPassword(NotificationMethod notificationMethod) throws KiiRestException {

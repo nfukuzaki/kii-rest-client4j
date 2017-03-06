@@ -60,17 +60,17 @@ public class KiiThingTypeConfigurationResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
-	@AdminAPI
-	public void remove() throws KiiRestException {
-		Map<String, String> headers = this.newAuthorizedHeaders();
-		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
-		try {
-			Response response = this.execute(request);
-			this.parseResponse(request, response);
-		} catch (IOException e) {
-			throw new KiiRestException(request.getCurl(), e);
-		}
-	}
+//	@AdminAPI
+//	public void remove() throws KiiRestException {
+//		Map<String, String> headers = this.newAuthorizedHeaders();
+//		KiiRestRequest request = new KiiRestRequest(getUrl(), Method.DELETE, headers);
+//		try {
+//			Response response = this.execute(request);
+//			this.parseResponse(request, response);
+//		} catch (IOException e) {
+//			throw new KiiRestException(request.getCurl(), e);
+//		}
+//	}
 	
 	@Override
 	public String getPath() {
