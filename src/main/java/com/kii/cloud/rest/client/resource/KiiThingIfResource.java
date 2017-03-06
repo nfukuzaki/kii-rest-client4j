@@ -138,6 +138,63 @@ public class KiiThingIfResource extends KiiRestResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+
+	/**
+	 * @param vendorThingID
+	 * @param thingPassword
+	 * @param thingType
+	 * @param firmwareVersion
+	 * @param options, optional fields for the thing, can be thingProperties, layoutPosition, and etc.
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public KiiThing onboard(
+			String vendorThingID,
+			String thingPassword,
+			String thingType,
+			String firmwareVersion,
+			JsonObject options) throws KiiRestException{
+		if (!(getCredentials() instanceof KiiUser)) {
+			throw new IllegalStateException("Credentials must be KiiUser who will become a owner");
+		}
+		if (vendorThingID == null) {
+			throw new IllegalArgumentException("vendorThingID is null");
+		}
+		if (thingPassword == null) {
+			throw new IllegalArgumentException("thingPassword is null");
+		}
+
+		Map<String, String> headers = this.newAuthorizedHeaders();
+
+		JsonObject requestBody = options;
+		if (requestBody == null) {
+			requestBody = new JsonObject();
+		}
+
+		requestBody.addProperty("vendorThingID", vendorThingID);
+		requestBody.addProperty("thingPassword", thingPassword);
+		if (thingType != null) {
+			requestBody.addProperty("thingType", thingType);
+		}
+		if (firmwareVersion != null) {
+			requestBody.addProperty("firmwareVersion", firmwareVersion);
+		}
+		requestBody.addProperty("owner", Prefix.USER.getValue() + getCredentials().getID());
+
+		KiiRestRequest request = new KiiRestRequest(getUrl("/onboardings"), Method.POST, headers, MEDIA_TYPE_ONBOARDING_WITH_VENDOR_THING_ID_BY_OWNER_REQUEST, requestBody);
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			JsonObject thingJson = new JsonObject();
+			thingJson.addProperty(
+					KiiThing.PROPERTY_THING_ID.getName(),
+					KiiThing.PROPERTY_THING_ID.get(responseBody));
+			return new KiiThing(thingJson)
+					.setAccessToken(KiiThing.PROPERTY_ACCESS_TOKEN.get(responseBody));
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
 	
 	@Override
 	protected KiiRestResource getParent() {

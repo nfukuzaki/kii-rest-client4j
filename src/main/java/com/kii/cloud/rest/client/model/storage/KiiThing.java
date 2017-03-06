@@ -17,9 +17,9 @@ public class KiiThing extends KiiCustomableJsonModel<KiiThing> implements KiiCre
 	public static final Pattern THING_PASSWORD_PATTERN = Pattern.compile("^\\p{Print}{1,200}$");
 	public static final Pattern THING_GENERIC_FIELD_PATTERN = Pattern.compile("[a-zA-Z0-9-_\\. ]{0,100}");
 
-	public static final KiiJsonProperty<String> PROPERTY_ACCESS_TOKEN = new KiiJsonProperty<String>(String.class, "_accessToken");
+	public static final KiiJsonProperty<String> PROPERTY_ACCESS_TOKEN = new KiiJsonProperty<String>(String.class, "_accessToken", "accessToken");
 	public static final KiiJsonProperty<String> PROPERTY_REFRESH_TOKEN = new KiiJsonProperty<String>(String.class, "_refreshToken");
-	public static final KiiJsonProperty<String> PROPERTY_THING_ID = new KiiJsonProperty<String>(String.class, "_thingID");
+	public static final KiiJsonProperty<String> PROPERTY_THING_ID = new KiiJsonProperty<String>(String.class, "_thingID", "thingID");
 	public static final KiiJsonProperty<String> PROPERTY_VENDOR_THING_ID = new KiiJsonProperty<String>(String.class, "_vendorThingID", new RegularExpressionValidator(VENDOR_THING_ID_PATTERN));
 	public static final KiiJsonProperty<String> PROPERTY_PASSWORD = new KiiJsonProperty<String>(String.class, "_password", new RegularExpressionValidator(THING_PASSWORD_PATTERN));
 	public static final KiiJsonProperty<String> PROPERTY_THING_TYPE = new KiiJsonProperty<String>(String.class, "_thingType", new RegularExpressionValidator(THING_GENERIC_FIELD_PATTERN));
