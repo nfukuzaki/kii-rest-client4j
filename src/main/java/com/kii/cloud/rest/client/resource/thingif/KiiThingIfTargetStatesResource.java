@@ -40,7 +40,7 @@ public class KiiThingIfTargetStatesResource extends KiiRestSubResource {
 	 * @throws KiiRestException
 	 */
 	public void save(JsonObject state) throws KiiRestException {
-		return this.save(state, false);
+		this.save(state, false);
 	}
 
 	/**
