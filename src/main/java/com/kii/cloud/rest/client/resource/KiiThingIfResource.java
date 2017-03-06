@@ -166,10 +166,8 @@ public class KiiThingIfResource extends KiiRestResource {
 
 		Map<String, String> headers = this.newAuthorizedHeaders();
 
-		JsonObject requestBody;
-		if (options != null) {
-			requestBody = new JsonObject();
-		} else {
+		JsonObject requestBody = options;
+		if (requestBody == null) {
 			requestBody = new JsonObject();
 		}
 
@@ -190,9 +188,9 @@ public class KiiThingIfResource extends KiiRestResource {
 			JsonObject thingJson = new JsonObject();
 			thingJson.addProperty(
 					KiiThing.PROPERTY_THING_ID.getName(),
-					responseBody.get("thingID").getAsString());
+					KiiThing.PROPERTY_THING_ID.get(responseBody));
 			return new KiiThing(thingJson)
-					.setAccessToken(responseBody.get("accessToken").getAsString());
+					.setAccessToken(KiiThing.PROPERTY_ACCESS_TOKEN.get(responseBody));
 		} catch (IOException e) {
 			throw new KiiRestException(request.getCurl(), e);
 		}
