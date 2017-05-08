@@ -65,13 +65,25 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 			throw new KiiRestException(request.getCurl(), e);
 		}
 	}
+	
+	
 	/**
 	 * @param endpoint
 	 * @return
 	 * @throws KiiRestException
 	 */
 	public JsonObject execute(String endpoint) throws KiiRestException {
-		return this.execute(endpoint, null);
+		return this.execute(endpoint, (JsonObject)null);
+	}
+	/**
+	 * 
+	 * @param endpoint
+	 * @param environmentVersion
+	 * @return
+	 * @throws KiiRestException
+	 */
+	public JsonObject execute(String endpoint, String environmentVersion) throws KiiRestException {
+		return this.execute(endpoint, null, environmentVersion);
 	}
 	/**
 	 * @param endpoint
@@ -80,6 +92,18 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 	 */
 	@AnonymousAPI
 	public JsonObject execute(String endpoint, JsonObject args) throws KiiRestException {
+		return execute(endpoint, args, null);
+	}
+	/**
+	 * 
+	 * @param endpoint
+	 * @param args
+	 * @param environmentVersion
+	 * @return
+	 * @throws KiiRestException
+	 */
+	@AnonymousAPI
+	public JsonObject execute(String endpoint, JsonObject args, String environmentVersion) throws KiiRestException {
 		if (endpoint == null) {
 			throw new IllegalArgumentException("endpoint is null");
 		}
@@ -87,13 +111,21 @@ public class KiiServerCodeResource extends KiiRestSubResource {
 		if (args == null) {
 			args = new JsonObject();
 		}
-		KiiRestRequest request = new KiiRestRequest(getUrl("/" + endpoint), Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, args);
+		String queryParam = "";
+		if (environmentVersion != null) {
+			queryParam = "?environment-version=" + environmentVersion;
+		}
+		KiiRestRequest request = new KiiRestRequest(getUrl("/" + endpoint) + queryParam, Method.POST, headers, MEDIA_TYPE_APPLICATION_JSON, args);
 		try {
 			Response response = this.execute(request);
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
-			String stepCount = response.header("X-Step-count");
-			if (!StringUtils.isEmpty(stepCount)) {
-				responseBody.addProperty("x_step_count", stepCount);
+			String xStepCount = response.header("X-Step-count");
+			String xEnvironmentVersion = response.header("X-Environment-version");
+			if (!StringUtils.isEmpty(xStepCount)) {
+				responseBody.addProperty("x_step_count", xStepCount);
+			}
+			if (!StringUtils.isEmpty(xEnvironmentVersion)) {
+				responseBody.addProperty("x_environment_version", xEnvironmentVersion);
 			}
 			return responseBody;
 		} catch (IOException e) {
