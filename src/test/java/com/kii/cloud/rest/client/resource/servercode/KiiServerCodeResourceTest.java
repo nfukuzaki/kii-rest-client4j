@@ -41,7 +41,7 @@ public class KiiServerCodeResourceTest {
 		rest.api().servercode().setCurrentVersion(versionID);
 		
 		rest.setCredentials(null);
-		JsonObject result = rest.api().servercode("current").execute("returnNumber", null);
+		JsonObject result = rest.api().servercode("current").execute("returnNumber",(JsonObject)null);
 		assertEquals(new BigDecimal("3.14"), GsonUtils.getBigDecimal(result, "returnedValue"));
 		assertEquals(2, (int)GsonUtils.getInt(result, "x_step_count"));
 	}
@@ -70,7 +70,7 @@ public class KiiServerCodeResourceTest {
 		rest.api().servercode().setCurrentVersion(versionID2);
 		
 		rest.setCredentials(null);
-		JsonObject result = rest.api().servercode(versionID1).execute("returnNumber", null);
+		JsonObject result = rest.api().servercode(versionID1).execute("returnNumber", (JsonObject)null);
 		assertEquals(new BigDecimal("3.14"), GsonUtils.getBigDecimal(result, "returnedValue"));
 		assertEquals(2, (int)GsonUtils.getInt(result, "x_step_count"));
 	}

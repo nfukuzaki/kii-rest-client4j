@@ -68,7 +68,7 @@ public class KiiServerCodeHookResourceTest {
 		String versionID = rest.api().servercode().deploy(new File(getClass().getResource("get_server_time.js").getPath()));
 		rest.api().servercode().setCurrentVersion(versionID);
 		
-		JsonObject result = rest.api().servercode(versionID).execute("get_server_time", null);
+		JsonObject result = rest.api().servercode(versionID).execute("get_server_time", (JsonObject)null);
 		DateTime serverDateTime = new DateTime(GsonUtils.getLong(result, "returnedValue"), DateTimeZone.UTC);
 		
 		// Executes the server code after 2 minutes.
