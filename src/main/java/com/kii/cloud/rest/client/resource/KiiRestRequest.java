@@ -3,6 +3,8 @@ package com.kii.cloud.rest.client.resource;
 import java.util.Map;
 
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.RequestBody;
 
 public class KiiRestRequest {
 	public enum Method {
@@ -10,7 +12,8 @@ public class KiiRestRequest {
 		GET,
 		POST,
 		PUT,
-		DELETE
+		DELETE,
+		MULTIPART_POST
 	}
 	private final String url;
 	private final Method method;
@@ -27,6 +30,13 @@ public class KiiRestRequest {
 		this.headers = headers;
 		this.contentType = contentType;
 		this.entity = entity;
+	}
+	public KiiRestRequest(String url, Map<String, String> headers, RequestBody multipartBody) {
+		this.url = url;
+		this.method = Method.MULTIPART_POST;
+		this.headers = headers;
+		this.contentType = MultipartBuilder.FORM;
+		this.entity = multipartBody;
 	}
 	public String getUrl() {
 		return url;
@@ -54,7 +64,11 @@ public class KiiRestRequest {
 		}
 		curl.append(" '" + this.url + "'");
 		if (this.entity != null) {
-			curl.append(" -d '" + entity.toString() + "'");
+			if (this.method == Method.MULTIPART_POST) {
+				curl.append(" -d '" + "--- MULTIPART ---" + "'");
+			} else {
+				curl.append(" -d '" + entity.toString() + "'");
+			}
 		}
 		return curl.toString();
 

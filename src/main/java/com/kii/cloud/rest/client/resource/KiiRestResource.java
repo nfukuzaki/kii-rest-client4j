@@ -109,10 +109,10 @@ public abstract class KiiRestResource {
 		return getParent().getAppID();
 	}
 	protected Response execute(KiiRestRequest restRequest) throws IOException {
+		OkHttpClient httpClient = client;
 		Builder builder = new Request.Builder();
 		builder.url(restRequest.getUrl());
 		builder.headers(Headers.of(restRequest.getHeaders()));
-		OkHttpClient httpClient = client;
 		switch (restRequest.getMethod()) {
 			case HEAD:
 				builder.head();
@@ -132,6 +132,11 @@ public abstract class KiiRestResource {
 				break;
 			case DELETE:
 				builder.delete();
+				break;
+			case MULTIPART_POST:
+				builder.post((RequestBody)restRequest.getEntity());
+				httpClient = httpClient.clone();
+				httpClient.setRetryOnConnectionFailure(false);
 				break;
 		}
 		Request request = builder.build();
