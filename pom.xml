@@ -7,7 +7,7 @@
 	
 	<properties>
 		<gson.version>2.5</gson.version>
-		<okhttp.version>2.7.2</okhttp.version>
+		<okhttp.version>2.7.5</okhttp.version>
 		<okio.version>1.6.0</okio.version>
 	</properties>
 	
