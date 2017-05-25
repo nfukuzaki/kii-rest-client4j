@@ -5,6 +5,7 @@ import com.kii.cloud.rest.client.logging.KiiEmptyLogger;
 import com.kii.cloud.rest.client.logging.KiiLogger;
 import com.kii.cloud.rest.client.model.KiiCredentialsContainer;
 import com.kii.cloud.rest.client.resource.KiiAppResource;
+import com.kii.cloud.rest.client.resource.KiiSysConfigurationResource;
 import com.kii.cloud.rest.client.resource.KiiThingIfResource;
 import com.kii.cloud.rest.client.resource.servercode.KiiDevlogResource;
 
@@ -55,6 +56,9 @@ public class KiiRest {
 	}
 	public KiiAppResource api() {
 		return new KiiAppResource(this.appID, this.appKey, this.endpoint, this.credentials, this.logger);
+	}
+	public KiiSysConfigurationResource sysconfig() {
+		return new KiiSysConfigurationResource(this.appID, this.appKey, this.endpoint, this.logger);
 	}
 	public KiiThingIfResource thingif() {
 		return new KiiThingIfResource(this.appID, this.appKey, this.thingEndpoint, this.credentials, this.logger);
