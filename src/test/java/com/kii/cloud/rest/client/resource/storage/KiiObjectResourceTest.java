@@ -1,9 +1,5 @@
 package com.kii.cloud.rest.client.resource.storage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,6 +13,8 @@ import com.kii.cloud.rest.client.model.storage.KiiNormalUser;
 import com.kii.cloud.rest.client.model.storage.KiiObject;
 import com.kii.cloud.rest.client.model.storage.KiiThing;
 import com.kii.cloud.rest.client.model.storage.KiiThingOwner;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SkipAcceptableTestRunner.class)
@@ -297,5 +295,33 @@ public class KiiObjectResourceTest {
 		
 		assertEquals(100, (int)object3.getInt("score"));
 		assertEquals(3, (int)object3.getInt("level"));
+	}
+
+	@Test
+	public void saveObjectWithID() throws Exception {
+		TestApp testApp = TestEnvironments.random();
+		KiiRest rest = new KiiRest(testApp.getAppID(), testApp.getAppKey(), testApp.getSite());
+
+		KiiNormalUser user = new KiiNormalUser().setUsername("test-" + System.currentTimeMillis());
+		user = rest.api().users().register(user, "password");
+		rest.setCredentials(user);
+
+		String userBucketID = "user_bucket" + System.currentTimeMillis();
+
+		// creating object
+		KiiObject object1 = new KiiObject().set("score", 100);
+		String objectID = "id-" + System.currentTimeMillis();
+		rest.api().users(user).buckets(userBucketID).objects().save(null, objectID, object1);
+
+		String version = object1.getVersion();
+		assertNotNull(version);
+		assertTrue(version.length() > 0);
+		assertEquals(100, object1.getInt("score").intValue());
+
+		// get saved object
+		KiiObject copy = rest.api().users(user).buckets(userBucketID).objects(objectID).get();
+		assertEquals(copy.getObjectID(), objectID);
+		assertEquals(100, copy.getInt("score").intValue());
+
 	}
 }

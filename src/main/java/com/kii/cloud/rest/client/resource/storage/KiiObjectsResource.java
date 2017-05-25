@@ -12,6 +12,8 @@ import com.kii.cloud.rest.client.resource.KiiRestRequest;
 import com.kii.cloud.rest.client.resource.KiiRestSubResource;
 import com.kii.cloud.rest.client.resource.KiiScopedResource;
 import com.kii.cloud.rest.client.resource.KiiRestRequest.Method;
+import com.kii.cloud.rest.client.util.Path;
+import com.kii.cloud.rest.client.util.StringUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 
@@ -62,6 +64,40 @@ public class KiiObjectsResource extends KiiRestSubResource implements KiiScopedR
 			String version = response.header("ETag");
 			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
 			String objectID = KiiObject.PROPERTY_OBJECT_ID.get(responseBody);
+			return object.setObjectID(objectID)
+					.setVersion(version)
+					.setURI(KiiObjectURI.newURI(((KiiBucketResource)parent).getURI(), objectID));
+		} catch (IOException e) {
+			throw new KiiRestException(request.getCurl(), e);
+		}
+	}
+
+	/**
+	 * Save object specifying its ID.
+	 * @param contentType If null application/json is applied.
+	 * @param objectID ID of the object.
+	 * @param object Object to be stored.
+	 * @return Stored object.
+	 * @throws KiiRestException
+	 * @see <a href="http://docs.kii.com/en/guides/cloudsdk/rest/managing-data/object-storages/creating/#creating-an-object-with-id">creating-an-object-with-id</a>
+	 */
+	public KiiObject save(String contentType, String objectID, KiiObject object) throws KiiRestException {
+		if (contentType == null) {
+			contentType = "application/json";
+		}
+		if (object == null) {
+			throw new IllegalArgumentException("object is null");
+		}
+		if (StringUtils.isEmpty(objectID)) {
+			throw new IllegalArgumentException("object ID is empty.");
+		}
+		Map<String, String> headers = this.newAuthorizedHeaders();
+		String url = Path.combine(getUrl(), objectID);
+		KiiRestRequest request = new KiiRestRequest(url, Method.PUT, headers, MediaType.parse(contentType), object.getJsonObject());
+		try {
+			Response response = this.execute(request);
+			JsonObject responseBody = this.parseResponseAsJsonObject(request, response);
+			String version = response.headers().get("ETag");
 			return object.setObjectID(objectID)
 					.setVersion(version)
 					.setURI(KiiObjectURI.newURI(((KiiBucketResource)parent).getURI(), objectID));
